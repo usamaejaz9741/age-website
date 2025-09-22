@@ -49,13 +49,13 @@ export default {
         background: "#ffffff",
         foreground: "#000000",
         primary: {
-          DEFAULT: "#0050ff",
-          hover: "#0051ff",
+          DEFAULT: "hsl(var(--resolution-blue-600))",
+          hover: "hsl(var(--resolution-blue-700))",
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#60cdff",
-          hover: "#33c1fd",
+          DEFAULT: "hsl(var(--malibu-300))",
+          hover: "hsl(var(--malibu-400))",
           foreground: "#000000",
         },
         success: {
@@ -67,12 +67,14 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
+          DEFAULT: "hsl(var(--muted) / 0.1)",
           foreground: "hsl(var(--muted-foreground))",
+          hover: "hsl(var(--muted) / 0.2)",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          muted: "hsl(var(--accent) / 0.1)",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

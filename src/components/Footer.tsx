@@ -31,17 +31,17 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold mb-2">
-                Alvi Global Enterprises
-              </h3>
-              <p className="text-primary-foreground/80 leading-relaxed">
-                Engineering revenue-generating business ecosystems for emerging markets. 
-                AI-powered, performance-driven, globally scaled.
-              </p>
-            </div>
-
-            {/* Global Footprint */}
+          <div className="mb-6">
+            <img 
+              src="/assets/age-logos/age-logo-footer.png"
+              alt="Alvi Global Enterprises"
+              className="h-15 w-auto mb-4"
+            />
+            <p className="text-primary-foreground/80 leading-relaxed">
+              Engineering revenue-generating business ecosystems for emerging markets. 
+              AI-powered, performance-driven, globally scaled.
+            </p>
+          </div>            {/* Global Footprint */}
             <div className="mb-6">
               <h4 className="font-semibold mb-3 flex items-center">
                 <Globe className="w-4 h-4 mr-2" />

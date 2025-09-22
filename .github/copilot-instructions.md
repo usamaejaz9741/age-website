@@ -1,16 +1,67 @@
 # AI Agent Instructions for Age-Website
 
 ## Project Overview
-This is a React-based website built with Vite, TypeScript, and Shadcn UI components. The project serves as a business website showcasing services and capabilities related to AI automation and product engineering.
+This is a React-based website built with Vite, TypeScript, and Shadcn UI components. The project serves as a business website showcasing services and capabilities related to AI automation and product engineering. The site uses a smooth-scrolling single-page architecture with sections controlled by a fixed header navigation.
+
+## Brand Guidelines
+
+### Color System
+- Primary: `resolution-blue-600` (#0050ff)
+- Primary Hover: `resolution-blue-700` (#0051ff)
+- Accent: `malibu-300` (#60cdff)
+- Accent Hover: `malibu-400` (#33c1fd)
+- Neutrals: Black (#000) and White (#fff) with opacity variants
+
+### Typography
+- Headings (H1-H3): Kufam font family
+  - Font weights: 400-900
+  - Optical sizing: auto
+- Body: System font stack
+
+### Logo Usage
+- Header Logo (`/public/assets/age-logos/age-logo-header.png`):
+  - Fixed height: 40px (width auto)
+  - Left-aligned in header
+  - Preserves brand colors
+  - Included padding: 8px vertical
+
+- Footer Logo (`/public/assets/age-logos/age-logo-footer.png`):
+  - Fixed height: 60px (width auto)
+  - Top of footer section
+  - White version for dark backgrounds
+  - Included padding: 16px bottom
+
+- Favicon System:
+  - Main favicon: `/public/favicon.ico` & `/public/favicon.svg`
+  - Apple Touch Icon: `/public/apple-touch-icon.png`
+  - Web App Icons: 
+    - `/public/web-app-manifest-192x192.png`
+    - `/public/web-app-manifest-512x512.png`
+  - Browser favicon: `/public/favicon-96x96.png`
+
+### Design Tokens
+```css
+/* Core Brand Colors */
+--resolution-blue-600: 224 100% 50%;  /* Primary */
+--resolution-blue-700: 224 100% 50%;  /* Primary Hover */
+--malibu-300: 199 98% 69%;           /* Accent */
+--malibu-400: 198 98% 60%;           /* Accent Hover */
+
+/* Neutrals */
+--neutral-75: 0 0% 0% / 0.75;
+--neutral-50: 0 0% 0% / 0.5;
+--neutral-25: 0 0% 0% / 0.25;
+--neutral-10: 0 0% 0% / 0.1;
+```
 
 ## Key Technologies & Architecture
-- React + TypeScript + Vite
-- Tailwind CSS for styling
-- Shadcn UI component library with Radix UI primitives
-- Lovable tagger for development mode component tracking
-- React Router for navigation
+- React + TypeScript + Vite (running on port 8080)
+- Tailwind CSS for styling with custom color schemes (resolution-blue, malibu)
+- Shadcn UI component library with extended Radix UI primitives
+- React Router for routing (single page with NotFound fallback)
 - React Query for data management
-- React Hook Form + Zod for form handling
+- Lovable tagger for development mode component tracking
+- Custom hooks for responsive design (`useIsMobile`)
 
 ## Project Structure
 - `/src/components/` - React components organized by feature
@@ -27,14 +78,15 @@ This is a React-based website built with Vite, TypeScript, and Shadcn UI compone
 ```tsx
 // Example from button.tsx - Custom variant pattern
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "cta" | "cta-outline" | ...;
-  size?: "default" | "sm" | "lg" | "xl";
+  variant?: "default" | "cta" | "cta-outline" | "cta-secondary" | "ghost" | "link";
+  size?: "default" | "sm" | "lg" | "xl" | "icon";
 }
 ```
-- Extend Shadcn/Radix primitives with custom variants
+- Extend Shadcn/Radix primitives with project-specific variants
 - Use `class-variance-authority` for variant management
-- Follow naming conventions in `ui/` directory
-- Always export with named exports
+- Custom variants follow business naming (e.g., "cta", "cta-outline")
+- All components support responsive design via Tailwind classes
+- Common patterns include group-hover animations and shadows
 
 ### Feature Components
 ```tsx

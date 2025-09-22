@@ -21,16 +21,20 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
+    <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-neutral-10 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <button 
               onClick={() => scrollToSection("hero")}
-              className="text-xl font-bold text-resolution-blue-900 hover:text-resolution-blue-700 transition-colors"
+              className="flex items-center h-10"
             >
-              AGE
+              <img 
+                src="/assets/age-logos/age-logo-header.png"
+                alt="AGE"
+                className="h-full w-auto"
+              />
             </button>
           </div>
 
@@ -40,7 +44,7 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-700 hover:text-resolution-blue-700 font-medium transition-colors duration-200"
+                className="text-neutral-75 hover:text-resolution-blue-600 font-medium transition-colors duration-200"
               >
                 {item.label}
               </button>

@@ -12,28 +12,24 @@
   }
   :root {
     /* Core Brand Colors */
-    --background: 0 0% 100%; /* #ffffff */
-    --foreground: 0 0% 0%; /* #000000 */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
     
     /* Resolution Blue */
-    --resolution-blue-600: 224 100% 50%; /* #0050ff - Primary */
-    --resolution-blue-700: 224 100% 50%; /* #0051ff - Primary Hover */
+    --resolution-blue-600: 224 100% 50%;
+    --resolution-blue-700: 224 100% 50%;
     
     /* Malibu */
-    --malibu-300: 199 98% 69%; /* #60cdff - Accent */
-    --malibu-400: 198 98% 60%; /* #33c1fd - Accent Hover */
-    
-    /* Semantic Colors */
-    --success: 142 76% 36%; /* Green */
-    --success-foreground: 0 0% 100%;
+    --malibu-300: 199 98% 69%;
+    --malibu-400: 198 98% 60%;
     
     /* Surface & Interface Colors */
     --card: var(--background);
     --card-foreground: var(--foreground);
     --popover: var(--background);
     --popover-foreground: var(--foreground);
-    --muted: 224 30% 96%; /* Lighter shade of resolution blue */
-    --muted-foreground: 224 40% 40%; /* More subtle text */
+    --muted: 224 30% 96%;
+    --muted-foreground: 224 40% 40%;
     --accent: var(--malibu-300);
     --accent-foreground: var(--foreground);
     

@@ -1,3 +1,17 @@
+/**
+ * Main landing page component for the AGE Website
+ * 
+ * This page serves as the primary marketing and lead generation page, featuring:
+ * - Hero section with main value proposition
+ * - Social proof and testimonials
+ * - Service offerings and case studies
+ * - Company information and contact details
+ * - Growth audit modal for lead capture
+ * 
+ * The page uses a global event listener system to handle growth audit
+ * button clicks from any component on the page.
+ */
+
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProofBar from "@/components/ProofBar";
@@ -11,21 +25,37 @@ import Footer from "@/components/Footer";
 import GrowthAuditModal from "@/components/GrowthAuditModal";
 import { useState, useEffect } from "react";
 
+/**
+ * Main landing page component
+ * 
+ * Manages the growth audit modal state and sets up global event listeners
+ * for growth audit buttons throughout the page.
+ */
 const Index = () => {
+  // State for controlling the growth audit modal visibility
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
 
-  // Listen for scroll events to growth audit section
+  /**
+   * Set up global event listeners for growth audit buttons
+   * 
+   * This allows any button with the data-growth-audit attribute to trigger
+   * the growth audit modal, providing a consistent user experience across
+   * all page sections.
+   */
   useEffect(() => {
     const handleGrowthAuditClick = () => {
       setIsAuditModalOpen(true);
     };
 
-    // Add event listener for growth audit buttons
+    // Find all buttons with the growth audit data attribute
     const auditButtons = document.querySelectorAll('[data-growth-audit]');
+    
+    // Add click event listeners to all audit buttons
     auditButtons.forEach(button => {
       button.addEventListener('click', handleGrowthAuditClick);
     });
 
+    // Cleanup: Remove event listeners when component unmounts
     return () => {
       auditButtons.forEach(button => {
         button.removeEventListener('click', handleGrowthAuditClick);
@@ -35,7 +65,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Fixed navigation header */}
       <Header />
+      
+      {/* Main page sections in order */}
       <Hero />
       <ProofBar />
       <ValuePillars />
@@ -46,6 +79,7 @@ const Index = () => {
       <ContentTeaser />
       <Footer />
       
+      {/* Growth audit modal for lead capture */}
       <GrowthAuditModal 
         isOpen={isAuditModalOpen} 
         onClose={() => setIsAuditModalOpen(false)} 

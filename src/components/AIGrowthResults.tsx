@@ -1,7 +1,9 @@
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QuizResults } from "@/pages/ai-growth-score";
+import { GeminiAPI } from "@/lib/geminiAPI";
 import { 
   TrendingUp, 
   Target, 
@@ -10,16 +12,99 @@ import {
   Calendar,
   CheckCircle2,
   ArrowRight,
-  Mail
+  Mail,
+  Loader2
 } from "lucide-react";
 
 interface AIGrowthResultsProps {
   results: QuizResults;
   userEmail: string;
   utmParams: {[key: string]: string};
+  quizAnswers: {[key: string]: number};
+  auditContent: string;
 }
 
-const AIGrowthResults = ({ results, userEmail, utmParams }: AIGrowthResultsProps) => {
+const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditContent }: AIGrowthResultsProps) => {
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const geminiAPI = useMemo(() => new GeminiAPI(), []);
+
+  useEffect(() => {
+    const generateRecommendations = async () => {
+      try {
+        const prompt = `Based on the following AI maturity assessment results, provide 3 specific, actionable recommendations for improvement:
+        
+        Overall Score: ${results.score}%
+        Maturity Band: ${results.band}
+        
+        Dimension Scores:
+        - AI Strategy: ${results.dimensions.strategy}%
+        - Implementation: ${results.dimensions.implementation}%
+        - Data Readiness: ${results.dimensions.data}%
+        - Culture & Change: ${results.dimensions.culture}%
+        
+        Please provide 3 concise, specific recommendations that will help improve the areas with the lowest scores.
+        Format each recommendation in a single sentence without numbering.`;
+
+        const response = await geminiAPI.generateContent(prompt);
+        const recommendations = response.split('\n').filter(r => r.trim().length > 0).slice(0, 3);
+        setRecommendations(recommendations);
+        
+        // Save user data with complete information
+        const userData = {
+          timestamp: new Date().toISOString(),
+          email: userEmail,
+          score: results.score,
+          band: results.band,
+          dimensions: results.dimensions,
+          recommendations: recommendations,
+          utmParams: utmParams,
+          auditContent: auditContent,
+          quizAnswers: quizAnswers
+        };
+
+        try {
+          const { saveUserData } = await import('@/lib/storage');
+          await saveUserData(userData);
+        } catch (error) {
+          console.error('Error saving user data:', error);
+        }
+      } catch (error) {
+        console.error('Error generating recommendations:', error);
+        const defaultRecommendations = [
+          'Develop a comprehensive AI strategy aligned with business goals',
+          'Implement data governance and quality improvement processes',
+          'Create an AI training program to build organizational capabilities'
+        ];
+        setRecommendations(defaultRecommendations);
+        
+        // Save user data with default recommendations
+        const userData = {
+          timestamp: new Date().toISOString(),
+          email: userEmail,
+          score: results.score,
+          band: results.band,
+          dimensions: results.dimensions,
+          recommendations: defaultRecommendations,
+          utmParams: utmParams,
+          auditContent: auditContent,
+          quizAnswers: quizAnswers
+        };
+
+        try {
+          const { saveUserData } = await import('@/lib/storage');
+          await saveUserData(userData);
+        } catch (error) {
+          console.error('Error saving user data:', error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    generateRecommendations();
+  }, [results, geminiAPI, userEmail, utmParams, auditContent, quizAnswers]);
+
   const getBandColor = (band: string) => {
     switch (band) {
       case 'Accelerator': return 'text-green-600 bg-green-50 border-green-200';
@@ -129,27 +214,36 @@ const AIGrowthResults = ({ results, userEmail, utmParams }: AIGrowthResultsProps
           </Card>
         </div>
 
-        {/* Top Recommendations */}
+        {/* AI-Generated Recommendations */}
         <Card className="shadow-medium mb-12">
           <CardHeader>
             <CardTitle className="text-2xl flex items-center">
               <Target className="w-6 h-6 text-primary mr-2" />
-              Top 3 Focus Areas
+              AI-Powered Recommendations
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-6">
-              {results.recommendations.map((recommendation, index) => (
-                <div key={index} className="bg-muted/10 p-6 rounded-lg">
-                  <div className="text-2xl font-bold text-primary mb-2">
-                    {index + 1}
+            {loading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <span className="ml-2 text-muted-foreground">
+                  Generating personalized recommendations...
+                </span>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-6">
+                {recommendations.map((recommendation, index) => (
+                  <div key={index} className="bg-muted/10 p-6 rounded-lg">
+                    <div className="text-2xl font-bold text-primary mb-2">
+                      {index + 1}
+                    </div>
+                    <p className="text-foreground font-medium">
+                      {recommendation}
+                    </p>
                   </div>
-                  <p className="text-foreground font-medium">
-                    {recommendation}
-                  </p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 

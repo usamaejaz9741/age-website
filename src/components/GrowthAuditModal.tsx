@@ -36,17 +36,17 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center text-3xl font-kufam font-bold bg-gradient-to-r from-resolution-blue-600 to-malibu-300 bg-clip-text text-transparent">
-            <Calendar className="w-8 h-8 mr-4 text-resolution-blue-600" />
+          <DialogTitle className="flex items-center text-3xl font-heading font-bold text-foreground mb-2">
+            <Calendar className="w-8 h-8 mr-4 text-primary" />
             Book Your Growth Audit
           </DialogTitle>
         </DialogHeader>
 
         <div className="py-6">
-          <div className="bg-gradient-to-br from-resolution-blue-600/10 to-malibu-300/10 p-8 rounded-xl mb-8 border border-resolution-blue-600/20">
+          <div className="bg-gradient-card p-8 rounded-xl mb-8 shadow-soft hover:shadow-medium transition-all">
             <div className="flex items-start md:items-center mb-6 gap-4">
-              <div className="bg-resolution-blue-600/10 p-3 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-resolution-blue-600" />
+              <div className="bg-primary/10 p-3 rounded-lg group-hover:scale-110 transition-transform">
+                <TrendingUp className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <h3 className="text-xl font-kufam font-semibold text-foreground mb-1">

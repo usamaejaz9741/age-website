@@ -1,35 +1,281 @@
+/**
+ * AI Growth Score Assessment Page
+ * 
+ * This page provides an interactive AI maturity assessment that evaluates organizations
+ * across four key dimensions: Strategy, Implementation, Data, and Culture.
+ * 
+ * Features:
+ * - Multi-step assessment flow (Hero → Quiz → Email → Results)
+ * - 12-question quiz with scoring algorithm
+ * - AI-powered personalized recommendations using Gemini API
+ * - Email capture with consent management
+ * - Google Analytics tracking for user engagement
+ * - UTM parameter tracking for marketing attribution
+ * 
+ * Assessment Flow:
+ * 1. Hero section with assessment introduction
+ * 2. Interactive quiz with progress tracking
+ * 3. Email capture for results delivery
+ * 4. Results display with AI-generated recommendations
+ * 5. Call-to-action for consultation booking
+ */
+
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AIGrowthQuiz from "@/components/AIGrowthQuiz";
 import AIGrowthResults from "@/components/AIGrowthResults";
 import AIGrowthFAQ from "@/components/AIGrowthFAQ";
+import EmailStep from "@/components/EmailStep";
+import { generateAIAudit, sendAuditEmail, type AuditData } from "@/lib/gemini";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, TrendingUp, Target, Zap } from "lucide-react";
 
+/**
+ * Interface for storing quiz answers
+ * Maps question IDs to their selected score values (0-3)
+ */
 export interface QuizAnswers {
   [key: string]: number;
 }
 
+/**
+ * Interface for quiz results after calculation
+ * Contains overall score, maturity band, dimension breakdown, and recommendations
+ */
 export interface QuizResults {
+  /** Overall AI maturity score (0-100) */
   score: number;
+  /** Maturity band based on score ranges */
   band: 'Explorer' | 'Experimenter' | 'Accelerator';
+  /** Individual dimension scores */
   dimensions: {
     strategy: number;
     implementation: number;
     data: number;
     culture: number;
   };
+  /** AI-generated personalized recommendations */
   recommendations: string[];
 }
 
+/**
+ * Main AI Growth Score assessment component
+ * 
+ * Manages the multi-step assessment flow and handles all user interactions,
+ * data processing, and AI integration for generating personalized recommendations.
+ */
 const AIGrowthScore = () => {
+  // Current step in the assessment flow
   const [currentStep, setCurrentStep] = useState<'hero' | 'quiz' | 'email' | 'results'>('hero');
+  
+  // User's quiz answers (question ID → score mapping)
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
+  
+  // User's email address for results delivery
   const [userEmail, setUserEmail] = useState('');
+  
+  // GDPR consent for email communications
   const [hasConsent, setHasConsent] = useState(false);
+  
+  // Calculated quiz results with AI recommendations
   const [quizResults, setQuizResults] = useState<QuizResults | null>(null);
+  
+  // UTM parameters for marketing attribution
   const [utmParams, setUtmParams] = useState<{[key: string]: string}>({});
+  
+  // Loading state for AI audit generation
+  const [isGeneratingAudit, setIsGeneratingAudit] = useState(false);
+  
+  // Generated audit content
+  const [auditContent, setAuditContent] = useState<string>('');
+
+  /**
+   * Handles email submission and AI audit generation
+   * 
+   * This function:
+   * 1. Validates user input and consent
+   * 2. Calculates quiz results
+   * 3. Generates AI-powered audit using Gemini API
+   * 4. Sends email with audit results
+   * 5. Tracks conversion in Google Analytics
+   * 6. Transitions to results view
+   */
+  const handleEmailSubmit = async () => {
+    console.log('=== EMAIL SUBMIT CLICKED ===');
+    console.log('Email:', userEmail);
+    console.log('Has Consent:', hasConsent);
+    console.log('Is Generating:', isGeneratingAudit);
+    console.log('Quiz Answers:', quizAnswers);
+    
+    // Validate required fields and prevent duplicate submissions
+    if (!userEmail || !hasConsent || isGeneratingAudit) {
+      console.log('Validation failed - missing email, consent, or already generating');
+      return;
+    }
+    
+    console.log('Starting audit generation...');
+    setIsGeneratingAudit(true);
+    
+    try {
+      // Calculate quiz results based on user answers
+      console.log('Calculating quiz results...');
+      const results = calculateResults(quizAnswers);
+      console.log('Quiz results:', results);
+      setQuizResults(results);
+
+      // Prepare data for AI audit generation
+      const auditData: AuditData = {
+        companyName: "Your Company", // TODO: Could be collected in the form
+        industry: "Technology", // TODO: Could be collected in the form
+        currentState: {
+          strategy: results.dimensions.strategy,
+          implementation: results.dimensions.implementation,
+          data: results.dimensions.data,
+          culture: results.dimensions.culture,
+        },
+        monthlyRevenue: "$100k-$500k", // TODO: Could be collected in the form
+        goals: ["Implement AI automation", "Increase efficiency"],
+      };
+      
+      // Generate comprehensive AI audit using Gemini API
+      console.log('Generating AI audit...');
+      const generatedAuditContent = await generateAIAudit(auditData);
+      console.log('Audit generated successfully');
+      setAuditContent(generatedAuditContent);
+      
+      // Send audit results to user's email (logs for manual sending)
+      console.log('Saving audit data...');
+      await sendAuditEmail(userEmail, generatedAuditContent);
+      
+      // Track successful lead capture in Google Analytics
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'lead_captured', {
+          event_category: 'conversion',
+          event_label: 'AI Growth Score Email',
+          value: results.score,
+          ...utmParams
+        });
+      }
+      
+      // Transition to results view
+      console.log('Transitioning to results view...');
+      setCurrentStep('results');
+      console.log('=== EMAIL SUBMIT COMPLETED SUCCESSFULLY ===');
+    } catch (error) {
+      console.error('Error generating audit:', error);
+      console.error('Full error details:', error);
+      // TODO: Show user-friendly error message
+    } finally {
+      setIsGeneratingAudit(false);
+    }
+  };
+
+  /**
+   * Calculates the score for a specific dimension based on related questions
+   * 
+   * @param answers - User's quiz answers
+   * @param questions - Array of question IDs for this dimension
+   * @returns Percentage score (0-100) for the dimension
+   */
+  const calculateDimensionScore = (answers: QuizAnswers, questions: string[]): number => {
+    // Get scores for all questions in this dimension (default to 0 if not answered)
+    const scores = questions.map(q => answers[q] || 0);
+    const total = scores.reduce((sum, score) => sum + score, 0);
+    const maxPossible = questions.length * 3; // Each question has max score of 3
+    return Math.round((total / maxPossible) * 100);
+  };
+
+  /**
+   * Generates personalized recommendations based on maturity band and dimension scores
+   * 
+   * @param band - User's maturity band (Explorer, Experimenter, Accelerator)
+   * @param dimensions - Individual dimension scores
+   * @returns Array of up to 3 actionable recommendations
+   */
+  const getRecommendations = (band: QuizResults['band'], dimensions: { [key: string]: number }): string[] => {
+    const recommendations: string[] = [];
+    
+    // Add recommendations for dimensions with low scores (< 60%)
+    Object.entries(dimensions).forEach(([dimension, score]) => {
+      if (score < 60) {
+        switch (dimension) {
+          case 'strategy':
+            recommendations.push("Develop a comprehensive AI strategy aligned with business objectives");
+            break;
+          case 'implementation':
+            recommendations.push("Start with pilot projects to demonstrate AI value");
+            break;
+          case 'data':
+            recommendations.push("Improve data quality and governance practices");
+            break;
+          case 'culture':
+            recommendations.push("Foster an AI-first culture through training and communication");
+            break;
+        }
+      }
+    });
+
+    // Add band-specific recommendations based on maturity level
+    switch (band) {
+      case 'Explorer':
+        recommendations.push("Begin with AI readiness assessment and strategy development");
+        break;
+      case 'Experimenter':
+        recommendations.push("Scale successful pilots and build internal AI capabilities");
+        break;
+      case 'Accelerator':
+        recommendations.push("Optimize AI operations and explore advanced use cases");
+        break;
+    }
+
+    // Return top 3 most relevant recommendations
+    return recommendations.slice(0, 3);
+  };
+
+  /**
+   * Calculates final quiz results including overall score, maturity band, and recommendations
+   * 
+   * @param answers - User's quiz answers
+   * @returns Complete quiz results with scoring and recommendations
+   */
+  const calculateResults = (answers: QuizAnswers): QuizResults => {
+    // Map question IDs to their respective dimensions
+    const questionMap = {
+      strategy: ['q1', 'q2', 'q3'],        // Questions 1-3: AI strategy and planning
+      implementation: ['q4', 'q5', 'q6'],  // Questions 4-6: Technical implementation
+      data: ['q7', 'q8', 'q9'],            // Questions 7-9: Data readiness and governance
+      culture: ['q10', 'q11', 'q12']       // Questions 10-12: Culture and change management
+    };
+
+    // Calculate individual dimension scores
+    const dimensions = {
+      strategy: calculateDimensionScore(answers, questionMap.strategy),
+      implementation: calculateDimensionScore(answers, questionMap.implementation),
+      data: calculateDimensionScore(answers, questionMap.data),
+      culture: calculateDimensionScore(answers, questionMap.culture)
+    };
+
+    // Calculate overall AI maturity score (average of all dimensions)
+    const totalScore = Object.values(dimensions).reduce((sum, score) => sum + score, 0);
+    const score = Math.round(totalScore / 4);
+
+    // Determine maturity band based on overall score
+    let band: QuizResults['band'];
+    if (score >= 75) band = 'Accelerator';      // Advanced AI maturity
+    else if (score >= 50) band = 'Experimenter'; // Intermediate AI maturity
+    else band = 'Explorer';                     // Early stage AI maturity
+
+    // Generate personalized recommendations based on results
+    const recommendations = getRecommendations(band, dimensions);
+
+    return {
+      score,
+      band,
+      dimensions,
+      recommendations
+    };
+  };
 
   // Capture UTM parameters on page load
   useEffect(() => {
@@ -67,8 +313,11 @@ const AIGrowthScore = () => {
   };
 
   const handleQuizComplete = (answers: QuizAnswers) => {
+    console.log('=== QUIZ COMPLETED ===');
+    console.log('Quiz answers received:', answers);
     setQuizAnswers(answers);
     setCurrentStep('email');
+    console.log('Moved to email step');
     
     // GA4 event - quiz complete
     if (typeof window !== 'undefined' && window.gtag) {
@@ -80,303 +329,123 @@ const AIGrowthScore = () => {
     }
   };
 
-  const handleEmailSubmit = (email: string, consent: boolean) => {
-    setUserEmail(email);
-    setHasConsent(consent);
-    
-    // Calculate results
-    const results = calculateResults(quizAnswers);
-    setQuizResults(results);
-    setCurrentStep('results');
-    
-    // GA4 event - lead captured
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'lead_captured', {
-        event_category: 'conversion',
-        event_label: 'AI Growth Score Email',
-        value: results.score,
-        ...utmParams
-      });
-    }
-  };
-
-  const calculateResults = (answers: QuizAnswers): QuizResults => {
-    const totalQuestions = Object.keys(answers).length;
-    const totalScore = Object.values(answers).reduce((sum, score) => sum + score, 0);
-    const percentage = Math.round((totalScore / (totalQuestions * 3)) * 100);
-    
-    let band: 'Explorer' | 'Experimenter' | 'Accelerator';
-    if (percentage >= 75) band = 'Accelerator';
-    else if (percentage >= 50) band = 'Experimenter';
-    else band = 'Explorer';
-    
-    // Calculate dimension scores (simplified grouping)
-    const dimensions = {
-      strategy: Math.round(((answers.q1 + answers.q2 + answers.q3) / 9) * 100),
-      implementation: Math.round(((answers.q4 + answers.q5 + answers.q6) / 9) * 100),
-      data: Math.round(((answers.q7 + answers.q8 + answers.q9) / 9) * 100),
-      culture: Math.round(((answers.q10 + answers.q11 + answers.q12) / 9) * 100),
-    };
-    
-    const recommendations = getRecommendations(band, dimensions);
-    
-    return {
-      score: percentage,
-      band,
-      dimensions,
-      recommendations
-    };
-  };
-
-  const getRecommendations = (band: string, dimensions: { [key: string]: number }) => {
-    const lowDimensions = Object.entries(dimensions)
-      .filter(([_, score]) => (score as number) < 60)
-      .sort(([_, a], [__, b]) => (a as number) - (b as number))
-      .slice(0, 3);
-    
-    const recommendationMap: {[key: string]: string} = {
-      strategy: "Develop a comprehensive AI strategy aligned with business objectives",
-      implementation: "Focus on pilot projects and gradual AI implementation",
-      data: "Improve data quality and governance for AI initiatives",
-      culture: "Build AI literacy and change management capabilities"
-    };
-    
-    return lowDimensions.map(([dim, _]) => recommendationMap[dim]);
-  };
-
-  const renderHero = () => (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
-      </div>
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
-        <div className="animate-fade-in mb-8">
-          <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <div className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse" />
-            Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25
-          </div>
-        </div>
-        
-        <div className="animate-fade-in">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-            Get Your{" "}
-            <span className="text-primary font-extrabold">AI Growth Score</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed">
-            A 3-minute diagnostic that reveals your AI readiness across strategy, implementation, 
-            data, and culture. Get your personalized roadmap to AI-driven growth.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up mb-16">
-            <Button 
-              variant="cta" 
-              size="xl"
-              className="group min-w-[280px]"
-              onClick={startQuiz}
-            >
-              <TrendingUp className="mr-2" />
-              Start AI Growth Audit
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            
-            <Button 
-              variant="cta-outline" 
-              size="xl"
-              className="group min-w-[280px]"
-              onClick={() => document.getElementById('what-you-get')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              What You'll Get
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="flex items-center justify-center bg-card p-6 rounded-lg shadow-soft">
-              <CheckCircle2 className="w-6 h-6 text-primary mr-3" />
-              <span className="text-muted-foreground">12 strategic questions</span>
-            </div>
-            <div className="flex items-center justify-center bg-card p-6 rounded-lg shadow-soft">
-              <Target className="w-6 h-6 text-primary mr-3" />
-              <span className="text-muted-foreground">Instant AI readiness score</span>
-            </div>
-            <div className="flex items-center justify-center bg-card p-6 rounded-lg shadow-soft">
-              <Zap className="w-6 h-6 text-primary mr-3" />
-              <span className="text-muted-foreground">Personalized roadmap</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-pulse-soft">
-        <div className="w-6 h-10 border-2 border-muted-foreground rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-muted-foreground rounded-full mt-2 animate-bounce" />
-        </div>
-      </div>
-    </section>
-  );
-
-  const renderWhatYouGet = () => (
-    <section id="what-you-get" className="py-20 bg-muted/5">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            What You'll Get
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A comprehensive AI readiness assessment tailored for senior operators
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <TrendingUp className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">AI Growth Score</h3>
-            <p className="text-muted-foreground">Your overall AI readiness percentage and growth band classification</p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Target className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Dimension Breakdown</h3>
-            <p className="text-muted-foreground">Detailed scores across strategy, implementation, data, and culture</p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Top 3 Priorities</h3>
-            <p className="text-muted-foreground">Actionable recommendations ranked by impact and feasibility</p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Expert Consultation</h3>
-            <p className="text-muted-foreground">Optional 30-minute strategy session with our AI growth specialists</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  // State and handlers for the email step will be managed in the EmailStep component
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
-      {currentStep === 'hero' && (
-        <>
-          {renderHero()}
-          {renderWhatYouGet()}
+      <main className="py-20">
+        {currentStep === 'hero' && (
+          <div className="max-w-7xl mx-auto px-6 text-center">
+            <div className="mb-8 animate-fade-in">
+              <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <div className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse" />
+                Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25
+              </div>
+            </div>
+
+            <h1 className="text-4xl md:text-6xl font-heading font-bold text-foreground mb-6 animate-fade-in">
+              Discover Your AI{" "}
+              <span className="text-primary">Growth Score</span>
+            </h1>
+            
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12 animate-fade-in">
+              A 3-minute diagnostic that reveals your AI readiness across strategy, implementation, 
+              data, and culture. Get your personalized roadmap to AI-driven growth.
+            </p>
+            
+            <Button
+              size="xl"
+              variant="cta"
+              onClick={startQuiz}
+              className="animate-fade-in"
+            >
+              Start Free Assessment
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+
+            <div className="grid md:grid-cols-3 gap-8 mt-20">
+              {[
+                {
+                  icon: TrendingUp,
+                  title: "5-Minute Quiz",
+                  description: "Quick assessment of your AI readiness across key dimensions"
+                },
+                {
+                  icon: Target,
+                  title: "AI Growth Score",
+                  description: "Benchmark your maturity level against industry standards"
+                },
+                {
+                  icon: Zap,
+                  title: "Action Plan",
+                  description: "Get personalized recommendations to accelerate growth"
+                }
+              ].map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div
+                    key={feature.title}
+                    className="p-6 animate-slide-up"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <Icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
+                    <p className="text-muted-foreground">{feature.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        
+        {currentStep === 'quiz' && (
+          <AIGrowthQuiz onComplete={handleQuizComplete} />
+        )}
+        
+        {currentStep === 'email' && (
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="max-w-md mx-auto p-8 bg-card rounded-lg shadow-medium animate-fade-in">
+              <h2 className="text-2xl font-heading font-bold text-center mb-6">Almost there!</h2>
+              <p className="text-muted-foreground text-center mb-8">
+                Enter your work email to receive your AI Growth Score and personalized insights.
+              </p>
+              
+              <EmailStep
+                email={userEmail}
+                setEmail={setUserEmail}
+                hasConsent={hasConsent}
+                setHasConsent={setHasConsent}
+                onSubmit={handleEmailSubmit}
+                isLoading={isGeneratingAudit}
+              />
+            </div>
+          </div>
+        )}
+        
+        {currentStep === 'results' && quizResults && (
+          <AIGrowthResults 
+            results={quizResults}
+            userEmail={userEmail}
+            utmParams={utmParams}
+            quizAnswers={quizAnswers}
+            auditContent={auditContent}
+          />
+        )}
+
+        {currentStep === 'hero' && (
           <AIGrowthFAQ />
-        </>
-      )}
-      
-      {currentStep === 'quiz' && (
-        <AIGrowthQuiz onComplete={handleQuizComplete} />
-      )}
-      
-      {currentStep === 'email' && (
-        <div className="min-h-screen flex items-center justify-center pt-16">
-          <EmailCapture onSubmit={handleEmailSubmit} />
-        </div>
-      )}
-      
-      {currentStep === 'results' && quizResults && (
-        <AIGrowthResults 
-          results={quizResults} 
-          userEmail={userEmail} 
-          utmParams={utmParams}
-        />
-      )}
-      
+        )}
+      </main>
+
       <Footer />
     </div>
   );
 };
 
-const EmailCapture = ({ onSubmit }: { onSubmit: (email: string, consent: boolean) => void }) => {
-  const [email, setEmail] = useState('');
-  const [consent, setConsent] = useState(false);
-  const [error, setError] = useState('');
 
-  const validateEmail = (email: string) => {
-    const businessDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
-    const domain = email.split('@')[1]?.toLowerCase();
-    return !businessDomains.includes(domain);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !email.includes('@')) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    
-    if (!validateEmail(email)) {
-      setError('Please use your work email address');
-      return;
-    }
-    
-    if (!consent) {
-      setError('Please consent to receive your results and insights');
-      return;
-    }
-    
-    onSubmit(email, consent);
-  };
-
-  return (
-    <div className="max-w-md mx-auto p-8 bg-card rounded-lg shadow-medium">
-      <h2 className="text-2xl font-bold text-center mb-6">Almost there!</h2>
-      <p className="text-muted-foreground text-center mb-8">
-        Enter your work email to receive your AI Growth Score and personalized insights.
-      </p>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <input
-            type="email"
-            placeholder="your.name@company.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-            required
-          />
-        </div>
-        
-        <div className="flex items-start space-x-3">
-          <input
-            type="checkbox"
-            id="consent"
-            checked={consent}
-            onChange={(e) => setConsent(e.target.checked)}
-            className="mt-1"
-            required
-          />
-          <label htmlFor="consent" className="text-sm text-muted-foreground">
-            I consent to receive my AI Growth Score results and occasional insights from AGE. 
-            You can unsubscribe anytime.
-          </label>
-        </div>
-        
-        {error && (
-          <p className="text-destructive text-sm">{error}</p>
-        )}
-        
-        <Button type="submit" variant="cta" className="w-full">
-          Get My AI Growth Score
-        </Button>
-      </form>
-    </div>
-  );
-};
 
 export default AIGrowthScore;

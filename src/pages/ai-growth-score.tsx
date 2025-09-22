@@ -23,7 +23,7 @@ export interface QuizResults {
   recommendations: string[];
 }
 
-const AIGrowthScore = () => {
+const ai-growth-score = () => {
   const [currentStep, setCurrentStep] = useState<'hero' | 'quiz' | 'email' | 'results'>('hero');
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
   const [userEmail, setUserEmail] = useState('');
@@ -379,4 +379,4 @@ const EmailCapture = ({ onSubmit }: { onSubmit: (email: string, consent: boolean
   );
 };
 
-export default AIGrowthScore;
+export default ai-growth-score;

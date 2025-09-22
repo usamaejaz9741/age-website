@@ -33,7 +33,7 @@ const CaseStudies = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Results that{" "}
-            <span className="text-success">speak numbers</span>
+            <span className="text-primary">speak numbers</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Real companies, real growth, real revenue impact.
@@ -56,7 +56,7 @@ const CaseStudies = () => {
                   <p className="text-muted-foreground">{caseStudy.industry}</p>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-success">
+                  <div className="text-2xl font-bold text-primary">
                     {caseStudy.highlight}
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -76,20 +76,20 @@ const CaseStudies = () => {
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">Revenue</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.revenue}</div>
-                  <TrendingUp className="w-4 h-4 text-success mx-auto mb-1" />
-                  <div className="text-sm font-semibold text-success">{caseStudy.results.after.revenue}</div>
+                  <TrendingUp className="w-4 h-4 text-primary mx-auto mb-1" />
+                  <div className="text-sm font-semibold text-primary">{caseStudy.results.after.revenue}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">Conversion</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.conversion}</div>
-                  <TrendingUp className="w-4 h-4 text-success mx-auto mb-1" />
-                  <div className="text-sm font-semibold text-success">{caseStudy.results.after.conversion}</div>
+                  <TrendingUp className="w-4 h-4 text-primary mx-auto mb-1" />
+                  <div className="text-sm font-semibold text-primary">{caseStudy.results.after.conversion}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">CAC</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.cac}</div>
-                  <TrendingUp className="w-4 h-4 text-success mx-auto mb-1 rotate-180" />
-                  <div className="text-sm font-semibold text-success">{caseStudy.results.after.cac}</div>
+                  <TrendingUp className="w-4 h-4 text-primary mx-auto mb-1 rotate-180" />
+                  <div className="text-sm font-semibold text-primary">{caseStudy.results.after.cac}</div>
                 </div>
               </div>
             </div>

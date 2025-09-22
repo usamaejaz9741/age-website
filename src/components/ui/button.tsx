@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft hover:shadow-medium",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        cta: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold",
-        "cta-secondary": "bg-success text-success-foreground hover:bg-success/90 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold",
-        "cta-outline": "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground shadow-soft hover:shadow-medium transform hover:-translate-y-0.5 font-semibold",
+        default: "bg-resolution-blue-600 text-white hover:bg-resolution-blue-700 shadow-soft hover:shadow-medium",
+        destructive: "bg-destructive text-white hover:bg-destructive/90",
+        outline: "border border-resolution-blue-600 bg-white hover:bg-malibu-300 hover:text-black",
+        secondary: "bg-malibu-300 text-black hover:bg-malibu-400",
+        ghost: "hover:bg-malibu-300 hover:text-black",
+        link: "text-resolution-blue-600 underline-offset-4 hover:underline hover:text-resolution-blue-700",
+        cta: "bg-resolution-blue-600 text-white hover:bg-resolution-blue-700 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold",
+        "cta-secondary": "bg-malibu-300 text-black hover:bg-malibu-400 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold",
+        "cta-outline": "border-2 border-resolution-blue-600 text-resolution-blue-600 hover:bg-resolution-blue-600 hover:text-white shadow-soft hover:shadow-medium transform hover:-translate-y-0.5 font-semibold",
       },
       size: {
         default: "h-10 px-4 py-2",

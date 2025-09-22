@@ -37,7 +37,7 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center text-2xl font-bold text-foreground">
-            <Calendar className="w-6 h-6 mr-3 text-success" />
+            <Calendar className="w-6 h-6 mr-3 text-primary" />
             Book Your Growth Audit
           </DialogTitle>
         </DialogHeader>
@@ -45,7 +45,7 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
         <div className="py-6">
           <div className="bg-gradient-hero p-6 rounded-lg mb-8">
             <div className="flex items-center mb-4">
-              <TrendingUp className="w-8 h-8 text-success mr-3" />
+              <TrendingUp className="w-8 h-8 text-primary mr-3" />
               <div>
                 <h3 className="text-lg font-semibold text-foreground">
                   Free 90-Minute Strategy Session
@@ -58,19 +58,19 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
             
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-success rounded-full mr-2" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
                 Market opportunity analysis
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-success rounded-full mr-2" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
                 Revenue optimization roadmap
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-success rounded-full mr-2" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
                 Competitive positioning review
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-success rounded-full mr-2" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
                 Custom growth recommendations
               </div>
             </div>

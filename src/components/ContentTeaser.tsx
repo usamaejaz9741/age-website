@@ -40,7 +40,7 @@ const ContentTeaser = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Stay ahead with{" "}
-            <span className="text-success">actionable insights</span>
+            <span className="text-primary">actionable insights</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Get exclusive access to growth strategies, market intelligence, 
@@ -57,15 +57,15 @@ const ContentTeaser = () => {
                 className="group p-6 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-slide-up cursor-pointer"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Icon className="w-6 h-6 text-success" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Icon className="w-6 h-6 text-primary" />
                 </div>
                 
-                <div className="text-xs text-success font-semibold uppercase tracking-wide mb-2">
+                <div className="text-xs text-primary font-semibold uppercase tracking-wide mb-2">
                   {insight.type}
                 </div>
                 
-                <h3 className="text-lg font-semibold text-foreground mb-3 group-hover:text-success transition-colors">
+                <h3 className="text-lg font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
                   {insight.title}
                 </h3>
                 
@@ -73,7 +73,7 @@ const ContentTeaser = () => {
                   {insight.description}
                 </p>
 
-                <div className="mt-4 flex items-center text-sm text-success font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-4 flex items-center text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Access now →
                 </div>
               </div>
@@ -109,7 +109,7 @@ const ContentTeaser = () => {
 
           <p className="text-xs text-muted-foreground text-center mt-4">
             No spam. Unsubscribe anytime. Read our{" "}
-            <button className="text-success hover:underline">privacy policy</button>.
+            <button className="text-primary hover:underline">privacy policy</button>.
           </p>
         </div>
       </div>

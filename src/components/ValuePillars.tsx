@@ -30,7 +30,7 @@ const ValuePillars = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Built different, built to{" "}
-            <span className="text-success">win</span>
+            <span className="text-primary">win</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             We don't just build software—we engineer complete revenue systems 
@@ -47,8 +47,8 @@ const ValuePillars = () => {
                 className="group p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-16 h-16 bg-success/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Icon className="w-8 h-8 text-success" />
+                <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Icon className="w-8 h-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-4">
                   {pillar.title}

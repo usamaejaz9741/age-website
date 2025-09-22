@@ -30,7 +30,7 @@ const HowWeWork = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            <span className="text-success">90 days</span> to revenue
+            <span className="text-primary">90 days</span> to revenue
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Our proven methodology delivers measurable results in 3 months, 
@@ -49,19 +49,19 @@ const HowWeWork = () => {
               >
                 {/* Connection Line */}
                 {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-success/30 z-0" />
+                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary/30 z-0" />
                 )}
                 
                 <div className="relative p-8 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1">
-                  <div className="w-16 h-16 bg-success/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <Icon className="w-8 h-8 text-success" />
+                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Icon className="w-8 h-8 text-primary" />
                   </div>
                   
                   <div className="mb-4">
                     <div className="text-2xl font-bold text-foreground">
                       {step.title}
                     </div>
-                    <div className="text-success font-semibold">
+                    <div className="text-primary font-semibold">
                       {step.subtitle}
                     </div>
                   </div>
@@ -73,7 +73,7 @@ const HowWeWork = () => {
                   <ul className="space-y-2">
                     {step.features.map((feature) => (
                       <li key={feature} className="flex items-center text-sm text-muted-foreground">
-                        <div className="w-1.5 h-1.5 bg-success rounded-full mr-3" />
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
                         {feature}
                       </li>
                     ))}
@@ -88,15 +88,15 @@ const HowWeWork = () => {
         <div className="relative p-8 bg-gradient-card rounded-xl shadow-soft">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <div className="text-3xl font-bold text-success mb-2">30</div>
+              <div className="text-3xl font-bold text-primary mb-2">30</div>
               <div className="text-sm text-muted-foreground">Days to MVP</div>
             </div>
             <div className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <div className="text-3xl font-bold text-success mb-2">60</div>
+              <div className="text-3xl font-bold text-primary mb-2">60</div>
               <div className="text-sm text-muted-foreground">Days to optimization</div>
             </div>
             <div className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              <div className="text-3xl font-bold text-success mb-2">90</div>
+              <div className="text-3xl font-bold text-primary mb-2">90</div>
               <div className="text-sm text-muted-foreground">Days to scale</div>
             </div>
           </div>

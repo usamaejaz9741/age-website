@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Kufam:ital,wght@0,400..900;1,400..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,53 +7,52 @@
 /* AGE B2B Design System - Performance-driven minimalism */
 
 @layer base {
+  h1, h2, h3 {
+    @apply font-heading font-bold tracking-tight;
+  }
   :root {
     /* Core Brand Colors */
-    --background: 0 0% 98%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
     
     /* Surface Colors */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 0 0% 0%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 0 0% 0%;
     
-    /* Brand Primary - Deep Blue for Trust */
-    --primary: 222 47% 11%;
-    --primary-foreground: 0 0% 98%;
+    /* Brand Primary - Resolution Blue */
+    --primary: 224 100% 50%;
+    --primary-foreground: 0 0% 100%;
     
-    /* Performance Green for Growth */
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 98%;
+    /* Secondary - Malibu */
+    --secondary: 199 98% 69%;
+    --secondary-foreground: 0 0% 0%;
     
-    /* Accent Colors */
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 222 47% 11%;
-    
-    --muted: 210 20% 92%;
+    --muted: 220 13% 91%;
     --muted-foreground: 215 15% 47%;
     
-    --accent: 210 20% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 199 98% 69%;
+    --accent-foreground: 0 0% 0%;
     
     /* Semantic Colors */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
     /* Interface */
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222 47% 11%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 100% 50%;
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(222 47% 11% / 0.05) 0%, hsl(142 76% 36% / 0.05) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(224 100% 50% / 0.05) 0%, hsl(199 98% 69% / 0.05) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(199 98% 69% / 0.02) 100%);
     
     /* Shadows */
-    --shadow-soft: 0 2px 10px hsl(222 47% 11% / 0.08);
-    --shadow-medium: 0 8px 25px hsl(222 47% 11% / 0.12);
-    --shadow-strong: 0 15px 35px hsl(222 47% 11% / 0.15);
+    --shadow-soft: 0 2px 10px hsl(224 100% 50% / 0.08);
+    --shadow-medium: 0 8px 25px hsl(224 100% 50% / 0.12);
+    --shadow-strong: 0 15px 35px hsl(224 100% 50% / 0.15);
     
     /* Typography Scale */
     --font-size-xs: 0.75rem;

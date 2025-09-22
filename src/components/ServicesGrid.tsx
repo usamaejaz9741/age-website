@@ -40,7 +40,7 @@ const ServicesGrid = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Complete business{" "}
-            <span className="text-success">ecosystems</span>
+            <span className="text-primary">ecosystems</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Five integrated service pillars that work together to create 
@@ -72,7 +72,7 @@ const ServicesGrid = () => {
                 <ul className="space-y-2">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center text-sm text-muted-foreground">
-                      <div className="w-1.5 h-1.5 bg-success rounded-full mr-3" />
+                      <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
                       {feature}
                     </li>
                   ))}

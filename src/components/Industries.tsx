@@ -35,7 +35,7 @@ const Industries = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Industries we{" "}
-            <span className="text-success">accelerate</span>
+            <span className="text-primary">accelerate</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Deep domain expertise across high-growth sectors in emerging markets.
@@ -55,7 +55,7 @@ const Industries = () => {
                   <Icon className="w-8 h-8 text-primary" />
                 </div>
                 
-                <h3 className="text-xl font-semibold text-foreground mb-4 group-hover:text-success transition-colors">
+                <h3 className="text-xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors">
                   {industry.name}
                 </h3>
                 
@@ -63,7 +63,7 @@ const Industries = () => {
                   {industry.description}
                 </p>
 
-                <div className="mt-6 flex items-center text-sm text-success font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-6 flex items-center text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Learn more →
                 </div>
               </div>
@@ -79,7 +79,7 @@ const Industries = () => {
           <p className="text-muted-foreground mb-6">
             We adapt our expertise to any high-growth market opportunity.
           </p>
-          <button className="text-success font-semibold hover:underline">
+          <button className="text-primary font-semibold hover:underline">
             Discuss your market →
           </button>
         </div>

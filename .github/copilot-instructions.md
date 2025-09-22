@@ -3,48 +3,71 @@
 ## Project Overview
 This is a React-based website built with Vite, TypeScript, and Shadcn UI components. The project serves as a business website showcasing services and capabilities related to AI automation and product engineering.
 
-## Key Technologies
+## Key Technologies & Architecture
 - React + TypeScript + Vite
 - Tailwind CSS for styling
 - Shadcn UI component library with Radix UI primitives
 - Lovable tagger for development mode component tracking
+- React Router for navigation
+- React Query for data management
+- React Hook Form + Zod for form handling
 
 ## Project Structure
 - `/src/components/` - React components organized by feature
   - `/ui/` - Reusable UI components built with Shadcn/Radix
-  - Main components directly implement business features (e.g., `Hero.tsx`, `ServicesGrid.tsx`)
+  - Main components implement business features (e.g., `Hero.tsx`, `ServicesGrid.tsx`)
 - `/src/hooks/` - Custom React hooks
 - `/src/lib/` - Utility functions and shared code
 - `/src/pages/` - Top-level page components
+- `/src/assets/` - Static assets (images, etc.)
 
-## Component Patterns
-1. UI Components:
-   - Extend Shadcn/Radix primitives with custom variants and styles
-   - Use `class-variance-authority` for variant management
-   - Example: See `button.tsx` for pattern implementation
+## Component Patterns & Conventions
 
-2. Feature Components:
-   - Implement business logic and compose UI components
-   - Follow atomic design principles
-   - Use CSS module pattern with Tailwind classes
-   - Example: See `Hero.tsx` for implementation pattern
+### UI Components
+```tsx
+// Example from button.tsx - Custom variant pattern
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "cta" | "cta-outline" | ...;
+  size?: "default" | "sm" | "lg" | "xl";
+}
+```
+- Extend Shadcn/Radix primitives with custom variants
+- Use `class-variance-authority` for variant management
+- Follow naming conventions in `ui/` directory
+- Always export with named exports
+
+### Feature Components
+```tsx
+// Example from Hero.tsx - Component structure pattern
+const Hero = () => {
+  return (
+    <section className="relative min-h-screen">
+      {/* Background with gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-hero">
+        <img src={heroImage} alt="..." className="opacity-10" />
+      </div>
+      {/* Content with animation classes */}
+      <div className="animate-fade-in">...</div>
+    </section>
+  );
+};
+```
+- Implement business logic and compose UI components
+- Use semantic HTML elements (section, article, etc.)
+- Apply consistent animation classes
+- Follow BEM-style class naming in Tailwind
 
 ## Development Workflow
 1. Local Development:
    ```bash
-   npm run dev
-   # Starts dev server on port 8080 with hot reloading
+   npm run dev   # Starts dev server on port 8080 with hot reloading + component tagging
    ```
 
-2. Building:
+2. Building & Testing:
    ```bash
    npm run build        # Production build
-   npm run build:dev    # Development build
+   npm run build:dev    # Development build with sourcemaps
    npm run preview      # Preview production build
-   ```
-
-3. Code Quality:
-   ```bash
    npm run lint        # Run ESLint checks
    ```
 

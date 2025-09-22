@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProofBar from "@/components/ProofBar";
 import ValuePillars from "@/components/ValuePillars";
@@ -34,6 +35,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <Hero />
       <ProofBar />
       <ValuePillars />

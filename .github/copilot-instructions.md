@@ -71,26 +71,50 @@ const Hero = () => {
    npm run lint        # Run ESLint checks
    ```
 
-## Styling Conventions
-- Use Tailwind CSS classes
-- Follow the project's custom color scheme defined in `tailwind.config.ts`
-- Custom variants are managed through `class-variance-authority`
-- Use `cn()` utility from `@/lib/utils` for conditional class names
+## Styling & Design System
+- Use Tailwind CSS classes following mobile-first approach
+- Custom colors and gradients defined in `tailwind.config.ts`
+- Animation classes from `tailwindcss-animate`
+- Follow these gradient patterns:
+  ```tsx
+  bg-gradient-hero    // For hero sections
+  bg-gradient-card    // For card backgrounds
+  ```
 
-## Key Integration Points
-1. Component Library:
-   - All UI components are built on Radix UI primitives
-   - Custom variants are defined in individual component files
-   - Follow existing patterns in `/components/ui/` for new components
+## Common Integration Patterns
 
-2. Asset Management:
-   - Store images in `/src/assets/`
-   - Import and use as React components
-   - Example: `import heroImage from "@/assets/hero-bg.jpg"`
+### Component Library Integration
+- All UI components built on Radix primitives
+- Custom variants in component files
+- Follow patterns in `components/ui/`
+- Example new component:
+  ```tsx
+  import { cn } from "@/lib/utils";
+  import * as RadixPrimitive from "@radix-ui/react-component";
+  
+  export const Component = ({ className, ...props }) => {
+    return <RadixPrimitive.Root className={cn("base-styles", className)} {...props} />;
+  };
+  ```
 
-## Common Patterns
-- Use TypeScript for type safety
-- Follow existing component and hook naming conventions
-- Maintain consistent file structure within component directories
-- Use named exports for components
-- Leverage path aliases (`@/`) for imports
+### Asset Management
+- Store images in `src/assets/`
+- Import and use as React components
+- Example: `import heroImage from "@/assets/hero-bg.jpg"`
+
+## Critical Patterns & Conventions
+- Use TypeScript with strict mode
+- Always use named exports
+- Path aliases with `@/` prefix
+- Consistent file structure:
+  - Components in PascalCase
+  - Hooks prefixed with `use`
+  - Utilities in camelCase
+- Error handling through React Error Boundaries
+- Form validation with Zod schemas
+
+## Performance Considerations
+- Use Next.js Image component for optimized images
+- Implement lazy loading for routes and heavy components
+- Follow React Query patterns for data caching
+- Use `React.memo()` for expensive renders

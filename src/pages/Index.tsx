@@ -1,12 +1,53 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Hero from "@/components/Hero";
+import ProofBar from "@/components/ProofBar";
+import ValuePillars from "@/components/ValuePillars";
+import ServicesGrid from "@/components/ServicesGrid";
+import CaseStudies from "@/components/CaseStudies";
+import HowWeWork from "@/components/HowWeWork";
+import Industries from "@/components/Industries";
+import ContentTeaser from "@/components/ContentTeaser";
+import Footer from "@/components/Footer";
+import GrowthAuditModal from "@/components/GrowthAuditModal";
+import { useState, useEffect } from "react";
 
 const Index = () => {
+  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
+
+  // Listen for scroll events to growth audit section
+  useEffect(() => {
+    const handleGrowthAuditClick = () => {
+      setIsAuditModalOpen(true);
+    };
+
+    // Add event listener for growth audit buttons
+    const auditButtons = document.querySelectorAll('[data-growth-audit]');
+    auditButtons.forEach(button => {
+      button.addEventListener('click', handleGrowthAuditClick);
+    });
+
+    return () => {
+      auditButtons.forEach(button => {
+        button.removeEventListener('click', handleGrowthAuditClick);
+      });
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Hero />
+      <ProofBar />
+      <ValuePillars />
+      <ServicesGrid />
+      <CaseStudies />
+      <HowWeWork />
+      <Industries />
+      <ContentTeaser />
+      <Footer />
+      
+      <GrowthAuditModal 
+        isOpen={isAuditModalOpen} 
+        onClose={() => setIsAuditModalOpen(false)} 
+      />
     </div>
   );
 };

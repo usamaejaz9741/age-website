@@ -1,13 +1,4 @@
 {
-  "version": 2,
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "itcn2025.alviglobal.com" }],
-      "destination": "https://www.alviglobal.com/ai-growth-score",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
       "source": "/(.*)",

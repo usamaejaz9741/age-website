@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://www.alviglobal.com/ai-growth-score",
+      "permanent": true
+    }
+  ]
+}

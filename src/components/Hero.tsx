@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-bg.jpg";
+import { useState } from "react";
+import GrowthAuditModal from "./GrowthAuditModal";
 
 const Hero = () => {
+  const [showGrowthAudit, setShowGrowthAudit] = useState(false);
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-hero overflow-hidden">
       {/* Background Image */}
@@ -35,7 +39,7 @@ const Hero = () => {
               variant="cta" 
               size="xl"
               className="group min-w-[280px]"
-              onClick={() => document.getElementById('growth-audit')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setShowGrowthAudit(true)}
             >
               <Calendar className="mr-2" />
               Book a Growth Audit
@@ -54,6 +58,12 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Growth Audit Modal */}
+      <GrowthAuditModal 
+        isOpen={showGrowthAudit}
+        onClose={() => setShowGrowthAudit(false)}
+      />
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-pulse-soft">

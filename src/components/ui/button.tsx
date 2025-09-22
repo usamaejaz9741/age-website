@@ -15,7 +15,7 @@ const buttonVariants = cva(
         secondary: "bg-malibu-300 text-black hover:bg-malibu-400",
         ghost: "hover:bg-malibu-300 hover:text-black",
         link: "text-resolution-blue-600 underline-offset-4 hover:underline hover:text-resolution-blue-700",
-        cta: "bg-resolution-blue-600 text-white hover:bg-resolution-blue-700 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold",
+        cta: "bg-resolution-blue-600 text-white hover:bg-resolution-blue-700 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold [&>svg]:text-white",
         "cta-secondary": "bg-malibu-300 text-black hover:bg-malibu-400 shadow-medium hover:shadow-strong transform hover:-translate-y-0.5 font-semibold",
         "cta-outline": "border-2 border-resolution-blue-600 text-resolution-blue-600 hover:bg-resolution-blue-600 hover:text-white shadow-soft hover:shadow-medium transform hover:-translate-y-0.5 font-semibold",
       },

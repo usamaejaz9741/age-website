@@ -34,101 +34,107 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center text-2xl font-bold text-foreground">
-            <Calendar className="w-6 h-6 mr-3 text-primary" />
+          <DialogTitle className="flex items-center text-3xl font-kufam font-bold bg-gradient-to-r from-resolution-blue-600 to-malibu-300 bg-clip-text text-transparent">
+            <Calendar className="w-8 h-8 mr-4 text-resolution-blue-600" />
             Book Your Growth Audit
           </DialogTitle>
         </DialogHeader>
 
         <div className="py-6">
-          <div className="bg-gradient-hero p-6 rounded-lg mb-8">
-            <div className="flex items-center mb-4">
-              <TrendingUp className="w-8 h-8 text-primary mr-3" />
+          <div className="bg-gradient-to-br from-resolution-blue-600/10 to-malibu-300/10 p-8 rounded-xl mb-8 border border-resolution-blue-600/20">
+            <div className="flex items-start md:items-center mb-6 gap-4">
+              <div className="bg-resolution-blue-600/10 p-3 rounded-lg">
+                <TrendingUp className="w-6 h-6 text-resolution-blue-600" />
+              </div>
               <div>
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-xl font-kufam font-semibold text-foreground mb-1">
                   Free 90-Minute Strategy Session
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground/80">
                   Get actionable insights to accelerate your revenue growth
                 </p>
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid sm:grid-cols-2 gap-5 text-sm">
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
+                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
                 Market opportunity analysis
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
+                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
                 Revenue optimization roadmap
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
+                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
                 Competitive positioning review
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-primary rounded-full mr-2" />
+                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
                 Custom growth recommendations
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name *</Label>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-sm font-medium">Full Name *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   placeholder="Your full name"
+                  className="h-12"
                   required
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-sm font-medium">Email Address *</Label>
                 <Input
                   id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   placeholder="your.email@company.com"
+                  className="h-12"
                   required
                 />
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="company">Company Name *</Label>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <Label htmlFor="company" className="text-sm font-medium">Company Name *</Label>
                 <Input
                   id="company"
                   value={formData.company}
                   onChange={(e) => handleInputChange("company", e.target.value)}
                   placeholder="Your company name"
+                  className="h-12"
                   required
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="website">Website</Label>
+              <div className="space-y-3">
+                <Label htmlFor="website" className="text-sm font-medium">Website</Label>
                 <Input
                   id="website"
                   value={formData.website}
                   onChange={(e) => handleInputChange("website", e.target.value)}
                   placeholder="https://yourcompany.com"
+                  className="h-12"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="revenue">Monthly Revenue Range *</Label>
+            <div className="space-y-3">
+              <Label htmlFor="revenue" className="text-sm font-medium">Monthly Revenue Range *</Label>
               <Select onValueChange={(value) => handleInputChange("monthlyRevenue", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12">
                   <SelectValue placeholder="Select your monthly revenue range" />
                 </SelectTrigger>
                 <SelectContent>
@@ -142,10 +148,10 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="goal">Primary Growth Goal *</Label>
+            <div className="space-y-3">
+              <Label htmlFor="goal" className="text-sm font-medium">Primary Growth Goal *</Label>
               <Select onValueChange={(value) => handleInputChange("goal", value)}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12">
                   <SelectValue placeholder="What's your main objective?" />
                 </SelectTrigger>
                 <SelectContent>
@@ -159,12 +165,12 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
               </Select>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button type="submit" variant="cta" className="flex-1">
-                <Calendar className="w-4 h-4 mr-2" />
+            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+              <Button type="submit" variant="cta" size="xl" className="flex-1">
+                <Calendar className="w-5 h-5" />
                 Schedule My Audit
               </Button>
-              <Button type="button" variant="outline" onClick={onClose} className="flex-1 sm:flex-none">
+              <Button type="button" variant="cta-outline" size="xl" onClick={onClose} className="flex-1 sm:flex-none">
                 Maybe Later
               </Button>
             </div>

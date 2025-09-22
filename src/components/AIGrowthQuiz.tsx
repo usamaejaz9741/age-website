@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { QuizAnswers } from "@/pages/AIGrowthScore";
+import { QuizAnswers } from "@/pages/ai-growth-score";
 
 interface QuizQuestion {
   id: string;

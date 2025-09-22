@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { QuizResults } from "@/pages/AIGrowthScore";
+import { QuizResults } from "@/pages/ai-growth-score";
 import { 
   TrendingUp, 
   Target, 
@@ -58,8 +58,8 @@ const AIGrowthResults = ({ results, userEmail, utmParams }: AIGrowthResultsProps
 
   const handleBookConsultation = () => {
     // GA4 event - consultation booking
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'consultation_interest', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'consultation_interest', {
         event_category: 'conversion',
         event_label: 'AI Growth Score Consultation',
         value: results.score,

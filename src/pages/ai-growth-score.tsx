@@ -23,7 +23,7 @@ export interface QuizResults {
   recommendations: string[];
 }
 
-const ai-growth-score = () => {
+const AIGrowthScore = () => {
   const [currentStep, setCurrentStep] = useState<'hero' | 'quiz' | 'email' | 'results'>('hero');
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
   const [userEmail, setUserEmail] = useState('');
@@ -44,8 +44,8 @@ const ai-growth-score = () => {
     setUtmParams(utms);
     
     // GA4 event - page view
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'page_view', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'page_view', {
         page_title: 'AI Growth Score',
         page_location: window.location.href,
         ...utms
@@ -57,8 +57,8 @@ const ai-growth-score = () => {
     setCurrentStep('quiz');
     
     // GA4 event - quiz start
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'quiz_start', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'quiz_start', {
         event_category: 'engagement',
         event_label: 'AI Growth Score Quiz',
         ...utmParams
@@ -71,8 +71,8 @@ const ai-growth-score = () => {
     setCurrentStep('email');
     
     // GA4 event - quiz complete
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'quiz_complete', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'quiz_complete', {
         event_category: 'engagement',
         event_label: 'AI Growth Score Quiz',
         ...utmParams
@@ -90,8 +90,8 @@ const ai-growth-score = () => {
     setCurrentStep('results');
     
     // GA4 event - lead captured
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'lead_captured', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'lead_captured', {
         event_category: 'conversion',
         event_label: 'AI Growth Score Email',
         value: results.score,
@@ -379,4 +379,4 @@ const EmailCapture = ({ onSubmit }: { onSubmit: (email: string, consent: boolean
   );
 };
 
-export default ai-growth-score;
+export default AIGrowthScore;

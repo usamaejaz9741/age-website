@@ -1,7 +1,49 @@
 # AI Agent Instructions for Age-Website
 
 ## Project Overview
-This is a React-based website built with Vite, TypeScript, and Shadcn UI components. The project serves as a business website showcasing services and capabilities related to AI automation and product engineering. The site uses a smooth-scrolling single-page architecture with sections controlled by a fixed header navigation.
+Single-page business website showcasing AI automation and product engineering services, built with React, TypeScript, Vite, and Shadcn UI. Features a quiz-based lead generation system and seamless integration with analytics and CRM platforms.
+
+## Architecture & Data Flows
+
+### Core Features
+1. **AI Growth Score System** (`/src/pages/ai-growth-score.tsx`)
+   ```typescript
+   interface QuizResults {
+     score: number;
+     band: 'Explorer' | 'Experimenter' | 'Accelerator';
+     dimensions: {
+       strategy: number;
+       implementation: number;
+       data: number;
+       culture: number;
+     };
+   }
+   ```
+   - Multi-step form flow: Landing -> Quiz -> Email -> Results
+   - UTM tracking and GA4 events (`page_view`, `quiz_start`, `quiz_complete`)
+   - Personalized scoring and recommendations engine
+
+2. **Analytics Integration**
+   ```typescript
+   // Event tracking pattern
+   if (typeof window !== 'undefined' && window.gtag) {
+     window.gtag('event', 'event_name', {
+       event_category: 'category',
+       event_label: 'label',
+       ...utmParams
+     });
+   }
+   ```
+
+3. **Component System**
+   - Shadcn/Radix components with custom variants
+   - Business-specific components (`ServicesGrid`, `CaseStudies`, etc.)
+   - Consistent animation classes (`animate-fade-in`, `animate-slide-up`)
+
+### State Management
+- React Query for data fetching and caching
+- Component-local state with React hooks
+- Form state with controlled inputs
 
 ## Brand Guidelines
 
@@ -112,7 +154,12 @@ const Hero = () => {
 ## Development Workflow
 1. Local Development:
    ```bash
-   npm run dev   # Starts dev server on port 8080 with hot reloading + component tagging
+   # Remove existing lockfiles if switching from Bun to npm
+   Remove-Item -Force bun.lockb   # If exists
+   Remove-Item -Force package-lock.json   # If exists
+   
+   npm install   # Install dependencies (Node.js required)
+   npm run dev   # Starts dev server (default port 8080, falls back to next available) with hot reloading + component tagging
    ```
 
 2. Building & Testing:
@@ -165,8 +212,52 @@ const Hero = () => {
 - Error handling through React Error Boundaries
 - Form validation with Zod schemas
 
-## Performance Considerations
-- Use Next.js Image component for optimized images
-- Implement lazy loading for routes and heavy components
-- Follow React Query patterns for data caching
-- Use `React.memo()` for expensive renders
+## Integration Points
+1. **Analytics**: GA4 event tracking (page_view, quiz_complete, etc.)
+2. **Lovable Platform**: Auto-commit integration at https://lovable.dev/projects/[project-id]
+3. **Form Submissions**: Quiz results and email collection flow
+
+## Development Workflow
+
+### Local Setup
+```bash
+# Remove any existing lockfiles when switching from Bun
+Remove-Item -Force bun.lockb   # If exists
+Remove-Item -Force package-lock.json   # If exists
+npm install   # Install dependencies
+npm run dev   # Start dev server (port 8080)
+```
+
+### Component Creation
+1. **UI Components**
+   ```typescript
+   // components/ui/my-component.tsx
+   import { cn } from "@/lib/utils";
+   import * as ComponentPrimitive from "@radix-ui/react-component";
+
+   export const MyComponent = ({ className, ...props }) => (
+     <ComponentPrimitive.Root 
+       className={cn("base-styles", className)} 
+       {...props} 
+     />
+   );
+   ```
+
+2. **Business Components**
+   ```typescript
+   // components/MyFeature.tsx
+   const MyFeature = () => (
+     <section className="relative animate-fade-in">
+       <div className="max-w-7xl mx-auto px-6 py-24">
+         {/* Component content */}
+       </div>
+     </section>
+   );
+   ```
+
+### Common Patterns
+- Add `@/` imports for internal modules
+- Use semantic HTML (`section`, `article`, etc.)
+- Follow BEM-style Tailwind classes
+- Track events using GTM pattern above
+- Keep variants in separate `.variants.ts` files

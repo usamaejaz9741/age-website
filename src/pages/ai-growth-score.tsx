@@ -89,6 +89,9 @@ const AIGrowthScore = () => {
   
   // Generated audit content
   const [auditContent, setAuditContent] = useState<string>('');
+  
+  // State for mobile indicator text expansion
+  const [isIndicatorExpanded, setIsIndicatorExpanded] = useState(false);
 
   /**
    * Handles email submission and AI audit generation
@@ -339,9 +342,23 @@ const AIGrowthScore = () => {
         {currentStep === 'hero' && (
           <div className="max-w-7xl mx-auto px-6 text-center">
             <div className="mb-8 animate-fade-in">
-              <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <div className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse" />
-                Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25
+              <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6 max-w-full">
+                <div className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse flex-shrink-0" />
+                <span className="hidden sm:inline">
+                  Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25
+                </span>
+                <button 
+                  className="sm:hidden text-left cursor-pointer rounded-full px-2 -mx-2 py-1 -my-1"
+                  onClick={() => setIsIndicatorExpanded(!isIndicatorExpanded)}
+                  aria-label="Toggle full event details"
+                >
+                  <span className={isIndicatorExpanded ? '' : 'truncate max-w-[200px] block'}>
+                    {isIndicatorExpanded 
+                      ? 'Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25'
+                      : 'Live from ITCN Asia 2025 • Karachi • Sept 23-25'
+                    }
+                  </span>
+                </button>
               </div>
             </div>
 

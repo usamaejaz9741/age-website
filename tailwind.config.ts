@@ -1,9 +1,9 @@
 /**
- * Tailwind CSS Configuration for AGE Website
+ * Tailwind CSS Configuration for Alvi Global Enterprises Website
  * 
- * This configuration defines the custom design system for the AGE website,
+ * This configuration defines the custom design system for the Alvi Global Enterprises website,
  * including brand colors, typography, spacing, animations, and component
- * styling. It extends Tailwind's default configuration with AGE-specific
+ * styling. It extends Tailwind's default configuration with Alvi Global Enterprises-specific
  * design tokens and utilities.
  */
 
@@ -11,7 +11,7 @@ import type { Config } from "tailwindcss";
 import tailwindAnimate from "tailwindcss-animate";
 
 /**
- * Tailwind CSS configuration with AGE brand design system
+ * Tailwind CSS configuration with Alvi Global Enterprises brand design system
  * 
  * Features:
  * - Custom color palette (Resolution Blue, Malibu)
@@ -51,7 +51,7 @@ export default {
         heading: ["Kufam", "sans-serif"], // Brand heading font
       },
       
-      // AGE brand color palette
+      // Alvi Global Enterprises brand color palette
       colors: {
         // Malibu (secondary/accent colors)
         malibu: {
@@ -194,7 +194,7 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        // AGE brand animations
+        // Alvi Global Enterprises brand animations
         "fade-in": {
           "0%": {
             opacity: "0",

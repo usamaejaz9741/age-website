@@ -44,7 +44,7 @@ const ValuePillars = () => {
             return (
               <div 
                 key={pillar.title}
-                className="group p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-slide-up"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">

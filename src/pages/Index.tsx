@@ -1,5 +1,5 @@
 /**
- * Main landing page component for the AGE Website
+ * Main landing page component for the Alvi Global Enterprises Website
  * 
  * This page serves as the primary marketing and lead generation page, featuring:
  * - Hero section with main value proposition
@@ -24,6 +24,7 @@ import ContentTeaser from "@/components/ContentTeaser";
 import Footer from "@/components/Footer";
 import GrowthAuditModal from "@/components/GrowthAuditModal";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 /**
  * Main landing page component
@@ -34,6 +35,7 @@ import { useState, useEffect } from "react";
 const Index = () => {
   // State for controlling the growth audit modal visibility
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
+  const location = useLocation();
 
   /**
    * Set up global event listeners for growth audit buttons
@@ -62,6 +64,23 @@ const Index = () => {
       });
     };
   }, []);
+
+  /**
+   * Handle scroll to section when navigating from other pages
+   */
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        // Small delay to ensure the page has rendered
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+      // Clear the state to prevent re-scrolling on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   return (
     <div className="min-h-screen bg-background">

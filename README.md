@@ -1,6 +1,6 @@
-# AGE Website - AI Growth Engineering Platform
+# Alvi Global Enterprises Website - AI Growth Engineering Platform
 
-A modern, interactive website for AGE (AI Growth Engineering) that provides AI maturity assessments and growth consulting services. The platform features an AI-powered quiz that evaluates organizations' AI readiness across strategy, implementation, data, and culture dimensions.
+A modern, interactive website for Alvi Global Enterprises that provides AI maturity assessments and growth consulting services. The platform features an AI-powered quiz that evaluates organizations' AI readiness across strategy, implementation, data, and culture dimensions.
 
 ## 🚀 Features
 

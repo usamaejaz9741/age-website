@@ -1,14 +1,37 @@
+# Robots.txt for Alvi Global Enterprises
+# https://alviglobal.com
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Specific rules for major search engines
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Social media crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: LinkedInBot
 Allow: /
+
+# Block access to admin and private areas (if any)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://alviglobal.com/sitemap.xml

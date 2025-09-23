@@ -85,7 +85,7 @@ const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoa
         <Button
           type="submit"
           size="lg"
-          className="w-full md:w-auto"
+          className="w-full sm:w-auto"
           disabled={!email || !hasConsent || isLoading}
         >
           {isLoading ? (

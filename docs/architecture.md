@@ -2,7 +2,7 @@
 
 ## System Overview
 
-The AGE website is a modern React application that provides AI-powered business assessments and growth consulting services. The architecture follows a component-based, service-oriented design with clear separation of concerns.
+The Alvi Global Enterprises website is a modern React application that provides AI-powered business assessments and growth consulting services. The architecture follows a component-based, service-oriented design with clear separation of concerns.
 
 ## High-Level Architecture
 

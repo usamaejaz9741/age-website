@@ -4,7 +4,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* AGE B2B Design System - Performance-driven minimalism */
+/* FOUC Prevention */
+html {
+  visibility: hidden;
+}
+
+html.loaded {
+  visibility: visible;
+}
+
+/* Prevent flash of unstyled content */
+body {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+body.loaded {
+  opacity: 1;
+}
+
+/* Alvi Global Enterprises B2B Design System - Performance-driven minimalism */
 
 @layer base {
   h1, h2, h3 {

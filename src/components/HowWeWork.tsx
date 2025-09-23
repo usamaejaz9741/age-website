@@ -52,16 +52,16 @@ const HowWeWork = () => {
                   <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary/30 z-0" />
                 )}
                 
-                <div className="relative p-8 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1">
+                <div className="relative p-4 sm:p-6 md:p-8 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1">
                   <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <Icon className="w-8 h-8 text-primary" />
                   </div>
                   
                   <div className="mb-4">
-                    <div className="text-2xl font-bold text-foreground">
+                    <div className="text-xl sm:text-2xl font-bold text-foreground">
                       {step.title}
                     </div>
-                    <div className="text-primary font-semibold">
+                    <div className="text-primary font-semibold text-sm sm:text-base">
                       {step.subtitle}
                     </div>
                   </div>

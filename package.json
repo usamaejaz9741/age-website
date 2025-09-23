@@ -1,10 +1,10 @@
 {
   "name": "age-website",
-  "description": "AI Growth Engineering website with interactive AI maturity assessment and growth consulting services",
+  "description": "Alvi Global Enterprises website with interactive AI maturity assessment and growth consulting services",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "author": "AGE Team",
+  "author": "Alvi Global Enterprises Team",
   "homepage": "https://alviglobal.com",
   "repository": {
     "type": "git",

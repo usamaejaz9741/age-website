@@ -23,7 +23,7 @@ const AIGrowthFAQ = () => {
       answer: "Yes, the 30-minute strategy session is complimentary for assessment participants. There's no obligation - it's our way of supporting AI growth in emerging markets."
     },
     {
-      question: "What makes AGE different from other AI consultants?",
+      question: "What makes Alvi Global Enterprises different from other AI consultants?",
       answer: "We engineer revenue-generating business ecosystems, not just AI tools. Our performance-driven approach combines AI automation, product engineering, and go-to-market strategy under one roof."
     }
   ];

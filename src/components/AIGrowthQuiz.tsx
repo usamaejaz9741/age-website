@@ -1,9 +1,27 @@
+/**
+ * AI Growth Quiz Component
+ * 
+ * This component provides an interactive quiz for assessing AI maturity across
+ * four key dimensions: Strategy, Implementation, Data, and Culture.
+ * 
+ * Features:
+ * - 12 comprehensive questions covering AI maturity
+ * - Progress tracking with visual progress bar
+ * - Responsive design with mobile optimization
+ * - Smooth navigation between questions
+ * - Answer validation and state management
+ * - Accessibility features for screen readers
+ */
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { QuizAnswers } from "@/pages/ai-growth-score";
 
+/**
+ * Interface for quiz question structure
+ */
 interface QuizQuestion {
   id: string;
   question: string;
@@ -136,10 +154,29 @@ const quizQuestions: QuizQuestion[] = [
   }
 ];
 
+/**
+ * Props interface for AIGrowthQuiz component
+ */
 interface AIGrowthQuizProps {
+  /** Callback function called when quiz is completed with all answers */
   onComplete: (answers: QuizAnswers) => void;
 }
 
+/**
+ * AI Growth Quiz component for assessing AI maturity
+ * 
+ * This component renders an interactive quiz with 12 questions covering
+ * four key dimensions of AI maturity: Strategy, Implementation, Data, and Culture.
+ * 
+ * Features:
+ * - Progressive question navigation with validation
+ * - Visual progress tracking
+ * - Responsive design for all screen sizes
+ * - Accessibility features for keyboard navigation
+ * - Answer state management and persistence
+ * 
+ * @param onComplete - Callback function called when quiz is completed
+ */
 const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
@@ -148,6 +185,11 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
   const question = quizQuestions[currentQuestion];
 
+  /**
+   * Handle option selection for current question
+   * 
+   * @param score - Selected option score (0-3)
+   */
   const handleOptionSelect = (score: number) => {
     setSelectedOption(score);
     setAnswers(prev => ({
@@ -156,6 +198,10 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
     }));
   };
 
+  /**
+   * Handle navigation to next question or completion
+   * Validates that an option is selected before proceeding
+   */
   const handleNext = () => {
     if (currentQuestion < quizQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
@@ -165,6 +211,10 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
     }
   };
 
+  /**
+   * Handle navigation to previous question
+   * Restores the previously selected option for that question
+   */
   const handlePrevious = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(prev => prev - 1);
@@ -187,33 +237,33 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
         </div>
 
         {/* Question Card */}
-        <div className="bg-card rounded-lg shadow-medium p-8 mb-8">
-          <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-8 leading-relaxed">
+        <div className="bg-card rounded-lg shadow-medium p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-6 sm:mb-8 leading-relaxed">
             {question.question}
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {question.options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleOptionSelect(option.score)}
-                className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-200 hover:shadow-soft ${
+                className={`w-full p-3 sm:p-4 text-left rounded-lg border-2 transition-all duration-200 hover:shadow-soft touch-manipulation ${
                   selectedOption === option.score
                     ? 'border-primary bg-primary/5 text-foreground'
                     : 'border-input bg-background text-muted-foreground hover:border-primary/50'
                 }`}
               >
-                <div className="flex items-center">
-                  <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center ${
+                <div className="flex items-start sm:items-center">
+                  <div className={`w-5 h-5 rounded-full border-2 mr-3 sm:mr-4 flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0 ${
                     selectedOption === option.score
                       ? 'border-primary bg-primary'
-                      : 'border-input'
-                  }`}>
+                      : 'border-input bg-background'
+                  }`} style={{ minWidth: '20px', minHeight: '20px' }}>
                     {selectedOption === option.score && (
-                      <div className="w-2 h-2 bg-white rounded-full" />
+                      <div className="w-2 h-2 bg-white rounded-full" style={{ minWidth: '8px', minHeight: '8px' }} />
                     )}
                   </div>
-                  <span className="text-base">{option.text}</span>
+                  <span className="text-sm sm:text-base leading-relaxed">{option.text}</span>
                 </div>
               </button>
             ))}

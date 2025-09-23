@@ -1,5 +1,5 @@
 /**
- * Main entry point for the AGE Website application
+ * Main entry point for the Alvi Global Enterprises Website application
  * 
  * This file initializes the React application and mounts it to the DOM.
  * It sets up the root component and applies global styles.
@@ -21,6 +21,10 @@ const root = createRoot(rootElement);
 // Add error boundary for development
 try {
   root.render(<App />);
+  
+  // FOUC Prevention: Add loaded class when app is ready
+  document.documentElement.classList.add('loaded');
+  document.body.classList.add('loaded');
 } catch (error) {
   console.error('Error rendering app:', error);
   root.render(
@@ -30,4 +34,8 @@ try {
       <pre>{error instanceof Error ? error.message : String(error)}</pre>
     </div>
   );
+  
+  // Still add loaded class even on error to prevent permanent hiding
+  document.documentElement.classList.add('loaded');
+  document.body.classList.add('loaded');
 }

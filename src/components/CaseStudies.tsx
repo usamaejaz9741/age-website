@@ -56,10 +56,10 @@ const CaseStudies = () => {
                   <p className="text-muted-foreground">{caseStudy.industry}</p>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-primary">
+                  <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
                     {caseStudy.highlight}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm text-muted-foreground">
                     in {caseStudy.timeframe}
                   </div>
                 </div>

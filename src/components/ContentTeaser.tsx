@@ -16,7 +16,7 @@ const ContentTeaser = () => {
   const insights = [
     {
       icon: TrendingUp,
-      title: "Emerging Market Playbook 2024",
+      title: "Emerging Market Playbook 2025",
       description: "Complete strategy guide for scaling B2B SaaS in Southeast Asia",
       type: "Strategy Guide"
     },

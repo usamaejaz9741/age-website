@@ -1,5 +1,5 @@
 /**
- * Main App component for the AGE Website
+ * Main App component for the Alvi Global Enterprises Website
  * 
  * This component sets up the application's core providers and routing structure.
  * It includes:

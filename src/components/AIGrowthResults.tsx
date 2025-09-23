@@ -20,6 +20,7 @@ import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QuizResults } from "@/pages/ai-growth-score";
 import { GeminiAPI } from "@/lib/geminiAPI";
+import { openCalendlyBooking } from "@/lib/calendly";
 import { 
   TrendingUp, 
   Target, 
@@ -29,7 +30,8 @@ import {
   CheckCircle2,
   ArrowRight,
   Mail,
-  Loader2
+  Loader2,
+  ExternalLink
 } from "lucide-react";
 
 /**
@@ -174,19 +176,26 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
     culture: 'Culture & Change'
   };
 
-  const handleBookConsultation = () => {
-    // GA4 event - consultation booking
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'consultation_interest', {
-        event_category: 'conversion',
-        event_label: 'AI Growth Score Consultation',
-        value: results.score,
-        ...utmParams
-      });
+  const handleBookConsultation = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
-    
-    // Open consultation booking (could be Calendly or similar)
-    window.open('https://calendly.com/alviglobal/ai-growth-consultation', '_blank');
+    // Open Calendly in new tab for AI Growth Consultation
+    openCalendlyBooking(
+      {
+        // Pre-fill with user email if available
+        email: userEmail
+      },
+      {
+        utmCampaign: 'ai-growth-score-results',
+        utmSource: 'age-website',
+        utmMedium: 'assessment',
+        utmContent: `score-${results.score}-band-${results.band}`,
+        utmTerm: 'consultation-booking'
+      },
+      'AI Growth Score Results'
+    );
   };
 
   return (
@@ -291,16 +300,17 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              variant="cta" 
-              size="xl"
-              onClick={handleBookConsultation}
-              className="group min-w-[280px]"
-            >
-              <Calendar className="mr-2" />
-              Book Strategy Session
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+                <Button
+                  type="button"
+                  variant="cta"
+                  size="xl"
+                  onClick={handleBookConsultation}
+                  className="group min-w-[280px]"
+                >
+                <Calendar className="mr-2" />
+                Book Free Consultation
+                <ExternalLink className="ml-2 w-4 h-4" />
+              </Button>
             
             <Button 
               variant="cta-outline" 

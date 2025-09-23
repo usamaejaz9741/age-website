@@ -1,5 +1,38 @@
+/**
+ * Footer Component - Site Footer with Links and Contact Information
+ * 
+ * This component provides the main footer for the Alvi Global Enterprises website, including:
+ * - Company branding and description
+ * - Navigation links organized by category
+ * - Contact information and social media links
+ * - Global footprint information
+ * - Copyright and legal information
+ * 
+ * Features:
+ * - Responsive grid layout
+ * - Social media integration
+ * - Contact information display
+ * - Global presence highlighting
+ * - Accessibility features
+ */
+
 import { MapPin, Mail, Phone, Linkedin, Twitter, Globe } from "lucide-react";
 
+/**
+ * Footer component with comprehensive site information
+ * 
+ * Displays company information, navigation links, contact details,
+ * and social media links in a responsive grid layout.
+ * 
+ * Features:
+ * - Multi-column responsive layout
+ * - Company branding and description
+ * - Organized navigation links
+ * - Contact information with icons
+ * - Social media links
+ * - Global footprint information
+ * - Copyright notice
+ */
 const Footer = () => {
   const links = {
     services: [
@@ -26,7 +59,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-primary text-primary-foreground" role="contentinfo">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand */}
@@ -121,7 +154,7 @@ const Footer = () => {
         <div className="pt-8 border-t border-primary-foreground/20">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-primary-foreground/60">
-              © 2024 Alvi Global Enterprises. All rights reserved.
+              © 2025 Alvi Global Enterprises. All rights reserved.
             </div>
 
             <div className="flex items-center space-x-4">

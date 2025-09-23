@@ -1,4 +1,4 @@
-# AI Agent Instructions for Age-Website
+# AI Agent Instructions for Alvi Global Enterprises Website
 
 ## Project Overview
 Single-page business website showcasing AI automation and product engineering services, built with React, TypeScript, Vite, and Shadcn UI. Features a quiz-based lead generation system and seamless integration with analytics and CRM platforms.

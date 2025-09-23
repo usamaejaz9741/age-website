@@ -1,7 +1,7 @@
 /**
- * Vite Configuration for AGE Website
+ * Vite Configuration for Alvi Global Enterprises Website
  * 
- * This configuration file sets up the build tooling for the AGE website,
+ * This configuration file sets up the build tooling for the Alvi Global Enterprises website,
  * including development server settings, build optimizations, and plugin
  * configurations for React, TypeScript, and component tagging.
  */
@@ -12,7 +12,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 /**
- * Vite configuration for the AGE website
+ * Vite configuration for the Alvi Global Enterprises website
  * 
  * Configures:
  * - Development server settings

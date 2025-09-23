@@ -26,10 +26,10 @@ const ProofBar = () => {
               className="text-center animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2">
                 {metric.value}
               </div>
-              <div className="text-sm text-muted-foreground font-medium uppercase tracking-wide">
+              <div className="text-xs sm:text-sm text-muted-foreground font-medium uppercase tracking-wide">
                 {metric.label}
               </div>
             </div>

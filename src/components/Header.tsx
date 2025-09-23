@@ -1,15 +1,91 @@
+/**
+ * Header Component - Navigation and Branding
+ * 
+ * This component provides the main navigation header for the Alvi Global Enterprises website.
+ * It includes:
+ * - Brand logo with navigation functionality
+ * - Desktop and mobile navigation menus
+ * - Calendly booking integration
+ * - Responsive design with mobile hamburger menu
+ * - Cross-page navigation with scroll-to-section support
+ */
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Calendar } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { openCalendlyBooking } from "@/lib/calendly";
 
+/**
+ * Header component with navigation and branding
+ * 
+ * Features:
+ * - Responsive navigation with mobile menu
+ * - Logo click navigation (home page scroll to top, other pages navigate home)
+ * - Section navigation (scroll on home page, navigate + scroll on other pages)
+ * - Calendly booking integration with UTM tracking
+ * - Mobile-first responsive design
+ */
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  /**
+   * Handle navigation to page sections
+   * 
+   * @param id - Section ID to navigate to
+   */
+  const handleNavigation = (id: string) => {
+    // If we're on the home page, scroll to section
+    if (location.pathname === '/') {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If we're on a different page, navigate to home and then scroll
+      navigate('/', { state: { scrollTo: id } });
     }
+    setIsMenuOpen(false);
+  };
+
+  /**
+   * Handle logo click navigation
+   * Scrolls to top on home page, navigates home on other pages
+   */
+  const handleLogoClick = () => {
+    if (location.pathname === '/') {
+      // If on home page, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // If on different page, navigate to home
+      navigate('/');
+    }
+    setIsMenuOpen(false);
+  };
+
+  /**
+   * Handle Calendly booking button click
+   * 
+   * @param e - Optional mouse event to prevent default behavior
+   */
+  const handleBookConsultation = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    console.log('=== HEADER BOOK CONSULTATION CLICKED ===');
+    openCalendlyBooking(
+      undefined,
+      {
+        utmCampaign: 'header-cta',
+        utmSource: 'age-website',
+        utmMedium: 'header',
+        utmContent: 'book-consultation'
+      },
+      'Header CTA'
+    );
     setIsMenuOpen(false);
   };
 
@@ -21,29 +97,29 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-neutral-10 z-50">
+    <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-neutral-10 z-50" role="banner">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <button 
-              onClick={() => scrollToSection("hero")}
+              onClick={handleLogoClick}
               className="flex items-center h-10"
             >
               <img 
                 src="/assets/age-logos/age-logo-header.png"
-                alt="AGE"
+                alt="Alvi Global Enterprises"
                 className="h-full w-auto"
               />
             </button>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+              {/* Desktop Navigation */}
+              <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => handleNavigation(item.id)}
                 className="text-neutral-75 hover:text-resolution-blue-600 font-medium transition-colors duration-200"
               >
                 {item.label}
@@ -52,15 +128,17 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex">
-            <Button 
-              variant="cta" 
-              size="sm"
-              data-growth-audit
-            >
-              Book Growth Audit
-            </Button>
-          </div>
+              <div className="hidden md:flex">
+                <Button
+                  type="button"
+                  variant="cta"
+                  size="sm"
+                  onClick={handleBookConsultation}
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Book Consultation
+                </Button>
+              </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -80,20 +158,22 @@ const Header = () => {
               {navItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => handleNavigation(item.id)}
                   className="block w-full text-left px-3 py-2 text-gray-700 hover:text-resolution-blue-700 hover:bg-gray-50 font-medium transition-colors duration-200"
                 >
                   {item.label}
                 </button>
               ))}
               <div className="px-3 pt-2">
-                <Button 
-                  variant="cta" 
+                <Button
+                  type="button"
+                  variant="cta"
                   size="sm" 
                   className="w-full"
-                  data-growth-audit
+                  onClick={handleBookConsultation}
                 >
-                  Book Growth Audit
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Book Consultation
                 </Button>
               </div>
             </div>

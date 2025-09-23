@@ -53,7 +53,7 @@ export interface AuditData {
 export async function generateAIAudit(data: AuditData): Promise<string> {
   try {
     console.log('=== GEMINI API CALL STARTED ===');
-    console.log('API Key available:', !!process.env.VITE_GEMINI_API_KEY);
+    console.log('API Key available:', !!import.meta.env.VITE_GEMINI_API_KEY);
     console.log('Audit data:', data);
     
     // Initialize Gemini 2.0 Flash model for content generation

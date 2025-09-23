@@ -5,9 +5,9 @@
  * and exporting it for analysis. It handles both individual submissions
  * and bulk data export functionality.
  * 
- * Note: This implementation uses browser localStorage for client-side storage
- * and API calls for server-side persistence. In a production environment,
- * consider using a database or cloud storage solution.
+ * Note: This implementation now uses Supabase database for server-side storage
+ * with localStorage as a fallback. The database provides proper persistence,
+ * analytics capabilities, and admin access to all submissions.
  */
 
 /**
@@ -41,76 +41,126 @@ export interface UserSubmission {
 }
 
 /**
- * Saves user assessment data to local file and browser storage
+ * Saves user assessment data to database with localStorage fallback
  * 
- * This function stores user submissions in multiple ways:
- * 1. Saves to browser localStorage for client-side access
- * 2. Saves to local file on server for data collection
- * 3. Logs data to console for immediate access
+ * This function stores user submissions in the following priority:
+ * 1. Saves to Supabase database (primary storage)
+ * 2. Falls back to localStorage if database fails
+ * 3. Logs data to console for debugging
  * 
  * @param data - User submission data to save
  * @returns Promise<boolean> - Success status of the save operation
  */
 export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
   try {
+    console.log('=== SAVING USER DATA ===');
+    console.log('Email:', data.email);
+    console.log('Score:', data.score);
+    console.log('Band:', data.band);
+
+    // Try to save to database first
+    try {
+      const { saveSubmissionToDatabase } = await import('./database');
+      const dbSuccess = await saveSubmissionToDatabase(data);
+      
+      if (dbSuccess) {
+        console.log('✅ Successfully saved to database');
+        
+        // Also save to localStorage as backup
+        await saveToLocalStorage(data);
+        
+        return true;
+      } else {
+        console.warn('⚠️ Database save failed, falling back to localStorage');
+      }
+    } catch (dbError) {
+      console.warn('⚠️ Database not configured or failed:', dbError);
+    }
+
+    // Fallback to localStorage
+    console.log('📱 Saving to localStorage as fallback');
+    await saveToLocalStorage(data);
+    
+    // Create downloadable file for manual collection
+    await createDownloadableFile(data);
+
+    console.log(`✅ User data saved successfully for ${data.email}`);
+    return true;
+  } catch (error) {
+    console.error('❌ Error saving user data:', error);
+    return false;
+  }
+};
+
+/**
+ * Save data to localStorage (fallback method)
+ */
+const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
+  try {
     // Save to localStorage for client-side access
     const existingData = localStorage.getItem('age_user_submissions');
     const submissions: UserSubmission[] = existingData ? JSON.parse(existingData) : [];
-    
+
     // Add new submission to the array
     submissions.push(data);
-    
+
     // Update localStorage
     localStorage.setItem('age_user_submissions', JSON.stringify(submissions));
-    
+
     // Save individual submission with timestamp
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const sanitizedEmail = data.email.replace('@', '_at_').replace(/[^a-zA-Z0-9._-]/g, '_');
     const individualKey = `age_submission_${sanitizedEmail}_${timestamp}`;
     localStorage.setItem(individualKey, JSON.stringify(data));
 
-    // Save to local file (for server-side collection)
-    try {
-      // Create a downloadable file with the data
-      const fileData = {
-        timestamp: new Date().toISOString(),
-        submission: data,
-        metadata: {
-          userAgent: navigator.userAgent,
-          url: window.location.href,
-          referrer: document.referrer
-        }
-      };
-
-      // Log the data to console for immediate access
-      console.log('=== NEW SUBMISSION ===');
-      console.log('Email:', data.email);
-      console.log('Score:', data.score);
-      console.log('Band:', data.band);
-      console.log('Full Data:', JSON.stringify(fileData, null, 2));
-      console.log('=====================');
-
-      // Create downloadable file
-      const blob = new Blob([JSON.stringify(fileData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `age_submission_${sanitizedEmail}_${timestamp}.json`;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-    } catch (fileError) {
-      console.warn('Failed to create downloadable file:', fileError);
-    }
-
-    console.log(`User data saved successfully for ${data.email}`);
-    return true;
+    console.log('📱 Data saved to localStorage');
   } catch (error) {
-    console.error('Error saving user data:', error);
-    return false;
+    console.error('❌ Error saving to localStorage:', error);
+  }
+};
+
+/**
+ * Create downloadable file for manual collection
+ */
+const createDownloadableFile = async (data: UserSubmission): Promise<void> => {
+  try {
+    // Create a downloadable file with the data
+    const fileData = {
+      timestamp: new Date().toISOString(),
+      submission: data,
+      metadata: {
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        referrer: document.referrer
+      }
+    };
+
+    // Log the data to console for immediate access
+    console.log('=== NEW SUBMISSION ===');
+    console.log('Email:', data.email);
+    console.log('Score:', data.score);
+    console.log('Band:', data.band);
+    console.log('Full Data:', JSON.stringify(fileData, null, 2));
+    console.log('=====================');
+
+    // Create downloadable file
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const sanitizedEmail = data.email.replace('@', '_at_').replace(/[^a-zA-Z0-9._-]/g, '_');
+    
+    const blob = new Blob([JSON.stringify(fileData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `age_submission_${sanitizedEmail}_${timestamp}.json`;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    console.log('📁 Downloadable file created');
+  } catch (fileError) {
+    console.warn('⚠️ Failed to create downloadable file:', fileError);
   }
 };
 

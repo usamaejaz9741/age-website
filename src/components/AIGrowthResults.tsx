@@ -1,3 +1,19 @@
+/**
+ * AI Growth Results Component
+ * 
+ * This component displays the results of the AI Growth Score assessment,
+ * including the overall score, dimension breakdown, AI-generated recommendations,
+ * and call-to-action for consultation booking.
+ * 
+ * Features:
+ * - Score visualization with progress bars
+ * - Dimension breakdown with individual scores
+ * - AI-generated personalized recommendations
+ * - Email confirmation and audit delivery
+ * - Consultation booking call-to-action
+ * - Data persistence to database
+ */
+
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -16,17 +32,34 @@ import {
   Loader2
 } from "lucide-react";
 
+/**
+ * Props interface for the AIGrowthResults component
+ */
 interface AIGrowthResultsProps {
+  /** Quiz results containing score, band, and dimension breakdown */
   results: QuizResults;
+  /** User's email address for follow-up */
   userEmail: string;
+  /** UTM parameters for marketing attribution */
   utmParams: {[key: string]: string};
+  /** Individual quiz answers for detailed analysis */
   quizAnswers: {[key: string]: number};
+  /** Generated AI audit content */
   auditContent: string;
 }
 
+/**
+ * AI Growth Results component that displays assessment results and recommendations
+ * 
+ * @param props - Component props containing results, user data, and audit content
+ * @returns JSX element displaying the assessment results
+ */
 const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditContent }: AIGrowthResultsProps) => {
+  // State for managing recommendations and loading status
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Initialize Gemini API client for generating recommendations
   const geminiAPI = useMemo(() => new GeminiAPI(), []);
 
   useEffect(() => {

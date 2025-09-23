@@ -1,9 +1,23 @@
+/**
+ * Checkbox Component
+ * 
+ * A checkbox component built on top of Radix UI's Checkbox primitive.
+ * Provides accessible checkbox functionality with custom styling.
+ */
+
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Checkbox component with accessible styling and check indicator
+ * 
+ * @param props - Checkbox props including checked state and HTML attributes
+ * @param ref - Forwarded ref to the checkbox element
+ * @returns JSX element for the checkbox
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>

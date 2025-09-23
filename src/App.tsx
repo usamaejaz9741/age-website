@@ -47,16 +47,16 @@ const App = () => (
       
       {/* Client-side routing */}
       <BrowserRouter>
-        <Routes>
-          {/* Main landing page with marketing content and services */}
-          <Route path="/" element={<Index />} />
-          
-          {/* AI Growth Score assessment page */}
-          <Route path="/ai-growth-score" element={<AIGrowthScore />} />
-          
-          {/* Catch-all route for 404 errors - must be last */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Routes>
+              {/* Main landing page with marketing content and services */}
+              <Route path="/" element={<Index />} />
+
+              {/* AI Growth Score assessment page */}
+              <Route path="/ai-growth-score" element={<AIGrowthScore />} />
+
+              {/* Catch-all route for 404 errors - must be last */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

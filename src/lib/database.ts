@@ -42,7 +42,7 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
     }
 
     // Validate band
-    const validBands = ['beginner', 'developing', 'advanced', 'expert'];
+    const validBands = ['Explorer', 'Experimenter', 'Accelerator'];
     if (!submission.band || !validBands.includes(submission.band)) {
       console.error('Invalid band value');
       return false;

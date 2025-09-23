@@ -10,8 +10,21 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Initialize Gemini AI client with API key from environment variables
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-console.log('Gemini API Key loaded:', apiKey ? 'Yes' : 'No');
-console.log('API Key value:', apiKey ? `${apiKey.substring(0, 10)}...` : 'Not found');
+
+// Security: Only log API key status in development, never the actual key
+if (import.meta.env.DEV) {
+  console.log('Gemini API Key loaded:', apiKey ? 'Yes' : 'No');
+  console.log('API Key available:', !!apiKey);
+} else {
+  // In production, only log availability status
+  console.log('Gemini API Key available:', !!apiKey);
+}
+
+// Validate API key before initializing
+if (!apiKey) {
+  throw new Error('Gemini API key is required but not found in environment variables');
+}
+
 const genAI = new GoogleGenerativeAI(apiKey);
 
 /**
@@ -52,9 +65,42 @@ export interface AuditData {
  */
 export async function generateAIAudit(data: AuditData): Promise<string> {
   try {
+    // Input validation and sanitization
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid audit data provided');
+    }
+
+    // Validate required fields
+    if (!data.companyName || typeof data.companyName !== 'string' || data.companyName.length > 100) {
+      throw new Error('Invalid company name');
+    }
+
+    if (!data.industry || typeof data.industry !== 'string' || data.industry.length > 50) {
+      throw new Error('Invalid industry');
+    }
+
+    if (!data.currentState || typeof data.currentState !== 'object') {
+      throw new Error('Invalid current state data');
+    }
+
+    // Validate scores are within expected range
+    const scores = Object.values(data.currentState);
+    if (scores.some(score => typeof score !== 'number' || score < 0 || score > 100)) {
+      throw new Error('Invalid score values');
+    }
+
+    // Sanitize string inputs
+    const sanitizedData = {
+      ...data,
+      companyName: data.companyName.trim().substring(0, 100),
+      industry: data.industry.trim().substring(0, 50),
+      monthlyRevenue: data.monthlyRevenue?.trim().substring(0, 50) || '',
+      goals: data.goals?.map(goal => goal.trim().substring(0, 200)).filter(Boolean) || []
+    };
+
     console.log('=== GEMINI API CALL STARTED ===');
     console.log('API Key available:', !!import.meta.env.VITE_GEMINI_API_KEY);
-    console.log('Audit data:', data);
+    console.log('Audit data validated and sanitized');
     
     // Initialize Gemini 2.0 Flash model for content generation
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
@@ -62,17 +108,17 @@ export async function generateAIAudit(data: AuditData): Promise<string> {
 
     // Construct comprehensive prompt for audit generation
     const prompt = `
-      Generate a detailed AI Growth Audit report for ${data.companyName} in the ${data.industry} industry.
+      Generate a detailed AI Growth Audit report for ${sanitizedData.companyName} in the ${sanitizedData.industry} industry.
       
       Current State Assessment:
-      - AI Strategy Maturity: ${data.currentState.strategy}/100
-      - Implementation Progress: ${data.currentState.implementation}/100
-      - Data Readiness: ${data.currentState.data}/100
-      - Cultural Alignment: ${data.currentState.culture}/100
+      - AI Strategy Maturity: ${sanitizedData.currentState.strategy}/100
+      - Implementation Progress: ${sanitizedData.currentState.implementation}/100
+      - Data Readiness: ${sanitizedData.currentState.data}/100
+      - Cultural Alignment: ${sanitizedData.currentState.culture}/100
       
       Business Context:
-      - Monthly Revenue: ${data.monthlyRevenue}
-      - Key Goals: ${data.goals.join(', ')}
+      - Monthly Revenue: ${sanitizedData.monthlyRevenue}
+      - Key Goals: ${sanitizedData.goals.join(', ')}
       
       Please provide a comprehensive audit report with the following sections:
       1. Executive Summary (2-3 paragraphs)
@@ -84,7 +130,7 @@ export async function generateAIAudit(data: AuditData): Promise<string> {
       7. Risk Assessment and Mitigation Strategies
       
       Format the response in markdown with clear sections, bullet points, and actionable insights.
-      Make it professional, data-driven, and tailored to the ${data.industry} industry.
+      Make it professional, data-driven, and tailored to the ${sanitizedData.industry} industry.
     `;
 
     // Generate audit content using Gemini AI

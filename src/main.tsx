@@ -26,12 +26,29 @@ try {
   document.documentElement.classList.add('loaded');
   document.body.classList.add('loaded');
 } catch (error) {
+  // Log error securely without exposing sensitive information
   console.error('Error rendering app:', error);
+  
+  // Render secure error page without exposing internal details
   root.render(
-    <div style={{ padding: '20px', color: 'red' }}>
-      <h1>Error Loading Application</h1>
-      <p>Check the console for details.</p>
-      <pre>{error instanceof Error ? error.message : String(error)}</pre>
+    <div style={{ padding: '20px', color: '#dc2626', fontFamily: 'system-ui, sans-serif' }}>
+      <h1>Application Error</h1>
+      <p>We're experiencing technical difficulties. Please try refreshing the page.</p>
+      <p>If the problem persists, please contact our support team.</p>
+      <button 
+        onClick={() => window.location.reload()} 
+        style={{ 
+          padding: '8px 16px', 
+          backgroundColor: '#dc2626', 
+          color: 'white', 
+          border: 'none', 
+          borderRadius: '4px',
+          cursor: 'pointer',
+          marginTop: '16px'
+        }}
+      >
+        Refresh Page
+      </button>
     </div>
   );
   

@@ -22,8 +22,40 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
     console.log('Score:', submission.score)
     console.log('Band:', submission.band)
     
+    // Security: Input validation and sanitization
+    if (!submission || typeof submission !== 'object') {
+      console.error('Invalid submission data');
+      return false;
+    }
+
+    // Validate email format
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!submission.email || !emailRegex.test(submission.email)) {
+      console.error('Invalid email format');
+      return false;
+    }
+
+    // Validate score range
+    if (typeof submission.score !== 'number' || submission.score < 0 || submission.score > 100) {
+      console.error('Invalid score value');
+      return false;
+    }
+
+    // Validate band
+    const validBands = ['beginner', 'developing', 'advanced', 'expert'];
+    if (!submission.band || !validBands.includes(submission.band)) {
+      console.error('Invalid band value');
+      return false;
+    }
+
+    // Sanitize email
+    const sanitizedSubmission = {
+      ...submission,
+      email: submission.email.trim().toLowerCase()
+    };
+    
     // Convert to database format
-    const dbSubmission = convertToDatabaseFormat(submission)
+    const dbSubmission = convertToDatabaseFormat(sanitizedSubmission)
     
     // Insert into database
     const { data, error } = await supabase

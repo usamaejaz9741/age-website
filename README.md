@@ -150,6 +150,49 @@ The application includes comprehensive analytics tracking:
 - Lead capture events
 - UTM parameter attribution
 
+## 🔒 Security
+
+The application implements comprehensive security measures:
+
+### Security Headers
+- **Content Security Policy (CSP)**: Restricts resource loading to prevent XSS
+- **X-Frame-Options**: Prevents clickjacking attacks
+- **X-Content-Type-Options**: Prevents MIME type sniffing
+- **Strict-Transport-Security**: Enforces HTTPS connections
+- **Referrer-Policy**: Controls referrer information sharing
+- **Permissions-Policy**: Restricts browser features
+
+### Input Validation & Sanitization
+- **Email Validation**: Comprehensive email format validation with length limits
+- **HTML Sanitization**: Prevents XSS through input sanitization
+- **Suspicious Pattern Detection**: Blocks potentially malicious inputs
+- **Rate Limiting**: Prevents abuse with form and API rate limiting
+- **Input Length Limits**: Enforces maximum input lengths
+
+### API Security
+- **Environment Variables**: API keys stored securely, never in source code
+- **Input Validation**: All API inputs validated before processing
+- **Error Handling**: Secure error messages without sensitive information
+- **Rate Limiting**: API call rate limiting to prevent abuse
+
+### Database Security
+- **Row Level Security (RLS)**: Supabase RLS enabled for data protection
+- **Input Sanitization**: All data sanitized before database storage
+- **Secure Connections**: HTTPS-only database connections
+- **Anonymous Access**: Properly configured anonymous access controls
+
+### Security Documentation
+- **Security Policy**: Comprehensive security documentation in `docs/security.md`
+- **Security Checklist**: Pre-deployment security checklist in `docs/security-checklist.md`
+- **Security Contact**: Security contact information in `/.well-known/security.txt`
+- **Vulnerability Disclosure**: Clear process for reporting security issues
+
+### Compliance
+- **GDPR Compliance**: Privacy-compliant data handling and consent management
+- **Data Minimization**: Only necessary data collected and stored
+- **Secure Transmission**: All data encrypted in transit
+- **Privacy Policy**: Clear privacy policy and data handling procedures
+
 ## 🚀 Deployment
 
 ### Vercel (Recommended)

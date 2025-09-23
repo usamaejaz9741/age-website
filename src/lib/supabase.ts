@@ -12,8 +12,24 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+// Security: Validate environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase configuration missing. Please check your environment variables.')
+  console.error('Missing Supabase environment variables');
+  throw new Error('Supabase configuration is incomplete');
+}
+
+// Security: Validate URL format
+try {
+  new URL(supabaseUrl);
+} catch (error) {
+  console.error('Invalid Supabase URL format');
+  throw new Error('Invalid Supabase URL configuration');
+}
+
+// Security: Validate key format (should be a JWT-like string)
+if (!supabaseAnonKey.startsWith('eyJ') || supabaseAnonKey.length < 100) {
+  console.error('Invalid Supabase anon key format');
+  throw new Error('Invalid Supabase key configuration');
 }
 
 /**
@@ -25,6 +41,12 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     // Disable auto-refresh for this use case since we're not using auth
     autoRefreshToken: false,
     persistSession: false
+  },
+  // Security: Disable realtime for anonymous users
+  realtime: {
+    params: {
+      eventsPerSecond: 2
+    }
   }
 })
 

@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp } from "lucide-react";
+import { AnimatedCard } from "@/components/ui/animated-card";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 const CaseStudies = () => {
   const cases = [
@@ -12,7 +14,7 @@ const CaseStudies = () => {
         after: { revenue: "$8.7M ARR", conversion: "4.1%", cac: "$280" }
       },
       timeframe: "12 months",
-      highlight: "312% revenue growth"
+      highlight: { value: 312, suffix: "% revenue growth" }
     },
     {
       company: "PropTech Pro",
@@ -23,7 +25,7 @@ const CaseStudies = () => {
         after: { revenue: "$18.9M ARR", conversion: "6.2%", cac: "$420" }
       },
       timeframe: "18 months", 
-      highlight: "263% revenue growth"
+      highlight: { value: 263, suffix: "% revenue growth" }
     }
   ];
 
@@ -42,10 +44,11 @@ const CaseStudies = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           {cases.map((caseStudy, index) => (
-            <div 
+            <AnimatedCard
               key={caseStudy.company}
-              className="group p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 animate-slide-up"
-              style={{ animationDelay: `${index * 0.2}s` }}
+              delay={index * 200}
+              direction="up"
+              className="group p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300"
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
@@ -57,7 +60,12 @@ const CaseStudies = () => {
                 </div>
                 <div className="text-right">
                   <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
-                    {caseStudy.highlight}
+                    <AnimatedCounter
+                      endValue={caseStudy.highlight.value}
+                      duration={2500}
+                      delay={index * 300}
+                      suffix={caseStudy.highlight.suffix}
+                    />
                   </div>
                   <div className="text-xs sm:text-sm text-muted-foreground">
                     in {caseStudy.timeframe}
@@ -92,7 +100,7 @@ const CaseStudies = () => {
                   <div className="text-sm font-semibold text-primary">{caseStudy.results.after.cac}</div>
                 </div>
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
 

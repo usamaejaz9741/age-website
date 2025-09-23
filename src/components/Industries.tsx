@@ -1,4 +1,5 @@
 import { Brain, DollarSign, Home, Plane, ShoppingCart } from "lucide-react";
+import { AnimatedCard } from "@/components/ui/animated-card";
 
 const Industries = () => {
   const industries = [
@@ -46,10 +47,11 @@ const Industries = () => {
           {industries.map((industry, index) => {
             const Icon = industry.icon;
             return (
-              <div 
+              <AnimatedCard
                 key={industry.name}
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-slide-up cursor-pointer"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                delay={index * 100}
+                direction="up"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               >
                 <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Icon className="w-8 h-8 text-primary" />
@@ -66,7 +68,7 @@ const Industries = () => {
                 <div className="mt-6 flex items-center text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Learn more →
                 </div>
-              </div>
+              </AnimatedCard>
             );
           })}
         </div>

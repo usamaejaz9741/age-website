@@ -1,9 +1,12 @@
+import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { AnimatedCard } from "@/components/ui/animated-card";
+
 const ProofBar = () => {
   const metrics = [
-    { value: "3×", label: "Lead Velocity" },
-    { value: "−27%", label: "CAC Reduction" },
-    { value: "180%", label: "Revenue Growth" },
-    { value: "45%", label: "Faster GTM" },
+    { value: 3, suffix: "×", label: "Lead Velocity" },
+    { value: 27, prefix: "−", suffix: "%", label: "CAC Reduction" },
+    { value: 180, suffix: "%", label: "Revenue Growth" },
+    { value: 45, suffix: "%", label: "Faster GTM" },
   ];
 
   const partners = [
@@ -21,18 +24,25 @@ const ProofBar = () => {
         {/* Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {metrics.map((metric, index) => (
-            <div 
+            <AnimatedCard
               key={metric.label}
-              className="text-center animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              delay={index * 100}
+              direction="up"
+              className="text-center"
             >
               <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2">
-                {metric.value}
+                <AnimatedCounter
+                  endValue={metric.value}
+                  duration={2000}
+                  delay={index * 200}
+                  prefix={metric.prefix}
+                  suffix={metric.suffix}
+                />
               </div>
               <div className="text-xs sm:text-sm text-muted-foreground font-medium uppercase tracking-wide">
                 {metric.label}
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
 

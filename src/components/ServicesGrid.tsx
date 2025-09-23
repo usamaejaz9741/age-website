@@ -1,4 +1,5 @@
 import { Bot, Code, TrendingUp, Palette, Settings } from "lucide-react";
+import { AnimatedCard } from "@/components/ui/animated-card";
 
 const ServicesGrid = () => {
   const services = [
@@ -52,10 +53,11 @@ const ServicesGrid = () => {
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
-              <div 
+              <AnimatedCard
                 key={service.title}
-                className="group p-4 sm:p-6 md:p-8 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                delay={index * 100}
+                direction="up"
+                className="group p-4 sm:p-6 md:p-8 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Icon className="w-8 h-8 text-primary" />
@@ -77,7 +79,7 @@ const ServicesGrid = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </AnimatedCard>
             );
           })}
         </div>

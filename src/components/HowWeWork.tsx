@@ -1,4 +1,5 @@
 import { Calendar, BarChart3, Rocket } from "lucide-react";
+import { AnimatedCard } from "@/components/ui/animated-card";
 
 const HowWeWork = () => {
   const steps = [
@@ -42,10 +43,11 @@ const HowWeWork = () => {
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div 
+              <AnimatedCard
                 key={step.title}
-                className="relative group animate-slide-up"
-                style={{ animationDelay: `${index * 0.2}s` }}
+                delay={index * 200}
+                direction="up"
+                className="relative group"
               >
                 {/* Connection Line */}
                 {index < steps.length - 1 && (
@@ -79,7 +81,7 @@ const HowWeWork = () => {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </AnimatedCard>
             );
           })}
         </div>

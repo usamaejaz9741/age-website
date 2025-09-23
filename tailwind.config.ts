@@ -183,63 +183,110 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       
-      // Custom keyframe animations
-      keyframes: {
-        // Accordion animations (for shadcn/ui components)
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        // Alvi Global Enterprises brand animations
-        "fade-in": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(20px)"
+          // Custom keyframe animations
+          keyframes: {
+            // Accordion animations (for shadcn/ui components)
+            "accordion-down": {
+              from: { height: "0" },
+              to: { height: "var(--radix-accordion-content-height)" },
+            },
+            "accordion-up": {
+              from: { height: "var(--radix-accordion-content-height)" },
+              to: { height: "0" },
+            },
+            // Alvi Global Enterprises brand animations
+            "fade-in": {
+              "0%": {
+                opacity: "0",
+                transform: "translateY(20px)"
+              },
+              "100%": {
+                opacity: "1",
+                transform: "translateY(0)"
+              }
+            },
+            "slide-up": {
+              "0%": {
+                opacity: "0",
+                transform: "translateY(10px)"
+              },
+              "100%": {
+                opacity: "1",
+                transform: "translateY(0)"
+              }
+            },
+            "scale-in": {
+              "0%": {
+                opacity: "0",
+                transform: "scale(0.95)"
+              },
+              "100%": {
+                opacity: "1",
+                transform: "scale(1)"
+              }
+            },
+            "pulse-soft": {
+              "0%, 100%": { opacity: "1" },
+              "50%": { opacity: "0.8" }
+            },
+            // Floating blob animations
+            "float-slow": {
+              "0%, 100%": {
+                transform: "translateY(0px) translateX(0px) scale(1)"
+              },
+              "25%": {
+                transform: "translateY(-20px) translateX(10px) scale(1.05)"
+              },
+              "50%": {
+                transform: "translateY(-10px) translateX(-15px) scale(0.95)"
+              },
+              "75%": {
+                transform: "translateY(-30px) translateX(5px) scale(1.02)"
+              }
+            },
+            "float-medium": {
+              "0%, 100%": {
+                transform: "translateY(0px) translateX(0px) scale(1)"
+              },
+              "33%": {
+                transform: "translateY(-25px) translateX(-20px) scale(1.08)"
+              },
+              "66%": {
+                transform: "translateY(-15px) translateX(25px) scale(0.92)"
+              }
+            },
+            "float-fast": {
+              "0%, 100%": {
+                transform: "translateY(0px) translateX(0px) scale(1)"
+              },
+              "20%": {
+                transform: "translateY(-15px) translateX(12px) scale(1.03)"
+              },
+              "40%": {
+                transform: "translateY(-35px) translateX(-8px) scale(0.97)"
+              },
+              "60%": {
+                transform: "translateY(-20px) translateX(18px) scale(1.06)"
+              },
+              "80%": {
+                transform: "translateY(-10px) translateX(-12px) scale(0.94)"
+              }
+            },
           },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)"
-          }
-        },
-        "slide-up": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(10px)"
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)"
-          }
-        },
-        "scale-in": {
-          "0%": {
-            opacity: "0",
-            transform: "scale(0.95)"
-          },
-          "100%": {
-            opacity: "1",
-            transform: "scale(1)"
-          }
-        },
-        "pulse-soft": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" }
-        },
-      },
       
-      // Animation utilities
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.6s ease-out",
-        "slide-up": "slide-up 0.4s ease-out",
-        "scale-in": "scale-in 0.3s ease-out",
-        "pulse-soft": "pulse-soft 3s ease-in-out infinite",
-      },
+          // Animation utilities
+          animation: {
+            "accordion-down": "accordion-down 0.2s ease-out",
+            "accordion-up": "accordion-up 0.2s ease-out",
+            "fade-in": "fade-in 0.6s ease-out",
+            "slide-up": "slide-up 0.4s ease-out",
+            "scale-in": "scale-in 0.3s ease-out",
+            "pulse-soft": "pulse-soft 3s ease-in-out infinite",
+            // Floating blob animations
+            "float-slow": "float-slow 8s ease-in-out infinite",
+            "float-medium": "float-medium 6s ease-in-out infinite",
+            "float-fast": "float-fast 4s ease-in-out infinite",
+          },
     },
   },
   

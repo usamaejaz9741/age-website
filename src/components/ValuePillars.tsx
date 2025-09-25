@@ -1,6 +1,26 @@
+/**
+ * Value Pillars Component - Core Value Propositions
+ * 
+ * This component displays the four core value pillars that differentiate
+ * Alvi Global Enterprises from competitors. It showcases the unique
+ * approach and methodology in an animated grid layout.
+ * 
+ * Features:
+ * - Four core value pillars with detailed descriptions
+ * - Animated cards with scroll-triggered animations
+ * - Responsive grid layout for different screen sizes
+ * - Icon-based visual representation for each pillar
+ * - Hover effects and smooth transitions
+ */
+
 import { Zap, Brain, Layers, Globe } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 
+/**
+ * Value Pillars component displaying core value propositions
+ * 
+ * @returns JSX element with animated value pillar cards
+ */
 const ValuePillars = () => {
   const pillars = [
     {

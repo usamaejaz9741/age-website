@@ -1,6 +1,26 @@
+/**
+ * Industries Component - Industry Expertise Display
+ * 
+ * This component showcases the industries and sectors where Alvi Global
+ * Enterprises has deep domain expertise. It displays various industry
+ * verticals with icons and descriptions in an animated grid layout.
+ * 
+ * Features:
+ * - Five core industry verticals with detailed descriptions
+ * - Animated cards with scroll-triggered animations
+ * - Responsive grid layout for different screen sizes
+ * - Icon-based visual representation for each industry
+ * - Industry-specific descriptions and expertise areas
+ */
+
 import { Brain, DollarSign, Home, Plane, ShoppingCart } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 
+/**
+ * Industries component displaying industry expertise areas
+ * 
+ * @returns JSX element with animated industry cards
+ */
 const Industries = () => {
   const industries = [
     {

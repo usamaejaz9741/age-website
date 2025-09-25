@@ -1,6 +1,26 @@
+/**
+ * Proof Bar Component - Social Proof and Key Metrics
+ * 
+ * This component displays key performance metrics and partner logos to build
+ * credibility and social proof. It features animated counters that count up
+ * when scrolled into view, creating an engaging visual experience.
+ * 
+ * Features:
+ * - Animated counters for key metrics (Lead Velocity, CAC Reduction, etc.)
+ * - Staggered animation timing for visual appeal
+ * - Responsive grid layout for different screen sizes
+ * - Partner logos for social proof
+ * - Scroll-triggered animations using intersection observer
+ */
+
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { AnimatedCard } from "@/components/ui/animated-card";
 
+/**
+ * Proof Bar component displaying key metrics and partner logos
+ * 
+ * @returns JSX element with animated metrics and partner logos
+ */
 const ProofBar = () => {
   const metrics = [
     { value: 3, suffix: "×", label: "Lead Velocity" },

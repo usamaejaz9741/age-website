@@ -1,6 +1,26 @@
+/**
+ * How We Work Component - Process and Methodology
+ * 
+ * This component displays the three-phase methodology used by Alvi Global
+ * Enterprises to deliver results in 90 days. It showcases the BUILD, MEASURE,
+ * and SCALE phases with detailed descriptions and features.
+ * 
+ * Features:
+ * - Three-phase methodology (BUILD, MEASURE, SCALE)
+ * - Timeline-based approach (30-day phases)
+ * - Animated cards with scroll-triggered animations
+ * - Responsive grid layout for different screen sizes
+ * - Feature lists for each phase
+ */
+
 import { Calendar, BarChart3, Rocket } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 
+/**
+ * How We Work component displaying the 90-day methodology
+ * 
+ * @returns JSX element with animated process cards
+ */
 const HowWeWork = () => {
   const steps = [
     {

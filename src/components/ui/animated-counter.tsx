@@ -2,34 +2,43 @@
  * Animated Counter Component
  * 
  * A component that displays animated counting numbers with intersection observer
- * to trigger animations when scrolled into view.
+ * to trigger animations when scrolled into view. The counter starts from 0 and
+ * animates to the target value when the component enters the viewport.
  */
 
 import { ReactNode } from 'react';
 import { useAnimatedCounter } from '@/hooks/use-animated-counter';
-import { useTestCounter } from '@/hooks/use-test-counter';
 import { cn } from '@/lib/utils';
 
 interface AnimatedCounterProps {
+  /** The final number to count to */
   endValue: number;
+  /** Animation duration in milliseconds (default: 2000) */
   duration?: number;
+  /** Additional CSS classes */
   className?: string;
+  /** Text to display before the number */
   prefix?: string;
+  /** Text to display after the number */
   suffix?: string;
+  /** Custom content to display instead of the number */
   children?: ReactNode;
+  /** Delay before starting the animation in milliseconds */
   delay?: number;
-  useTest?: boolean;
 }
 
 /**
  * Animated counter component with scroll-triggered counting animation
  * 
- * @param endValue - The final number to count to
- * @param duration - Animation duration in milliseconds
- * @param className - Additional CSS classes
- * @param prefix - Text to display before the number
- * @param suffix - Text to display after the number
- * @param children - Custom content to display instead of the number
+ * Features:
+ * - Intersection Observer integration for viewport detection
+ * - Smooth easing animation from 0 to target value
+ * - Customizable duration and delay
+ * - Support for prefix/suffix text
+ * - Custom content rendering via children prop
+ * 
+ * @param props - Component props
+ * @returns JSX element with animated counter
  */
 export function AnimatedCounter({
   endValue,
@@ -38,20 +47,12 @@ export function AnimatedCounter({
   prefix = '',
   suffix = '',
   children,
-  delay = 0,
-  useTest = false
+  delay = 0
 }: AnimatedCounterProps) {
   const { ref, count } = useAnimatedCounter(endValue, {
     duration,
     delay
   });
-
-  const { count: testCount } = useTestCounter(endValue, {
-    duration,
-    delay
-  });
-
-  const displayCount = useTest ? testCount : count;
 
   return (
     <span
@@ -63,7 +64,7 @@ export function AnimatedCounter({
       ) : (
         <>
           {prefix}
-          {displayCount.toLocaleString()}
+          {count.toLocaleString()}
           {suffix}
         </>
       )}

@@ -128,16 +128,18 @@ const AIGrowthScore = () => {
       setQuizResults(results);
 
       // Prepare data for AI audit generation
+      // Note: Using default values for company details as they're not collected in the current form
+      // Future enhancement: Add company name, industry, and revenue fields to the assessment
       const auditData: AuditData = {
-        companyName: "Your Company", // TODO: Could be collected in the form
-        industry: "Technology", // TODO: Could be collected in the form
+        companyName: "Your Company", // Default placeholder - could be enhanced with form collection
+        industry: "Technology", // Default placeholder - could be enhanced with industry selection
         currentState: {
           strategy: results.dimensions.strategy,
           implementation: results.dimensions.implementation,
           data: results.dimensions.data,
           culture: results.dimensions.culture,
         },
-        monthlyRevenue: "$100k-$500k", // TODO: Could be collected in the form
+        monthlyRevenue: "$100k-$500k", // Default placeholder - could be enhanced with revenue range selection
         goals: ["Implement AI automation", "Increase efficiency"],
       };
       
@@ -168,7 +170,11 @@ const AIGrowthScore = () => {
     } catch (error) {
       console.error('Error generating audit:', error);
       console.error('Full error details:', error);
-      // TODO: Show user-friendly error message
+      
+      // Show user-friendly error message
+      // Note: In a production environment, you might want to show a toast notification
+      // or redirect to an error page with retry functionality
+      alert('Sorry, there was an error generating your AI audit. Please try again or contact support if the issue persists.');
     } finally {
       setIsGeneratingAudit(false);
     }
@@ -462,7 +468,5 @@ const AIGrowthScore = () => {
     </div>
   );
 };
-
-
 
 export default AIGrowthScore;

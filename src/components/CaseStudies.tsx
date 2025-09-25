@@ -1,8 +1,28 @@
+/**
+ * Case Studies Component - Success Stories and Results
+ * 
+ * This component showcases real client success stories with detailed metrics
+ * and results. It features animated counters for key performance indicators
+ * and provides social proof through concrete business outcomes.
+ * 
+ * Features:
+ * - Real client case studies with before/after metrics
+ * - Animated counters for revenue growth and key metrics
+ * - Responsive grid layout for different screen sizes
+ * - Scroll-triggered animations using intersection observer
+ * - Call-to-action for consultation booking
+ */
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 
+/**
+ * Case Studies component displaying client success stories and metrics
+ * 
+ * @returns JSX element with case studies and animated metrics
+ */
 const CaseStudies = () => {
   const cases = [
     {

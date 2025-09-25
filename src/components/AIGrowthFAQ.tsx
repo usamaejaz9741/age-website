@@ -1,5 +1,25 @@
+/**
+ * AI Growth FAQ Component - Frequently Asked Questions
+ * 
+ * This component displays frequently asked questions about the AI Growth Score
+ * assessment in an accordion format. It provides answers to common questions
+ * about the assessment process, data privacy, and the company's services.
+ * 
+ * Features:
+ * - Six common questions with detailed answers
+ * - Accordion-style expandable content
+ * - Responsive design for all screen sizes
+ * - Clean, accessible interface
+ * - Information about assessment accuracy and data privacy
+ */
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
+/**
+ * AI Growth FAQ component displaying frequently asked questions
+ * 
+ * @returns JSX element with accordion-style FAQ items
+ */
 const AIGrowthFAQ = () => {
   const faqItems = [
     {

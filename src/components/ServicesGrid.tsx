@@ -1,6 +1,26 @@
+/**
+ * Services Grid Component - Service Offerings Display
+ * 
+ * This component displays the five core service pillars offered by Alvi Global
+ * Enterprises. Each service is presented with an icon, title, description,
+ * and key features in an animated grid layout.
+ * 
+ * Features:
+ * - Five core service pillars with detailed descriptions
+ * - Animated cards with scroll-triggered animations
+ * - Responsive grid layout for different screen sizes
+ * - Icon-based visual representation for each service
+ * - Feature lists for each service offering
+ */
+
 import { Bot, Code, TrendingUp, Palette, Settings } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 
+/**
+ * Services Grid component displaying core service offerings
+ * 
+ * @returns JSX element with animated service cards
+ */
 const ServicesGrid = () => {
   const services = [
     {

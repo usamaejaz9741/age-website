@@ -1,8 +1,28 @@
+/**
+ * Content Teaser Component - Lead Generation and Content Marketing
+ * 
+ * This component showcases valuable content offerings and provides a lead
+ * generation form for users to subscribe to insights, guides, and tools.
+ * It displays three key content types with descriptions and a subscription form.
+ * 
+ * Features:
+ * - Three content offerings with detailed descriptions
+ * - Email subscription form for lead generation
+ * - Responsive grid layout for different screen sizes
+ * - Icon-based visual representation for each content type
+ * - Form validation and submission handling
+ */
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, FileText, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
+/**
+ * Content Teaser component displaying content offerings and subscription form
+ * 
+ * @returns JSX element with content teasers and subscription form
+ */
 const ContentTeaser = () => {
   const [email, setEmail] = useState("");
 

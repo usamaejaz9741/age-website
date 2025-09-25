@@ -80,7 +80,7 @@ export function validateAndSanitizeText(input: string, maxLength: number = 1000)
  * @param max - Maximum allowed value
  * @returns boolean - Whether value is valid
  */
-export function validateNumeric(value: any, min: number = 0, max: number = 100): boolean {
+export function validateNumeric(value: unknown, min: number = 0, max: number = 100): boolean {
   if (typeof value !== 'number' || isNaN(value)) {
     return false;
   }

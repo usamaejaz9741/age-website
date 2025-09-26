@@ -197,7 +197,8 @@ export const STRUCTURED_DATA_TEMPLATES = {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: DEFAULT_SEO_CONFIG.contactEmail
+      email: DEFAULT_SEO_CONFIG.contactEmail,
+      telephone: '+92 302 8222054'
     },
     sameAs: Object.values(DEFAULT_SEO_CONFIG.socialLinks)
   },

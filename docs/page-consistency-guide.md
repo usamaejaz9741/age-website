@@ -195,3 +195,4 @@ const YourPage = () => {
 - Include clear action buttons
 
 This guide ensures consistent, accessible, and performant pages across the entire website.
+

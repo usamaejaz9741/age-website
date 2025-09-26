@@ -437,3 +437,4 @@ export function generatePerformanceMeta(pageData: {
     { name: 'theme-color', content: '#0050ff' }
   ];
 }
+

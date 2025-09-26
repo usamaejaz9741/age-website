@@ -328,3 +328,4 @@ See the following files for complete examples:
 - `src/pages/Index.tsx` - Homepage implementation
 - `src/pages/ai-growth-score.tsx` - Assessment page implementation
 - `src/components/README.md` - Quick reference guide
+

@@ -14,7 +14,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Security: Validate environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables');
+  // Missing Supabase environment variables
   throw new Error('Supabase configuration is incomplete');
 }
 
@@ -22,13 +22,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
 try {
   new URL(supabaseUrl);
 } catch (error) {
-  console.error('Invalid Supabase URL format');
+  // Invalid Supabase URL format
   throw new Error('Invalid Supabase URL configuration');
 }
 
 // Security: Validate key format (should be a JWT-like string)
 if (!supabaseAnonKey.startsWith('eyJ') || supabaseAnonKey.length < 100) {
-  console.error('Invalid Supabase anon key format');
+  // Invalid Supabase anon key format
   throw new Error('Invalid Supabase key configuration');
 }
 

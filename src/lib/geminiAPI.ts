@@ -28,8 +28,10 @@ export class GeminiAPI {
    */
   constructor() {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    
+    
     if (!apiKey) {
-      throw new Error('Gemini API key not found in environment variables. Please set VITE_GEMINI_API_KEY.');
+      throw new Error('Gemini API key not found in environment variables. Make sure VITE_GEMINI_API_KEY is set in .env.local');
     }
     this.apiKey = apiKey;
     this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
@@ -76,7 +78,8 @@ export class GeminiAPI {
 
       // Check for HTTP errors
       if (!response.ok) {
-        throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`Gemini API error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       // Parse and validate response
@@ -89,7 +92,7 @@ export class GeminiAPI {
       
       return data.candidates[0].content.parts[0].text;
     } catch (error) {
-      console.error('Error calling Gemini API:', error);
+      // Error calling Gemini API
       
       // Re-throw with more context for debugging
       if (error instanceof Error) {

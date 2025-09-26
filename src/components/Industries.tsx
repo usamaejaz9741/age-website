@@ -26,35 +26,44 @@ const Industries = () => {
     {
       icon: Brain,
       name: "AI & Machine Learning",
-      description: "Next-gen AI solutions for enterprise automation and intelligence"
+      description: "Next-gen AI solutions for enterprise automation and intelligence",
+      iconColor: "var(--icon-purple)",
+      bgColor: "var(--icon-purple-bg)"
     },
     {
       icon: DollarSign,
       name: "Fintech & Banking",
-      description: "Digital financial services and payment platform development"
+      description: "Digital financial services and payment platform development",
+      iconColor: "var(--icon-blue)",
+      bgColor: "var(--icon-blue-bg)"
     },
     {
       icon: Home,
       name: "Real Estate Tech",
-      description: "PropTech solutions for property management and transactions"
+      description: "PropTech solutions for property management and transactions",
+      iconColor: "var(--icon-green)",
+      bgColor: "var(--icon-green-bg)"
     },
     {
       icon: Plane,
       name: "Travel & Hospitality",
-      description: "Booking platforms and customer experience optimization"
+      description: "Booking platforms and customer experience optimization",
+      iconColor: "var(--icon-indigo)",
+      bgColor: "var(--icon-indigo-bg)"
     },
     {
       icon: ShoppingCart,
       name: "E-commerce & Retail",
-      description: "Omnichannel commerce and marketplace solutions"
+      description: "Omnichannel commerce and marketplace solutions",
+      iconColor: "var(--icon-red)",
+      bgColor: "var(--icon-red-bg)"
     }
   ];
 
   return (
-    <section id="industries" className="py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-6">
+    <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Industries we{" "}
             <span className="text-primary">accelerate</span>
           </h2>
@@ -71,13 +80,19 @@ const Industries = () => {
                 key={industry.name}
                 delay={index * 100}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1 cursor-pointer"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Icon className="w-8 h-8 text-primary" />
+                <div 
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
+                  style={{ backgroundColor: industry.bgColor }}
+                >
+                  <Icon 
+                    className="w-8 h-8" 
+                    style={{ color: industry.iconColor }}
+                  />
                 </div>
                 
-                <h3 className="text-xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors">
+                <h3 className="text-2xl font-bold text-foreground mb-4 leading-tight group-hover:text-primary transition-colors">
                   {industry.name}
                 </h3>
                 
@@ -95,18 +110,17 @@ const Industries = () => {
 
         {/* Call to Action */}
         <div className="mt-16 text-center p-8 bg-gradient-hero rounded-xl">
-          <h3 className="text-2xl font-bold text-foreground mb-4">
+          <h3 className="text-2xl font-bold text-foreground mb-6 leading-tight">
             Don't see your industry?
           </h3>
           <p className="text-muted-foreground mb-6">
             We adapt our expertise to any high-growth market opportunity.
           </p>
-          <button className="text-primary font-semibold hover:underline">
+          <button className="text-primary font-bold hover:underline">
             Discuss your market →
           </button>
         </div>
-      </div>
-    </section>
+    </div>
   );
 };
 

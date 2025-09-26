@@ -31,7 +31,7 @@ const Hero = () => {
   const [showGrowthAudit, setShowGrowthAudit] = useState(false);
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-hero overflow-hidden" role="banner" aria-labelledby="hero-heading">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden" role="banner" aria-labelledby="hero-heading">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -71,7 +71,7 @@ const Hero = () => {
         <div className="animate-fade-in">
           <h1 id="hero-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
             Engineer revenue,{" "}
-            <span className="text-primary font-extrabold">not just software</span>
+            <span className="text-primary font-bold">not just software</span>
           </h1>
           
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed">
@@ -118,7 +118,7 @@ const Hero = () => {
           <div className="w-1 h-3 bg-muted-foreground rounded-full mt-2 animate-bounce" />
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

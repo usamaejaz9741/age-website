@@ -1,5 +1,6 @@
 # Robots.txt for Alvi Global Enterprises
 # https://alviglobal.com
+# Last updated: 2025-01-23
 
 # Allow all search engines to crawl the site
 User-agent: *
@@ -18,6 +19,18 @@ User-agent: Slurp
 Allow: /
 Crawl-delay: 1
 
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
 # Social media crawlers
 User-agent: Twitterbot
 Allow: /
@@ -28,10 +41,72 @@ Allow: /
 User-agent: LinkedInBot
 Allow: /
 
-# Block access to admin and private areas (if any)
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# AI and research crawlers
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Block access to admin and private areas
 Disallow: /admin/
 Disallow: /private/
 Disallow: /api/
+Disallow: /_next/
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /.env.local
+Disallow: /.git/
+Disallow: /src/
+Disallow: /public/
+Disallow: /dist/
+Disallow: /build/
+
+# Block access to development and testing files
+Disallow: /*.json$
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*.map$
+Disallow: /*.txt$
+Disallow: /*.xml$
+Disallow: /*.ico$
+Disallow: /*.png$
+Disallow: /*.jpg$
+Disallow: /*.jpeg$
+Disallow: /*.gif$
+Disallow: /*.svg$
+Disallow: /*.webp$
+
+# Allow specific important files
+Allow: /sitemap.xml
+Allow: /robots.txt
+Allow: /llms.txt          # AI language model information
+Allow: /favicon.ico
+Allow: /site.webmanifest
+Allow: /og-image.jpg
+Allow: /og-image-ai-assessment.jpg
 
 # Sitemap location
 Sitemap: https://alviglobal.com/sitemap.xml
+
+# Additional sitemaps
+Sitemap: https://alviglobal.com/sitemap-images.xml
+
+# Future sitemaps (when available)
+# Sitemap: https://alviglobal.com/sitemap-news.xml
+# Sitemap: https://alviglobal.com/sitemap-videos.xml

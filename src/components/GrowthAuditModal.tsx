@@ -58,7 +58,6 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
       e.preventDefault();
       e.stopPropagation();
     }
-    console.log('=== MODAL BOOK CONSULTATION CLICKED ===');
     openCalendlyBooking(
       undefined, // No prefill data
       {
@@ -79,7 +78,7 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-6">
         <DialogHeader>
           <DialogTitle className="flex items-center text-xl sm:text-2xl md:text-3xl font-heading font-bold text-foreground mb-2">
-            <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-3 sm:mr-4 text-primary" />
+            <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-3 sm:mr-4" style={{ color: 'var(--icon-blue) !important' }} />
             Book Your Growth Audit
           </DialogTitle>
         </DialogHeader>
@@ -88,7 +87,7 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
           <div className="bg-gradient-card p-4 sm:p-6 md:p-8 rounded-xl mb-6 sm:mb-8 shadow-soft hover:shadow-medium transition-all">
             <div className="flex items-start md:items-center mb-6 gap-4">
               <div className="bg-primary/10 p-3 rounded-lg group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-6 h-6 text-primary" />
+                <TrendingUp className="w-6 h-6" style={{ color: 'var(--icon-green) !important' }} />
               </div>
               <div>
                 <h3 className="text-xl font-kufam font-semibold text-foreground mb-1">

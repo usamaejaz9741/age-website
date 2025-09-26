@@ -1,23 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+        http://www.google.com/schemas/sitemap-image/1.1
+        http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd
+        http://www.google.com/schemas/sitemap-news/0.9
+        http://www.google.com/schemas/sitemap-news/0.9/sitemap-news.xsd">
   
-  <!-- Homepage -->
+  <!-- Homepage - Main landing page -->
   <url>
     <loc>https://alviglobal.com/</loc>
     <lastmod>2025-01-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://alviglobal.com/og-image.jpg</image:loc>
+      <image:title>Alvi Global Enterprises - AI-Powered Business Solutions</image:title>
+      <image:caption>AI-powered business ecosystems for emerging markets with proven results</image:caption>
+    </image:image>
   </url>
   
-  <!-- AI Growth Score Assessment -->
+  <!-- AI Growth Score Assessment - Key conversion page -->
   <url>
     <loc>https://alviglobal.com/ai-growth-score</loc>
     <lastmod>2025-01-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://alviglobal.com/og-image-ai-assessment.jpg</image:loc>
+      <image:title>AI Growth Score Assessment - Discover Your AI Maturity</image:title>
+      <image:caption>Comprehensive 3-minute assessment across strategy, implementation, data, and culture dimensions</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Services Pages (Future) -->
+  <url>
+    <loc>https://alviglobal.com/services</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://alviglobal.com/services/ai-automation</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://alviglobal.com/services/product-engineering</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://alviglobal.com/services/growth-consulting</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Case Studies (Future) -->
+  <url>
+    <loc>https://alviglobal.com/case-studies</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- About Page (Future) -->
+  <url>
+    <loc>https://alviglobal.com/about</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Contact Page (Future) -->
+  <url>
+    <loc>https://alviglobal.com/contact</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Blog/Insights (Future) -->
+  <url>
+    <loc>https://alviglobal.com/insights</loc>
+    <lastmod>2025-01-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
 </urlset>

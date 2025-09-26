@@ -17,34 +17,30 @@ import type { UserSubmission } from './storage'
  */
 export async function saveSubmissionToDatabase(submission: UserSubmission): Promise<boolean> {
   try {
-    console.log('=== SAVING TO DATABASE ===')
-    console.log('Email:', submission.email)
-    console.log('Score:', submission.score)
-    console.log('Band:', submission.band)
     
     // Security: Input validation and sanitization
     if (!submission || typeof submission !== 'object') {
-      console.error('Invalid submission data');
+      // Invalid submission data
       return false;
     }
 
     // Validate email format
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!submission.email || !emailRegex.test(submission.email)) {
-      console.error('Invalid email format');
+      // Invalid email format
       return false;
     }
 
     // Validate score range
     if (typeof submission.score !== 'number' || submission.score < 0 || submission.score > 100) {
-      console.error('Invalid score value');
+      // Invalid score value
       return false;
     }
 
     // Validate band
     const validBands = ['Explorer', 'Experimenter', 'Accelerator'];
     if (!submission.band || !validBands.includes(submission.band)) {
-      console.error('Invalid band value');
+      // Invalid band value
       return false;
     }
 
@@ -64,15 +60,14 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
       .select()
     
     if (error) {
-      console.error('Database error:', error)
+      // Database error
       return false
     }
     
-    console.log('Successfully saved to database:', data)
     return true
     
   } catch (error) {
-    console.error('Error saving to database:', error)
+    // Error saving to database
     return false
   }
 }

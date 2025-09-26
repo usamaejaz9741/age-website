@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.google.com/schemas/sitemap-image/1.1
+        http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd">
+  
+  <!-- Homepage Images -->
+  <url>
+    <loc>https://alviglobal.com/</loc>
+    <image:image>
+      <image:loc>https://alviglobal.com/og-image.jpg</image:loc>
+      <image:title>Alvi Global Enterprises - AI-Powered Business Solutions</image:title>
+      <image:caption>AI-powered business ecosystems for emerging markets with proven results</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/age-logos/age-logo-header.png</image:loc>
+      <image:title>Alvi Global Enterprises Logo</image:title>
+      <image:caption>Official logo of Alvi Global Enterprises</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/hero-background.jpg</image:loc>
+      <image:title>AI-Powered Business Automation</image:title>
+      <image:caption>Modern business automation and AI integration</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- AI Growth Score Assessment Images -->
+  <url>
+    <loc>https://alviglobal.com/ai-growth-score</loc>
+    <image:image>
+      <image:loc>https://alviglobal.com/og-image-ai-assessment.jpg</image:loc>
+      <image:title>AI Growth Score Assessment - Discover Your AI Maturity</image:title>
+      <image:caption>Comprehensive 3-minute assessment across strategy, implementation, data, and culture dimensions</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/ai-assessment-icon.png</image:loc>
+      <image:title>AI Assessment Icon</image:title>
+      <image:caption>AI maturity assessment and evaluation icon</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Service Images -->
+  <url>
+    <loc>https://alviglobal.com/services</loc>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/services/ai-automation.jpg</image:loc>
+      <image:title>AI Automation Services</image:title>
+      <image:caption>AI-powered automation solutions for business processes</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/services/product-engineering.jpg</image:loc>
+      <image:title>Product Engineering Services</image:title>
+      <image:caption>Full-stack product development and engineering services</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/services/growth-consulting.jpg</image:loc>
+      <image:title>Growth Consulting Services</image:title>
+      <image:caption>Go-to-market strategy and business growth consulting</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Case Study Images -->
+  <url>
+    <loc>https://alviglobal.com/case-studies</loc>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/case-studies/fintech-success.jpg</image:loc>
+      <image:title>Fintech Success Story</image:title>
+      <image:caption>312% revenue growth in 18 months through AI automation</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/case-studies/ecommerce-transformation.jpg</image:loc>
+      <image:title>E-commerce Transformation</image:title>
+      <image:caption>180% conversion rate improvement through AI optimization</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/case-studies/saas-scaling.jpg</image:loc>
+      <image:title>SaaS Scaling Success</image:title>
+      <image:caption>263% revenue growth through strategic AI implementation</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Client Logo Images -->
+  <url>
+    <loc>https://alviglobal.com/</loc>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/client-logos/techcorp.png</image:loc>
+      <image:title>TechCorp Logo</image:title>
+      <image:caption>TechCorp - Trusted client of Alvi Global Enterprises</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/client-logos/globalbank.png</image:loc>
+      <image:title>GlobalBank Logo</image:title>
+      <image:caption>GlobalBank - Trusted client of Alvi Global Enterprises</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/client-logos/lightbox.png</image:loc>
+      <image:title>Lightbox Logo</image:title>
+      <image:caption>Lightbox - Trusted client of Alvi Global Enterprises</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/client-logos/nietzsche.png</image:loc>
+      <image:title>Nietzsche Logo</image:title>
+      <image:caption>Nietzsche - Trusted client of Alvi Global Enterprises</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alviglobal.com/assets/client-logos/spherule.png</image:loc>
+      <image:title>Spherule Logo</image:title>
+      <image:caption>Spherule - Trusted client of Alvi Global Enterprises</image:caption>
+    </image:image>
+  </url>
+  
+</urlset>

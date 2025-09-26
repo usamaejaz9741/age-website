@@ -27,43 +27,52 @@ const ServicesGrid = () => {
       icon: Bot,
       title: "AI & Automation",
       description: "Intelligent systems that scale your operations and reduce manual overhead",
-      features: ["Process Automation", "AI-Powered Analytics", "Smart Decision Systems"]
+      features: ["Process Automation", "AI-Powered Analytics", "Smart Decision Systems"],
+      iconColor: "var(--icon-purple)",
+      bgColor: "var(--icon-purple-bg)"
     },
     {
       icon: Code,
       title: "Product & Engineering", 
       description: "Full-stack development with performance and scalability at the core",
-      features: ["Custom Software", "API Development", "Cloud Infrastructure"]
+      features: ["Custom Software", "API Development", "Cloud Infrastructure"],
+      iconColor: "var(--icon-blue)",
+      bgColor: "var(--icon-blue-bg)"
     },
     {
       icon: TrendingUp,
       title: "Growth & GTM",
       description: "Data-driven strategies that accelerate market entry and revenue growth",
-      features: ["Market Analysis", "Sales Optimization", "Performance Marketing"]
+      features: ["Market Analysis", "Sales Optimization", "Performance Marketing"],
+      iconColor: "var(--icon-green)",
+      bgColor: "var(--icon-green-bg)"
     },
     {
       icon: Palette,
       title: "Creative & Content",
       description: "Brand experiences that resonate with your target markets and drive conversion",
-      features: ["Brand Strategy", "Content Systems", "Design Systems"]
+      features: ["Brand Strategy", "Content Systems", "Design Systems"],
+      iconColor: "var(--icon-indigo)",
+      bgColor: "var(--icon-indigo-bg)"
     },
     {
       icon: Settings,
       title: "Revenue Ops",
       description: "Operational excellence that ensures sustainable growth and profitability",
-      features: ["Sales Operations", "Customer Success", "Business Intelligence"]
+      features: ["Sales Operations", "Customer Success", "Business Intelligence"],
+      iconColor: "var(--icon-red)",
+      bgColor: "var(--icon-red-bg)"
     }
   ];
 
   return (
-    <section id="services" className="py-24 bg-muted/20">
-      <div className="max-w-7xl mx-auto px-6">
+    <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Complete business{" "}
             <span className="text-primary">ecosystems</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Five integrated service pillars that work together to create 
             revenue-generating business systems.
           </p>
@@ -77,13 +86,19 @@ const ServicesGrid = () => {
                 key={service.title}
                 delay={index * 100}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Icon className="w-8 h-8 text-primary" />
+                <div 
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
+                  style={{ backgroundColor: `${service.bgColor} !important` }}
+                >
+                  <Icon 
+                    className="w-8 h-8" 
+                    style={{ color: `${service.iconColor} !important` }}
+                  />
                 </div>
                 
-                <h3 className="text-xl font-semibold text-foreground mb-4">
+                <h3 className="text-2xl font-bold text-foreground mb-4 leading-tight">
                   {service.title}
                 </h3>
                 
@@ -93,7 +108,7 @@ const ServicesGrid = () => {
 
                 <ul className="space-y-2">
                   {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center text-sm text-muted-foreground">
+                    <li key={feature} className="flex items-center text-base text-muted-foreground">
                       <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
                       {feature}
                     </li>
@@ -103,8 +118,7 @@ const ServicesGrid = () => {
             );
           })}
         </div>
-      </div>
-    </section>
+    </div>
   );
 };
 

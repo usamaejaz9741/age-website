@@ -237,8 +237,8 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
         </div>
 
         {/* Question Card */}
-        <div className="bg-card rounded-lg shadow-medium p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-6 sm:mb-8 leading-relaxed">
+        <div className="bg-gradient-card rounded-xl shadow-medium p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground mb-6 sm:mb-8 leading-tight">
             {question.question}
           </h2>
 
@@ -247,11 +247,15 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
               <button
                 key={index}
                 onClick={() => handleOptionSelect(option.score)}
-                className={`w-full p-3 sm:p-4 text-left rounded-lg border-2 transition-all duration-200 hover:shadow-soft touch-manipulation ${
+                className={`w-full p-3 sm:p-4 text-left rounded-xl border-2 transition-all duration-500 ease-gentle hover:shadow-soft touch-manipulation ${
                   selectedOption === option.score
                     ? 'border-primary bg-primary/5 text-foreground'
                     : 'border-input bg-background text-muted-foreground hover:border-primary/50'
                 }`}
+                aria-pressed={selectedOption === option.score}
+                aria-describedby={`option-${index}-description`}
+                role="radio"
+                tabIndex={0}
               >
                 <div className="flex items-start sm:items-center">
                   <div className={`w-5 h-5 rounded-full border-2 mr-3 sm:mr-4 flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0 ${
@@ -263,7 +267,7 @@ const AIGrowthQuiz = ({ onComplete }: AIGrowthQuizProps) => {
                       <div className="w-2 h-2 bg-white rounded-full" style={{ minWidth: '8px', minHeight: '8px' }} />
                     )}
                   </div>
-                  <span className="text-sm sm:text-base leading-relaxed">{option.text}</span>
+                  <span id={`option-${index}-description`} className="text-sm sm:text-base leading-relaxed">{option.text}</span>
                 </div>
               </button>
             ))}

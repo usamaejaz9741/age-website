@@ -9,17 +9,18 @@
  * - Animated counters for key metrics (Lead Velocity, CAC Reduction, etc.)
  * - Staggered animation timing for visual appeal
  * - Responsive grid layout for different screen sizes
- * - Partner logos for social proof
+ * - Client logos for social proof with hover effects
  * - Scroll-triggered animations using intersection observer
  */
 
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { AnimatedCard } from "@/components/ui/animated-card";
+import { getOptimizedImageAttrs, handleImageError } from "@/lib/image-utils";
 
 /**
- * Proof Bar component displaying key metrics and partner logos
+ * Proof Bar component displaying key metrics and client logos
  * 
- * @returns JSX element with animated metrics and partner logos
+ * @returns JSX element with animated metrics and client logos
  */
 const ProofBar = () => {
   const metrics = [
@@ -29,18 +30,17 @@ const ProofBar = () => {
     { value: 45, suffix: "%", label: "Faster GTM" },
   ];
 
-  const partners = [
-    "TechCorp",
-    "InnovateLab", 
-    "GrowthCo",
-    "ScaleUp",
-    "FintechPro",
-    "DataFlow",
+  const clientLogos = [
+    { name: "Boltshift", logo: "/assets/client-logos/boltshift.png" },
+    { name: "FeatherDev", logo: "/assets/client-logos/featherdev.png" },
+    { name: "GlobalBank", logo: "/assets/client-logos/globalbank.png" },
+    { name: "Lightbox", logo: "/assets/client-logos/lightbox.png" },
+    { name: "Nietzsche", logo: "/assets/client-logos/nietzsche.png" },
+    { name: "Spherule", logo: "/assets/client-logos/spherule.png" },
   ];
 
   return (
-    <section className="py-16 bg-muted/30 border-t">
-      <div className="max-w-7xl mx-auto px-6">
+    <div>
         {/* Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {metrics.map((metric, index) => (
@@ -66,29 +66,35 @@ const ProofBar = () => {
           ))}
         </div>
 
-        {/* Partners */}
+        {/* Client Logos */}
         <div className="text-center">
-          <p className="text-sm text-muted-foreground uppercase tracking-wide mb-8 font-medium">
+          <p className="text-base text-muted-foreground uppercase tracking-wide mb-8 font-medium">
             Trusted by industry leaders
           </p>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
-            {partners.map((partner, index) => (
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-12 items-center">
+            {clientLogos.map((client, index) => (
               <div 
-                key={partner}
-                className="text-center opacity-60 hover:opacity-100 transition-opacity animate-scale-in"
+                key={client.name}
+                className="text-center opacity-60 hover:opacity-100 transition-opacity"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="h-12 flex items-center justify-center">
-                  <span className="text-lg font-semibold text-muted-foreground">
-                    {partner}
-                  </span>
+                <div className="h-8 flex items-center justify-center">
+                <img 
+                  src={client.logo}
+                  alt={`${client.name} logo`}
+                  className="max-h-8 max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 ease-gentle"
+                  {...getOptimizedImageAttrs('logo')}
+                  onLoad={() => {
+                    // Image loaded successfully
+                  }}
+                  onError={(e) => handleImageError(e)}
+                />
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </section>
+    </div>
   );
 };
 

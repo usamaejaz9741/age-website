@@ -12,12 +12,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
 
 // Security: Only log API key status in development, never the actual key
-if (import.meta.env.DEV) {
-  console.log('Gemini API Key loaded:', apiKey ? 'Yes' : 'No');
-  console.log('API Key available:', !!apiKey);
-} else {
-  // In production, only log availability status
-  console.log('Gemini API Key available:', !!apiKey);
+// API key validation - only log availability status in production
+if (!apiKey) {
+  // Gemini API Key not found in environment variables
 }
 
 // Validate API key before initializing
@@ -47,6 +44,24 @@ export interface AuditData {
   monthlyRevenue: string;
   /** Key business goals and objectives */
   goals: string[];
+}
+
+export interface QuizAuditData {
+  /** User email for personalization */
+  email: string;
+  /** Overall AI maturity score */
+  score: number;
+  /** AI maturity band */
+  band: 'Explorer' | 'Experimenter' | 'Accelerator';
+  /** Dimension breakdown scores */
+  breakdown: {
+    strategy: number;
+    implementation: number;
+    data: number;
+    culture: number;
+  };
+  /** Quiz answers for detailed analysis */
+  answers: Record<string, number>;
 }
 
 /**
@@ -98,13 +113,10 @@ export async function generateAIAudit(data: AuditData): Promise<string> {
       goals: data.goals?.map(goal => goal.trim().substring(0, 200)).filter(Boolean) || []
     };
 
-    console.log('=== GEMINI API CALL STARTED ===');
-    console.log('API Key available:', !!import.meta.env.VITE_GEMINI_API_KEY);
-    console.log('Audit data validated and sanitized');
+    // API call started - data validated and sanitized
     
     // Initialize Gemini 2.0 Flash model for content generation
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-    console.log('Model initialized successfully');
 
     // Construct comprehensive prompt for audit generation
     const prompt = `
@@ -134,17 +146,13 @@ export async function generateAIAudit(data: AuditData): Promise<string> {
     `;
 
     // Generate audit content using Gemini AI
-    console.log('Sending request to Gemini API...');
     const result = await model.generateContent(prompt);
-    console.log('Received response from Gemini API');
     const response = await result.response;
     const text = response.text();
-    console.log('Generated audit content length:', text.length);
-    console.log('=== GEMINI API CALL COMPLETED ===');
     
     return text;
   } catch (error) {
-    console.error('Error generating AI audit:', error);
+    // Error generating AI audit
     throw new Error('Failed to generate AI audit report. Please try again later.');
   }
 }
@@ -159,13 +167,97 @@ export async function generateAIAudit(data: AuditData): Promise<string> {
  * @param auditContent - Generated audit report content
  * @returns Promise<void>
  */
+/**
+ * Generates a quiz-based AI Growth Audit report using Gemini AI
+ * 
+ * This function creates a personalized audit report based on quiz results
+ * 
+ * @param data - Quiz audit data containing scores and answers
+ * @returns Promise<string> - Markdown-formatted audit report
+ * @throws Error if AI generation fails
+ */
+export async function generateQuizAudit(data: QuizAuditData): Promise<string> {
+  try {
+    // Input validation and sanitization
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid quiz audit data provided');
+    }
+
+    // Validate required fields
+    if (!data.email || typeof data.email !== 'string' || data.email.length > 100) {
+      throw new Error('Invalid email address');
+    }
+
+    if (typeof data.score !== 'number' || data.score < 0 || data.score > 100) {
+      throw new Error('Invalid score value');
+    }
+
+    if (!data.band || !['Explorer', 'Experimenter', 'Accelerator'].includes(data.band)) {
+      throw new Error('Invalid maturity band');
+    }
+
+    if (!data.breakdown || typeof data.breakdown !== 'object') {
+      throw new Error('Invalid breakdown data');
+    }
+
+    // Create the prompt for quiz-based audit
+    const prompt = `
+You are an AI Growth Consultant specializing in helping businesses understand their AI maturity and create actionable growth strategies.
+
+Based on the following quiz results, generate a comprehensive AI Growth Audit report:
+
+**Quiz Results:**
+- Overall Score: ${data.score}%
+- Maturity Band: ${data.band}
+- Dimension Breakdown:
+  - Strategy: ${data.breakdown.strategy}%
+  - Implementation: ${data.breakdown.implementation}%
+  - Data: ${data.breakdown.data}%
+  - Culture: ${data.breakdown.culture}%
+
+**Instructions:**
+1. Create a personalized executive summary
+2. Analyze strengths and gaps in each dimension
+3. Provide specific, actionable recommendations
+4. Include a 90-day action plan
+5. Format the response in clear, professional markdown
+
+Make the report practical, specific, and focused on immediate next steps for AI growth.
+`;
+
+    // Call Gemini API
+    const response = await GeminiAPI.generateContent(prompt);
+    
+    if (!response || !response.text) {
+      throw new Error('No response received from AI service');
+    }
+
+    return response.text;
+  } catch (error) {
+    // Return a fallback audit if AI generation fails
+    return `# AI Growth Audit Report
+
+## Executive Summary
+Based on your quiz results, you scored **${data.score}%** overall, placing you in the **${data.band}** maturity band.
+
+## Dimension Analysis
+- **Strategy**: ${data.breakdown.strategy}%
+- **Implementation**: ${data.breakdown.implementation}%
+- **Data**: ${data.breakdown.data}%
+- **Culture**: ${data.breakdown.culture}%
+
+## Next Steps
+1. Focus on your lowest-scoring dimension
+2. Develop a 90-day action plan
+3. Consider consulting with our AI growth experts
+
+*This is a basic report. For a detailed analysis, please contact our team.*`;
+  }
+}
+
 export async function sendAuditEmail(email: string, auditContent: string): Promise<void> {
-  // Log the audit content for manual email sending
-  console.log('=== AUDIT CONTENT FOR MANUAL EMAIL ===');
-  console.log('Email:', email);
-  console.log('Audit Content:');
-  console.log(auditContent);
-  console.log('=====================================');
+  // Note: In production, this would integrate with an email service
+  // For now, the audit content is returned to be displayed to the user
   
   // Save audit content to localStorage for easy access
   const auditKey = `age_audit_${email}_${new Date().toISOString().replace(/[:.]/g, '-')}`;

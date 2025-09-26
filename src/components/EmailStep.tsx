@@ -96,7 +96,7 @@ const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoa
 
   return (
     <div className="max-w-xl mx-auto text-center animate-fade-in">
-      <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">
+      <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6 leading-tight">
         Get Your Personalized AI Growth Audit
       </h2>
       
@@ -122,7 +122,7 @@ const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoa
             aria-invalid={emailError ? "true" : "false"}
           />
           {emailError && (
-            <p id="email-error" className="text-red-600 text-sm mt-1" role="alert">
+            <p id="email-error" className="text-destructive text-sm mt-1" role="alert" aria-live="polite">
               {emailError}
             </p>
           )}

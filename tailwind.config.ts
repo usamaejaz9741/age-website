@@ -55,13 +55,13 @@ export default {
       colors: {
         // Malibu (secondary/accent colors)
         malibu: {
-          '300': '#60cdff', /* Light accent color */
-          '400': '#33c1fd', /* Accent hover state */
+          '300': '#4db8ff', /* Light accent color - 65% lightness */
+          '400': '#4285f4', /* Accent hover state - 52% lightness */
         },
         // Resolution Blue (primary brand color)
         'resolution-blue': {
           '600': '#0050ff', /* Primary brand color */
-          '700': '#0051ff', /* Primary hover state */
+          '700': '#0033a6', /* Primary hover state - 42% lightness */
         },
         // Base colors
         black: '#000000',
@@ -135,6 +135,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Multicolored icon system
+        'icon-purple': "hsl(var(--icon-purple))",
+        'icon-blue': "hsl(var(--icon-blue))",
+        'icon-green': "hsl(var(--icon-green))",
+        'icon-indigo': "hsl(var(--icon-indigo))",
+        'icon-red': "hsl(var(--icon-red))",
       },
       
       // Custom background images
@@ -150,30 +156,44 @@ export default {
         'strong': 'var(--shadow-strong)',   // Strong shadow for emphasis
       },
       
-      // Custom font size scale
+      // Custom font size scale - Golden Ratio progression for mathematical harmony
       fontSize: {
-        'xs': 'var(--font-size-xs)',
-        'sm': 'var(--font-size-sm)',
-        'base': 'var(--font-size-base)',
-        'lg': 'var(--font-size-lg)',
-        'xl': 'var(--font-size-xl)',
-        '2xl': 'var(--font-size-2xl)',
-        '3xl': 'var(--font-size-3xl)',
-        '4xl': 'var(--font-size-4xl)',
-        '5xl': 'var(--font-size-5xl)',
-        '6xl': 'var(--font-size-6xl)',
+        'xs': 'var(--font-size-xs)',     // 0.75rem (12px)
+        'sm': 'var(--font-size-sm)',     // 0.875rem (14px)
+        'base': 'var(--font-size-base)', // 1rem (16px)
+        'lg': 'var(--font-size-lg)',     // 1.125rem (18px)
+        'xl': 'var(--font-size-xl)',     // 1.25rem (20px)
+        '2xl': 'var(--font-size-2xl)',   // 1.5rem (24px)
+        '3xl': 'var(--font-size-3xl)',   // 1.875rem (30px)
+        '4xl': 'var(--font-size-4xl)',   // 2.5rem (40px)
+        '5xl': 'var(--font-size-5xl)',   // 3.75rem (60px)
+        '6xl': 'var(--font-size-6xl)',   // 6rem (96px)
       },
       
-      // Custom spacing scale
+      // Fluid Typography - Responsive scaling
+      fluidFontSize: {
+        'xs': 'var(--fluid-text-xs)',
+        'sm': 'var(--fluid-text-sm)',
+        'base': 'var(--fluid-text-base)',
+        'lg': 'var(--fluid-text-lg)',
+        'xl': 'var(--fluid-text-xl)',
+        '2xl': 'var(--fluid-text-2xl)',
+        '3xl': 'var(--fluid-text-3xl)',
+        '4xl': 'var(--fluid-text-4xl)',
+        '5xl': 'var(--fluid-text-5xl)',
+        '6xl': 'var(--fluid-text-6xl)',
+      },
+      
+      // Custom spacing scale - Golden Ratio progression for mathematical harmony
       spacing: {
-        'xs': 'var(--space-xs)',
-        'sm': 'var(--space-sm)',
-        'md': 'var(--space-md)',
-        'lg': 'var(--space-lg)',
-        'xl': 'var(--space-xl)',
-        '2xl': 'var(--space-2xl)',
-        '3xl': 'var(--space-3xl)',
-        '4xl': 'var(--space-4xl)',
+        'xs': 'var(--space-xs)',     // 0.5rem (8px)
+        'sm': 'var(--space-sm)',     // 0.75rem (12px)
+        'md': 'var(--space-md)',     // 1rem (16px)
+        'lg': 'var(--space-lg)',     // 1.25rem (20px)
+        'xl': 'var(--space-xl)',     // 1.5rem (24px)
+        '2xl': 'var(--space-2xl)',   // 2rem (32px)
+        '3xl': 'var(--space-3xl)',   // 2.5rem (40px)
+        '4xl': 'var(--space-4xl)',   // 3.75rem (60px)
       },
       
       // Custom border radius
@@ -181,6 +201,16 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      
+      // Mathematically optimized easing functions
+      transitionTimingFunction: {
+        'natural': 'var(--ease-natural)',
+        'decelerate': 'var(--ease-decelerate)',
+        'accelerate': 'var(--ease-accelerate)',
+        'sharp': 'var(--ease-sharp)',
+        'gentle': 'var(--ease-gentle)',
+        'bounce': 'var(--ease-bounce)',
       },
       
           // Custom keyframe animations
@@ -194,7 +224,7 @@ export default {
               from: { height: "var(--radix-accordion-content-height)" },
               to: { height: "0" },
             },
-            // Alvi Global Enterprises brand animations
+            // Alvi Global Enterprises brand animations - Mathematically optimized
             "fade-in": {
               "0%": {
                 opacity: "0",
@@ -208,7 +238,7 @@ export default {
             "slide-up": {
               "0%": {
                 opacity: "0",
-                transform: "translateY(10px)"
+                transform: "translateY(15px)"
               },
               "100%": {
                 opacity: "1",
@@ -218,7 +248,7 @@ export default {
             "scale-in": {
               "0%": {
                 opacity: "0",
-                transform: "scale(0.95)"
+                transform: "scale(0.9)"
               },
               "100%": {
                 opacity: "1",
@@ -272,20 +302,44 @@ export default {
                 transform: "translateY(-10px) translateX(-12px) scale(0.94)"
               }
             },
+            // Additional animations for SectionTemplate
+            "slide-left": {
+              "0%": {
+                opacity: "0",
+                transform: "translateX(-30px)"
+              },
+              "100%": {
+                opacity: "1",
+                transform: "translateX(0)"
+              }
+            },
+            "slide-right": {
+              "0%": {
+                opacity: "0",
+                transform: "translateX(30px)"
+              },
+              "100%": {
+                opacity: "1",
+                transform: "translateX(0)"
+              }
+            },
           },
       
-          // Animation utilities
+          // Animation utilities - Mathematically optimized timing and easing
           animation: {
-            "accordion-down": "accordion-down 0.2s ease-out",
-            "accordion-up": "accordion-up 0.2s ease-out",
-            "fade-in": "fade-in 0.6s ease-out",
-            "slide-up": "slide-up 0.4s ease-out",
-            "scale-in": "scale-in 0.3s ease-out",
-            "pulse-soft": "pulse-soft 3s ease-in-out infinite",
-            // Floating blob animations
-            "float-slow": "float-slow 8s ease-in-out infinite",
-            "float-medium": "float-medium 6s ease-in-out infinite",
-            "float-fast": "float-fast 4s ease-in-out infinite",
+            "accordion-down": "accordion-down 0.2s var(--ease-natural)",
+            "accordion-up": "accordion-up 0.2s var(--ease-natural)",
+            "fade-in": "fade-in 0.5s var(--ease-decelerate)",        // Natural deceleration
+            "slide-up": "slide-up 0.4s var(--ease-gentle)",          // Gentle motion
+            "scale-in": "scale-in 0.3s var(--ease-bounce)",          // Playful bounce
+            "pulse-soft": "pulse-soft 2s var(--ease-gentle) infinite",
+            // Floating blob animations - Natural motion
+            "float-slow": "float-slow 6s var(--ease-gentle) infinite",
+            "float-medium": "float-medium 4s var(--ease-gentle) infinite",
+            "float-fast": "float-fast 3s var(--ease-gentle) infinite",
+            // Additional animations for SectionTemplate
+            "slide-left": "slide-left 0.5s var(--ease-gentle)",
+            "slide-right": "slide-right 0.5s var(--ease-gentle)",
           },
     },
   },

@@ -8,12 +8,16 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { suppressConsoleWarnings } from "./lib/console-utils";
 
 // Get the root DOM element and create React root
 const rootElement = document.getElementById("root");
 if (!rootElement) {
   throw new Error("Root element not found. Make sure index.html has a div with id='root'");
 }
+
+// Suppress console warnings in production
+suppressConsoleWarnings();
 
 // Create React root and render the App component
 const root = createRoot(rootElement);

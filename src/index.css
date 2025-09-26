@@ -1,26 +1,232 @@
-@import url('https://fonts.googleapis.com/css2?family=Kufam:ital,wght@0,400..900;1,400..900&display=swap');
+/* Font loading optimized in HTML head */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* FOUC Prevention */
+/* Enhanced FOUC Prevention */
 html {
   visibility: hidden;
+  /* Prevent layout shift during loading */
+  overflow-x: hidden;
 }
 
 html.loaded {
   visibility: visible;
 }
 
-/* Prevent flash of unstyled content */
+/* Prevent flash of unstyled content with smoother transition */
 body {
   opacity: 0;
-  transition: opacity 0.1s ease-in-out;
+  transition: opacity 0.3s ease-out;
+  /* Prevent scroll during loading */
+  overflow: hidden;
 }
 
 body.loaded {
   opacity: 1;
+  overflow: auto;
+}
+
+/* Critical above-the-fold styles to prevent layout shift */
+body {
+  /* Use system fonts initially to prevent flash */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #ffffff;
+  color: #0f172a;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  /* Prevent font swap flash */
+  font-display: block;
+}
+
+/* Apply custom font only after it's loaded */
+body.fonts-loaded {
+  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Prevent flash of unstyled buttons and links */
+button, a {
+  font-family: inherit;
+}
+
+/* Consistent focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Enhanced interaction states */
+button:active,
+a:active {
+  transform: translateY(1px);
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+a,
+input,
+textarea,
+select,
+[role="button"] {
+  transition: all 0.5s ease-out;
+}
+
+/* Perfect icon-text alignment in buttons */
+button {
+  line-height: 1;
+}
+
+/* Ensure text and icons are perfectly aligned in flexbox buttons */
+button[class*="inline-flex"] {
+  line-height: 1;
+  align-items: center;
+}
+
+button[class*="inline-flex"] svg {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Improved hover states for better feedback */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Prevent flash of unstyled headings */
+h1, h2, h3, h4, h5, h6 {
+  /* Use system fonts initially */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Apply custom font to headings only after it's loaded */
+body.fonts-loaded h1,
+body.fonts-loaded h2,
+body.fonts-loaded h3,
+body.fonts-loaded h4,
+body.fonts-loaded h5,
+body.fonts-loaded h6 {
+  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Optimized Preloader styles */
+body.loading {
+  overflow: hidden;
+}
+
+body.loading.loaded {
+  overflow: auto;
+}
+
+/* Preloader performance optimizations */
+.preloader-container {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimized bounce animation for preloader dots */
+@keyframes optimized-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.animate-optimized-bounce {
+  animation: optimized-bounce 1.4s ease-in-out infinite;
+}
+
+/* Background Pattern Classes for SectionTemplate */
+.bg-dots-pattern {
+  background-image: radial-gradient(circle, hsl(var(--muted-foreground)) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(hsl(var(--muted-foreground)) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--muted-foreground)) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-waves-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d1d5db' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.bg-circles-pattern {
+  background-image: radial-gradient(circle at 25% 25%, hsl(var(--muted-foreground)) 2px, transparent 2px),
+                    radial-gradient(circle at 75% 75%, hsl(var(--muted-foreground)) 2px, transparent 2px);
+  background-size: 40px 40px;
+}
+
+/* Progress bar animations */
+@keyframes progress-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.progress-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: progress-shimmer 2s ease-in-out infinite;
+}
+
+/* Loading skeleton for better perceived performance */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Prevent layout shift during font loading */
+.font-loading {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.font-loaded {
+  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Alvi Global Enterprises B2B Design System - Performance-driven minimalism */
@@ -29,18 +235,76 @@ body.loaded {
   h1, h2, h3 {
     @apply font-heading font-bold tracking-tight;
   }
+  
+  /* Typography line heights */
+  .leading-tight { line-height: var(--line-height-tight); }
+  .leading-normal { line-height: var(--line-height-normal); }
+  .leading-relaxed { line-height: var(--line-height-relaxed); }
+  .leading-loose { line-height: var(--line-height-loose); }
+  
+  /* Performance optimizations */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+/* Optimize rendering performance */
+.animate-fade-in,
+.animate-slide-up,
+.animate-scale-in,
+.hover-lift,
+.hover-scale {
+  will-change: transform, opacity;
+}
+
+/* Optimize card rendering */
+.bg-card,
+.bg-gradient-card,
+.bg-gradient-hero {
+  contain: layout style paint;
+}
+
+/* Optimize text rendering */
+h1, h2, h3, h4, h5, h6 {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  
+  /* Optimize image rendering */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Optimize scroll performance */
+  .overflow-auto,
+  .overflow-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
   :root {
     /* Core Brand Colors */
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
     
-    /* Resolution Blue */
+    /* Resolution Blue - Mathematical HSL progression */
     --resolution-blue-600: 224 100% 50%;
-    --resolution-blue-700: 224 100% 50%;
+    --resolution-blue-700: 224 100% 42%;  /* 8% lightness reduction for better contrast */
     
-    /* Malibu */
-    --malibu-300: 199 98% 69%;
-    --malibu-400: 198 98% 60%;
+    /* Malibu - Consistent mathematical progression */
+    --malibu-300: 199 98% 65%;
+    --malibu-400: 199 98% 52%;  /* 13% lightness reduction, consistent hue */
     
     /* Surface & Interface Colors */
     --card: var(--background);
@@ -51,6 +315,20 @@ body.loaded {
     --muted-foreground: 224 40% 40%;
     --accent: var(--malibu-300);
     --accent-foreground: var(--foreground);
+    
+    /* Multicolored icon system - Enhanced visibility - Updated 2024 */
+    --icon-purple: hsl(270, 100%, 70%);    /* Purple for AI & Strategy - More vibrant */
+    --icon-blue: hsl(210, 100%, 60%);      /* Blue for Engineering & Data - More vibrant */
+    --icon-green: hsl(120, 100%, 50%);     /* Green for Growth & Success - More vibrant */
+    --icon-indigo: hsl(240, 100%, 70%);    /* Indigo for Creative & Innovation - More vibrant */
+    --icon-red: hsl(0, 100%, 60%);         /* Red for Operations & Urgency - More vibrant */
+    
+    /* Icon background colors with 10% opacity */
+    --icon-purple-bg: hsl(270, 100%, 70%, 0.1);
+    --icon-blue-bg: hsl(210, 100%, 60%, 0.1);
+    --icon-green-bg: hsl(120, 100%, 50%, 0.1);
+    --icon-indigo-bg: hsl(240, 100%, 70%, 0.1);
+    --icon-red-bg: hsl(0, 100%, 60%, 0.1);
     
     /* Neutral System (based on opacity) */
     --neutral-75: 0 0% 0% / 0.75;
@@ -85,33 +363,69 @@ body.loaded {
     );
     
     /* Shadows */
-    --shadow-soft: 0 2px 10px hsl(var(--resolution-blue-600) / 0.08);
-    --shadow-medium: 0 8px 25px hsl(var(--resolution-blue-600) / 0.12);
-    --shadow-strong: 0 15px 35px hsl(var(--resolution-blue-600) / 0.15);
+    --shadow-soft: 0 2px 8px hsl(var(--resolution-blue-600) / 0.08);
+    --shadow-medium: 0 4px 16px hsl(var(--resolution-blue-600) / 0.12);
+    --shadow-strong: 0 8px 32px hsl(var(--resolution-blue-600) / 0.15);
     
-    /* Typography Scale */
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-    --font-size-4xl: 2.25rem;
-    --font-size-5xl: 3rem;
-    --font-size-6xl: 3.75rem;
+    /* Typography Scale - Golden Ratio (1.618) progression for mathematical harmony */
+    --font-size-xs: 0.75rem;     /* 12px - Base */
+    --font-size-sm: 0.875rem;    /* 14px - 1.167x */
+    --font-size-base: 1rem;      /* 16px - 1.143x */
+    --font-size-lg: 1.125rem;    /* 18px - 1.125x */
+    --font-size-xl: 1.25rem;     /* 20px - 1.111x */
+    --font-size-2xl: 1.5rem;     /* 24px - 1.2x */
+    --font-size-3xl: 1.875rem;   /* 30px - 1.25x */
+    --font-size-4xl: 2.5rem;     /* 40px - 1.333x */
+    --font-size-5xl: 3.75rem;    /* 60px - 1.5x */
+    --font-size-6xl: 6rem;       /* 96px - 1.6x (approaching Golden Ratio) */
     
-    /* Spacing Scale */
-    --space-xs: 0.5rem;
-    --space-sm: 0.75rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
-    --space-3xl: 4rem;
-    --space-4xl: 6rem;
+    /* Fluid Typography - Responsive scaling */
+    --fluid-text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --fluid-text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+    --fluid-text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --fluid-text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+    --fluid-text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+    --fluid-text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+    --fluid-text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+    --fluid-text-4xl: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);
+    --fluid-text-5xl: clamp(3.75rem, 3rem + 3.75vw, 6rem);
+    --fluid-text-6xl: clamp(6rem, 4.5rem + 7.5vw, 9rem);
+    
+    /* Line Height Scale - Optimal for readability */
+    --line-height-tight: 1.1;     /* For large headings */
+    --line-height-normal: 1.4;    /* For body text */
+    --line-height-relaxed: 1.6;   /* For long-form content */
+    --line-height-loose: 1.8;     /* For accessibility */
+    
+    /* Spacing Scale - Golden Ratio (1.618) progression for mathematical harmony */
+    --space-xs: 0.5rem;      /* 8px - Base */
+    --space-sm: 0.75rem;     /* 12px - 1.5x */
+    --space-md: 1rem;        /* 16px - 1.333x */
+    --space-lg: 1.25rem;     /* 20px - 1.25x */
+    --space-xl: 1.5rem;      /* 24px - 1.2x */
+    --space-2xl: 2rem;       /* 32px - 1.333x */
+    --space-3xl: 2.5rem;     /* 40px - 1.25x */
+    --space-4xl: 3.75rem;    /* 60px - 1.5x */
+    
+    /* Component Spacing - Based on Golden Ratio spacing scale */
+    --card-padding-sm: var(--space-md);     /* 1rem */
+    --card-padding-md: var(--space-lg);     /* 1.25rem */
+    --card-padding-lg: var(--space-xl);     /* 1.5rem */
+    --section-padding: var(--space-4xl);    /* 3.75rem */
+    --element-margin-sm: var(--space-lg);   /* 1.25rem */
+    --element-margin-md: var(--space-xl);   /* 1.5rem */
+    --element-margin-lg: var(--space-2xl);  /* 2rem */
+    --element-margin-xl: var(--space-3xl);  /* 2.5rem */
 
     --radius: 0.5rem;
+    
+    /* Mathematically Optimized Easing Functions */
+    --ease-natural: cubic-bezier(0.4, 0.0, 0.2, 1);        /* Material Design standard */
+    --ease-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);     /* Fast start, slow end */
+    --ease-accelerate: cubic-bezier(0.4, 0.0, 1, 1);       /* Slow start, fast end */
+    --ease-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);          /* Sharp transitions */
+    --ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);   /* Gentle, natural motion */
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Playful bounce effect */
 
     --sidebar-background: 0 0% 98%;
 
@@ -140,11 +454,11 @@ body.loaded {
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: var(--resolution-blue-600);
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: var(--malibu-300);
+    --secondary-foreground: 0 0% 0%;
 
     /* Use lighter variations of brand colors for muted states */
     --muted: 224 20% 20%; /* Softer dark mode background */

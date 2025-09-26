@@ -73,10 +73,10 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
         Maturity Band: ${results.band}
         
         Dimension Scores:
-        - AI Strategy: ${results.dimensions.strategy}%
-        - Implementation: ${results.dimensions.implementation}%
-        - Data Readiness: ${results.dimensions.data}%
-        - Culture & Change: ${results.dimensions.culture}%
+        - AI Strategy: ${results.breakdown.strategy}%
+        - Implementation: ${results.breakdown.implementation}%
+        - Data Readiness: ${results.breakdown.data}%
+        - Culture & Change: ${results.breakdown.culture}%
         
         Please provide 3 concise, specific recommendations that will help improve the areas with the lowest scores.
         Format each recommendation in a single sentence without numbering.`;
@@ -91,7 +91,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
           email: userEmail,
           score: results.score,
           band: results.band,
-          dimensions: results.dimensions,
+          dimensions: results.breakdown,
           recommendations: recommendations,
           utmParams: utmParams,
           auditContent: auditContent,
@@ -119,7 +119,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
           email: userEmail,
           score: results.score,
           band: results.band,
-          dimensions: results.dimensions,
+          dimensions: results.breakdown,
           recommendations: defaultRecommendations,
           utmParams: utmParams,
           auditContent: auditContent,
@@ -145,7 +145,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
       case 'Accelerator': return 'text-green-600 bg-green-50 border-green-200';
       case 'Experimenter': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
       case 'Explorer': return 'text-blue-600 bg-blue-50 border-blue-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      default: return 'text-muted-foreground bg-muted border-border';
     }
   };
 
@@ -202,8 +202,8 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
     <div className="min-h-screen bg-background pt-20">
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className="text-center mb-16 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Your AI Growth Score
           </h1>
           <p className="text-xl text-muted-foreground">
@@ -235,20 +235,32 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
               <CardTitle className="text-2xl mb-4">Dimension Breakdown</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {Object.entries(results.dimensions).map(([key, score]) => {
+              {Object.entries(results.breakdown).map(([key, score]) => {
                 const Icon = dimensionIcons[key as keyof typeof dimensionIcons];
                 const label = dimensionLabels[key as keyof typeof dimensionLabels];
+                const scoreValue = score as number;
+                
+                // Assign different colors to different dimensions
+                const dimensionColors = {
+                  strategy: 'var(--icon-purple) !important',
+                  implementation: 'var(--icon-blue) !important',
+                  data: 'var(--icon-green) !important',
+                  culture: 'var(--icon-indigo) !important'
+                };
                 
                 return (
                   <div key={key} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <Icon className="w-5 h-5 text-primary mr-2" />
+                        <Icon 
+                          className="w-5 h-5 mr-2" 
+                          style={{ color: dimensionColors[key as keyof typeof dimensionColors] }}
+                        />
                         <span className="font-medium">{label}</span>
                       </div>
-                      <span className="font-semibold">{score}%</span>
+                      <span className="font-semibold">{scoreValue}%</span>
                     </div>
-                    <Progress value={score} className="h-2" />
+                    <Progress value={scoreValue} className="h-2" />
                   </div>
                 );
               })}
@@ -260,14 +272,14 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
         <Card className="shadow-medium mb-12">
           <CardHeader>
             <CardTitle className="text-2xl flex items-center">
-              <Target className="w-6 h-6 text-primary mr-2" />
+              <Target className="w-6 h-6 mr-2" style={{ color: 'var(--icon-blue) !important' }} />
               AI-Powered Recommendations
             </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--icon-blue) !important' }} />
                 <span className="ml-2 text-muted-foreground">
                   Generating personalized recommendations...
                 </span>
@@ -275,7 +287,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
             ) : (
               <div className="grid md:grid-cols-3 gap-6">
                 {recommendations.map((recommendation, index) => (
-                  <div key={index} className="bg-muted/10 p-6 rounded-lg">
+                  <div key={index} className="bg-muted/10 p-6 rounded-xl">
                     <div className="text-2xl font-bold text-primary mb-2">
                       {index + 1}
                     </div>
@@ -290,7 +302,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
         </Card>
 
         {/* Next Steps */}
-        <div className="bg-gradient-hero rounded-lg p-8 text-center">
+        <div className="bg-gradient-hero rounded-xl p-8 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             Ready to Accelerate Your AI Journey?
           </h2>
@@ -326,27 +338,27 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
         </div>
 
         {/* What's Included */}
-        <div className="mt-12 bg-card p-8 rounded-lg shadow-soft">
+        <div className="mt-12 bg-gradient-card p-8 rounded-xl shadow-soft">
           <h3 className="text-2xl font-bold text-center mb-8">
             What's Included in Your Strategy Session
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-4" />
+              <CheckCircle2 className="w-8 h-8 mx-auto mb-4" style={{ color: 'var(--icon-green) !important' }} />
               <h4 className="font-semibold mb-2">Deep Dive Analysis</h4>
               <p className="text-muted-foreground text-sm">
                 Detailed review of your assessment results and current AI maturity
               </p>
             </div>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-4" />
+              <CheckCircle2 className="w-8 h-8 mx-auto mb-4" style={{ color: 'var(--icon-green) !important' }} />
               <h4 className="font-semibold mb-2">Custom Roadmap</h4>
               <p className="text-muted-foreground text-sm">
                 90-day action plan with prioritized initiatives and success metrics
               </p>
             </div>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-4" />
+              <CheckCircle2 className="w-8 h-8 mx-auto mb-4" style={{ color: 'var(--icon-green) !important' }} />
               <h4 className="font-semibold mb-2">Resource Recommendations</h4>
               <p className="text-muted-foreground text-sm">
                 Specific tools, partners, and capabilities needed for your next phase

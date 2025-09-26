@@ -25,7 +25,7 @@ Add these to your `.env.local` file:
 
 ```env
 # Existing
-VITE_GEMINI_API_KEY=AIzaSyBJUIIknaCyS_gzrc6I2htz8Dghdav7dT0
+VITE_GEMINI_API_KEY=AIzaSyBD9_oNX0FdxSNz92LSFQop32a-E8r0dLc
 
 # New - Supabase Configuration
 VITE_SUPABASE_URL=your_supabase_project_url_here

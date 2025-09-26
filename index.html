@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
     <title>Alvi Global Enterprises - Engineer Revenue, Not Just Software</title>
     <meta name="description" content="AI-powered business ecosystems for emerging markets. We engineer complete revenue systems with automation, product development, and GTM strategy under one roof." />
     <meta name="author" content="Alvi Global Enterprises" />
@@ -26,8 +28,92 @@
     <!-- Performance and SEO Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Optimized font loading to prevent font flash -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kufam:wght@400;500;600;700;800;900&display=block" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kufam:wght@400;500;600;700;800;900&display=block" /></noscript>
     <link rel="dns-prefetch" href="https://calendly.com" />
     <link rel="dns-prefetch" href="https://generativelanguage.googleapis.com" />
+    
+    <!-- Critical Resource Preloading -->
+    <link rel="preload" href="/assets/age-logos/age-logo-header.png" as="image" type="image/png" />
+    <link rel="preload" href="/assets/preloader.gif" as="image" type="image/gif" />
+    
+    <!-- Critical CSS for above-the-fold content -->
+    <style>
+      /* Critical styles to prevent layout shift */
+      .hero-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .hero-content {
+        text-align: center;
+        max-width: 1200px;
+        padding: 0 1rem;
+        z-index: 20;
+        position: relative;
+      }
+      
+      .hero-heading {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        color: #0f172a;
+      }
+      
+      .fonts-loaded .hero-heading {
+        font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      }
+      
+      .hero-subtitle {
+        font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+        color: #64748b;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+      
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, #0050ff 0%, #4285f4 100%);
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.2s ease;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .btn-primary:hover {
+        transform: translateY(-2px);
+      }
+      
+      @media (max-width: 640px) {
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .btn-primary {
+          width: 100%;
+          max-width: 280px;
+        }
+      }
+    </style>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -140,15 +226,114 @@
     }
     </script>
     
-    <!-- FOUC Prevention Fallback -->
+    <!-- Enhanced FOUC Prevention with Font Loading -->
     <script>
-      // Fallback to show content if JS doesn't load within 3 seconds
-      setTimeout(function() {
-        if (!document.documentElement.classList.contains('loaded')) {
+      // Immediate FOUC prevention
+      (function() {
+        // Font loading detection
+        function handleFontLoading() {
+          if ('fonts' in document) {
+            // Modern browsers with Font Loading API
+            document.fonts.ready.then(function() {
+              if (document.documentElement) {
+                document.documentElement.classList.add('fonts-loaded');
+              }
+              if (document.body) {
+                document.body.classList.add('fonts-loaded');
+              }
+            });
+          } else {
+            // Fallback for older browsers
+            setTimeout(function() {
+              if (document.documentElement) {
+                document.documentElement.classList.add('fonts-loaded');
+              }
+              if (document.body) {
+                document.body.classList.add('fonts-loaded');
+              }
+            }, 1000);
+          }
+        }
+        
+        // Add loaded class immediately for users with JS enabled
+        if (document.documentElement) {
           document.documentElement.classList.add('loaded');
+        }
+        if (document.body) {
           document.body.classList.add('loaded');
         }
-      }, 3000);
+        
+        // Handle font loading
+        handleFontLoading();
+        
+        // Fallback to show content if JS doesn't load within 2 seconds
+        setTimeout(function() {
+          if (document.documentElement && !document.documentElement.classList.contains('loaded')) {
+            document.documentElement.classList.add('loaded');
+          }
+          if (document.body && !document.body.classList.contains('loaded')) {
+            document.body.classList.add('loaded');
+          }
+          if (document.documentElement && !document.documentElement.classList.contains('fonts-loaded')) {
+            document.documentElement.classList.add('fonts-loaded');
+          }
+          if (document.body && !document.body.classList.contains('fonts-loaded')) {
+            document.body.classList.add('fonts-loaded');
+          }
+        }, 2000);
+        
+        // Progressive enhancement - show content as soon as DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            if (document.documentElement) {
+              document.documentElement.classList.add('loaded');
+            }
+            if (document.body) {
+              document.body.classList.add('loaded');
+            }
+          });
+        }
+      })();
+    </script>
+    
+    <!-- Console Warning Suppression -->
+    <script>
+      // Suppress React DevTools and other development warnings
+      (function() {
+        const originalWarn = console.warn;
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        const shouldSuppress = (message) => {
+          if (typeof message === 'string') {
+            return (
+              message.includes('Download the React DevTools') ||
+              message.includes('reactjs.org/link/react-devtools') ||
+              message.includes('React DevTools') ||
+              message.includes('React does not recognize the `fetchPriority` prop') ||
+              message.includes('fetchpriority') ||
+              message.includes('[Intervention] Images loaded lazily') ||
+              message.includes('Load events are deferred')
+            );
+          }
+          return false;
+        };
+        
+        console.warn = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalWarn.apply(console, args);
+        };
+        
+        console.log = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalLog.apply(console, args);
+        };
+        
+        console.error = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalError.apply(console, args);
+        };
+      })();
     </script>
   </head>
 

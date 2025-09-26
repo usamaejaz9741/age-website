@@ -51,8 +51,8 @@ const AIGrowthFAQ = () => {
   return (
     <section className="py-20 bg-muted/5">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-muted-foreground">
@@ -65,7 +65,7 @@ const AIGrowthFAQ = () => {
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              className="bg-card rounded-lg shadow-soft border px-6"
+              className="bg-gradient-card rounded-xl shadow-soft border px-6"
             >
               <AccordionTrigger className="text-left font-semibold text-foreground hover:text-primary">
                 {item.question}

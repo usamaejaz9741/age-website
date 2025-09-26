@@ -75,7 +75,6 @@ const Header = () => {
       e.preventDefault();
       e.stopPropagation();
     }
-    console.log('=== HEADER BOOK CONSULTATION CLICKED ===');
     openCalendlyBooking(
       undefined,
       {
@@ -97,7 +96,15 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-neutral-10 z-50" role="banner">
+    <>
+      {/* Skip to main content link for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-neutral-10 z-50" role="banner">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -110,6 +117,8 @@ const Header = () => {
                 src="/assets/age-logos/age-logo-header.png"
                 alt="Alvi Global Enterprises"
                 className="h-full w-auto"
+                loading="eager"
+                decoding="sync"
               />
             </button>
           </div>
@@ -120,7 +129,7 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.id)}
-                className="text-neutral-75 hover:text-resolution-blue-600 font-medium transition-colors duration-200"
+                className="text-neutral-75 hover:text-primary font-medium transition-colors duration-500 ease-gentle"
               >
                 {item.label}
               </button>
@@ -132,7 +141,7 @@ const Header = () => {
                 <Button
                   type="button"
                   variant="cta"
-                  size="sm"
+                  size="default"
                   onClick={handleBookConsultation}
                 >
                   <Calendar className="w-4 h-4 mr-2" />
@@ -144,7 +153,7 @@ const Header = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-resolution-blue-700 transition-colors"
+              className="text-neutral-75 hover:text-resolution-blue-700 transition-colors"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -159,7 +168,7 @@ const Header = () => {
                 <button
                   key={item.id}
                   onClick={() => handleNavigation(item.id)}
-                  className="block w-full text-left px-3 py-2 text-gray-700 hover:text-resolution-blue-700 hover:bg-gray-50 font-medium transition-colors duration-200"
+                  className="block w-full text-left px-3 py-2 text-neutral-75 hover:text-resolution-blue-700 hover:bg-neutral-5 font-medium transition-colors duration-500 ease-gentle"
                 >
                   {item.label}
                 </button>
@@ -168,7 +177,7 @@ const Header = () => {
                 <Button
                   type="button"
                   variant="cta"
-                  size="sm" 
+                  size="default" 
                   className="w-full"
                   onClick={handleBookConsultation}
                 >
@@ -181,6 +190,7 @@ const Header = () => {
         )}
       </div>
     </header>
+    </>
   );
 };
 

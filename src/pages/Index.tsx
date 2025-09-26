@@ -12,7 +12,8 @@
  * button clicks from any component on the page.
  */
 
-import Header from "@/components/Header";
+import PageTemplate from "@/components/PageTemplate";
+import SectionTemplate from "@/components/SectionTemplate";
 import Hero from "@/components/Hero";
 import ProofBar from "@/components/ProofBar";
 import ValuePillars from "@/components/ValuePillars";
@@ -21,7 +22,6 @@ import CaseStudies from "@/components/CaseStudies";
 import HowWeWork from "@/components/HowWeWork";
 import Industries from "@/components/Industries";
 import ContentTeaser from "@/components/ContentTeaser";
-import Footer from "@/components/Footer";
 import GrowthAuditModal from "@/components/GrowthAuditModal";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -83,27 +83,99 @@ const Index = () => {
   }, [location.state]);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Fixed navigation header */}
-      <Header />
+    <PageTemplate 
+      pageTitle="Alvi Global Enterprises - AI-Powered Business Solutions"
+      pageDescription="Transform your business with AI automation, product engineering, and growth strategies. Expert solutions for emerging markets with proven results."
+      pageKeywords="AI automation, business growth, emerging markets, revenue engineering, product development, go-to-market strategy, AI consulting, business transformation, digital transformation, AI implementation, business ecosystems, growth consulting, AI maturity assessment, Pakistan, Karachi, ITCN Asia 2025"
+      canonicalUrl="https://alviglobal.com"
+      ogImage="https://alviglobal.com/og-image.jpg"
+      twitterCard="summary_large_image"
+      pageType="WebPage"
+      structuredData={{
+        "@type": "WebPage",
+        "name": "Alvi Global Enterprises - AI-Powered Business Solutions",
+        "description": "Transform your business with AI automation, product engineering, and growth strategies. Expert solutions for emerging markets with proven results.",
+        "mainEntity": {
+          "@type": "Organization",
+          "name": "Alvi Global Enterprises",
+          "description": "AI-powered business ecosystems for emerging markets",
+          "service": [
+            {
+              "@type": "Service",
+              "name": "AI Automation",
+              "description": "AI-powered automation solutions for business processes"
+            },
+            {
+              "@type": "Service",
+              "name": "Product Engineering",
+              "description": "Full-stack product development and engineering services"
+            },
+            {
+              "@type": "Service",
+              "name": "Growth Consulting",
+              "description": "Go-to-market strategy and business growth consulting"
+            },
+            {
+              "@type": "Service",
+              "name": "AI Maturity Assessment",
+              "description": "Comprehensive AI readiness assessment and recommendations"
+            }
+          ]
+        }
+      }}
+      customMeta={[
+        { name: "google-site-verification", content: "your-google-verification-code" },
+        { name: "msvalidate.01", content: "your-bing-verification-code" },
+        { property: "article:author", content: "Alvi Global Enterprises" },
+        { property: "article:publisher", content: "https://alviglobal.com" }
+      ]}
+    >
+      {/* Hero Section */}
+      <SectionTemplate variant="hero" padding="none" maxWidth="full" align="center">
+        <Hero />
+      </SectionTemplate>
       
-      {/* Main page sections in order */}
-      <Hero />
-      <ProofBar />
-      <ValuePillars />
-      <ServicesGrid />
-      <CaseStudies />
-      <HowWeWork />
-      <Industries />
-      <ContentTeaser />
-      <Footer />
+      {/* Proof Bar Section */}
+      <SectionTemplate variant="muted" padding="xl" maxWidth="7xl" align="center">
+        <ProofBar />
+      </SectionTemplate>
+      
+      {/* Value Pillars Section */}
+      <SectionTemplate variant="default" padding="xl" maxWidth="7xl" align="center">
+        <ValuePillars />
+      </SectionTemplate>
+      
+      {/* Services Grid Section */}
+      <SectionTemplate variant="muted" padding="xl" maxWidth="7xl" align="center">
+        <ServicesGrid />
+      </SectionTemplate>
+      
+      {/* Case Studies Section */}
+      <SectionTemplate variant="default" padding="xl" maxWidth="7xl" align="center">
+        <CaseStudies />
+      </SectionTemplate>
+      
+      {/* How We Work Section */}
+      <SectionTemplate variant="muted" padding="xl" maxWidth="7xl" align="center">
+        <HowWeWork />
+      </SectionTemplate>
+      
+      {/* Industries Section */}
+      <SectionTemplate variant="default" padding="xl" maxWidth="7xl" align="center">
+        <Industries />
+      </SectionTemplate>
+      
+      {/* Content Teaser Section */}
+      <SectionTemplate variant="gradient" padding="xl" maxWidth="7xl" align="center">
+        <ContentTeaser />
+      </SectionTemplate>
       
       {/* Growth audit modal for lead capture */}
       <GrowthAuditModal 
         isOpen={isAuditModalOpen} 
         onClose={() => setIsAuditModalOpen(false)} 
       />
-    </div>
+    </PageTemplate>
   );
 };
 

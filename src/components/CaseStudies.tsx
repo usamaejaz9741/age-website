@@ -50,10 +50,9 @@ const CaseStudies = () => {
   ];
 
   return (
-    <section id="case-studies" className="py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-6">
+    <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Results that{" "}
             <span className="text-primary">speak numbers</span>
           </h2>
@@ -68,7 +67,7 @@ const CaseStudies = () => {
               key={caseStudy.company}
               delay={index * 200}
               direction="up"
-              className="group p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300"
+              className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle"
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
@@ -100,24 +99,24 @@ const CaseStudies = () => {
               </div>
 
               {/* Results Grid */}
-              <div className="grid grid-cols-3 gap-4 p-6 bg-muted/30 rounded-lg">
+              <div className="grid grid-cols-3 gap-4 p-6 bg-muted/30 rounded-xl">
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">Revenue</div>
+                  <div className="text-base text-muted-foreground mb-1">Revenue</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.revenue}</div>
-                  <TrendingUp className="w-4 h-4 text-primary mx-auto mb-1" />
-                  <div className="text-sm font-semibold text-primary">{caseStudy.results.after.revenue}</div>
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1" style={{ color: 'var(--icon-green) !important' }} />
+                  <div className="text-base font-semibold" style={{ color: 'var(--icon-green) !important' }}>{caseStudy.results.after.revenue}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">Conversion</div>
+                  <div className="text-base text-muted-foreground mb-1">Conversion</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.conversion}</div>
-                  <TrendingUp className="w-4 h-4 text-primary mx-auto mb-1" />
-                  <div className="text-sm font-semibold text-primary">{caseStudy.results.after.conversion}</div>
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1" style={{ color: 'var(--icon-blue) !important' }} />
+                  <div className="text-base font-semibold" style={{ color: 'var(--icon-blue) !important' }}>{caseStudy.results.after.conversion}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">CAC</div>
+                  <div className="text-base text-muted-foreground mb-1">CAC</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.cac}</div>
-                  <TrendingUp className="w-4 h-4 text-primary mx-auto mb-1 rotate-180" />
-                  <div className="text-sm font-semibold text-primary">{caseStudy.results.after.cac}</div>
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1 rotate-180" style={{ color: 'var(--icon-red) !important' }} />
+                  <div className="text-base font-semibold" style={{ color: 'var(--icon-red) !important' }}>{caseStudy.results.after.cac}</div>
                 </div>
               </div>
             </AnimatedCard>
@@ -130,8 +129,7 @@ const CaseStudies = () => {
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
-      </div>
-    </section>
+    </div>
   );
 };
 

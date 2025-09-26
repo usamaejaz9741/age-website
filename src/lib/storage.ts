@@ -53,10 +53,6 @@ export interface UserSubmission {
  */
 export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
   try {
-    console.log('=== SAVING USER DATA ===');
-    console.log('Email:', data.email);
-    console.log('Score:', data.score);
-    console.log('Band:', data.band);
 
     // Try to save to database first
     try {
@@ -64,30 +60,24 @@ export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
       const dbSuccess = await saveSubmissionToDatabase(data);
       
       if (dbSuccess) {
-        console.log('✅ Successfully saved to database');
-        
         // Also save to localStorage as backup
         await saveToLocalStorage(data);
-        
         return true;
       } else {
-        console.warn('⚠️ Database save failed, falling back to localStorage');
+        // Fallback to localStorage
+        await saveToLocalStorage(data);
       }
     } catch (dbError) {
-      console.warn('⚠️ Database not configured or failed:', dbError);
+      // Fallback to localStorage if database fails
+      await saveToLocalStorage(data);
     }
-
-    // Fallback to localStorage
-    console.log('📱 Saving to localStorage as fallback');
-    await saveToLocalStorage(data);
     
     // Create downloadable file for manual collection
     await createDownloadableFile(data);
 
-    console.log(`✅ User data saved successfully for ${data.email}`);
     return true;
   } catch (error) {
-    console.error('❌ Error saving user data:', error);
+    console.error('Error saving user data:', error);
     return false;
   }
 };
@@ -113,9 +103,8 @@ const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
     const individualKey = `age_submission_${sanitizedEmail}_${timestamp}`;
     localStorage.setItem(individualKey, JSON.stringify(data));
 
-    console.log('📱 Data saved to localStorage');
   } catch (error) {
-    console.error('❌ Error saving to localStorage:', error);
+    console.error('Error saving to localStorage:', error);
   }
 };
 
@@ -135,13 +124,7 @@ const createDownloadableFile = async (data: UserSubmission): Promise<void> => {
       }
     };
 
-    // Log the data to console for immediate access
-    console.log('=== NEW SUBMISSION ===');
-    console.log('Email:', data.email);
-    console.log('Score:', data.score);
-    console.log('Band:', data.band);
-    console.log('Full Data:', JSON.stringify(fileData, null, 2));
-    console.log('=====================');
+    // Data prepared for download
 
     // Create downloadable file
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -158,9 +141,8 @@ const createDownloadableFile = async (data: UserSubmission): Promise<void> => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    console.log('📁 Downloadable file created');
   } catch (fileError) {
-    console.warn('⚠️ Failed to create downloadable file:', fileError);
+    console.warn('Failed to create downloadable file:', fileError);
   }
 };
 
@@ -179,7 +161,6 @@ export const exportToCSV = (): boolean => {
     const existingData = localStorage.getItem('age_user_submissions');
     
     if (!existingData) {
-      console.log('No submissions found to export');
       return false;
     }
 
@@ -236,8 +217,6 @@ export const exportToCSV = (): boolean => {
     // Clean up the URL object
     URL.revokeObjectURL(url);
 
-    console.log(`CSV export completed: ${filename}`);
-    console.log(`Exported ${submissions.length} submissions`);
     return true;
   } catch (error) {
     console.error('Error exporting to CSV:', error);

@@ -55,11 +55,6 @@ export function openCalendlyBooking(
   utm?: CalendlyUTM,
   eventLabel?: string
 ): void {
-  console.log('=== CALENDLY BOOKING TRIGGERED ===');
-  console.log('URL:', CALENDLY_CONFIG.BASE_URL);
-  console.log('Prefill:', prefill);
-  console.log('UTM:', utm);
-  console.log('Event Label:', eventLabel);
 
   // Track the event
   if (typeof window !== 'undefined' && window.gtag) {
@@ -89,7 +84,7 @@ export function openCalendlyBooking(
     }
   });
 
-  console.log('Final URL:', url.toString());
+  // Open Calendly in new tab
 
   // Open in new tab
   try {
@@ -97,17 +92,12 @@ export function openCalendlyBooking(
     
     // Check if the window was successfully opened
     if (newWindow && !newWindow.closed) {
-      console.log('Successfully opened Calendly in new tab');
       // Focus the new window
       newWindow.focus();
-    } else {
-      console.warn('Popup blocked or failed to open, but not falling back to current tab');
-      // Don't fall back to current tab navigation to avoid the double navigation issue
     }
-  } catch (error) {
-    console.error('Error opening Calendly:', error);
-    // Don't fall back to current tab navigation
-  }
+        } catch (error) {
+          // Error opening Calendly - handled gracefully
+        }
 }
 
 

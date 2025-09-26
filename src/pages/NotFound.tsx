@@ -10,6 +10,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
+import PageTemplate from "@/components/PageTemplate";
+import SectionTemplate from "@/components/SectionTemplate";
 
 /**
  * 404 Not Found page component
@@ -58,47 +60,73 @@ const NotFound = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-6">
-      <div className="max-w-md mx-auto text-center">
-        {/* Error code display with brand styling */}
-        <div className="mb-8">
-          <h1 className="text-8xl font-bold text-primary mb-4">404</h1>
-          <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
-            Page Not Found
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            The page you're looking for doesn't exist or has been moved. 
-            Let's get you back on track.
+    <PageTemplate 
+      pageTitle="Page Not Found - Alvi Global Enterprises"
+      pageDescription="The page you're looking for doesn't exist. Navigate back to our homepage or contact support."
+      pageKeywords="404, page not found, error, Alvi Global Enterprises, AI automation, business solutions"
+      canonicalUrl="https://alviglobal.com/404"
+      pageType="WebPage"
+      structuredData={{
+        "@type": "WebPage",
+        "name": "Page Not Found - Alvi Global Enterprises",
+        "description": "The page you're looking for doesn't exist. Navigate back to our homepage or contact support.",
+        "mainEntity": {
+          "@type": "Organization",
+          "name": "Alvi Global Enterprises"
+        }
+      }}
+      customMeta={[
+        { name: "robots", content: "noindex, nofollow" }
+      ]}
+    >
+      <SectionTemplate 
+        variant="default" 
+        padding="xl" 
+        maxWidth="md" 
+        align="center"
+        className="min-h-screen flex items-center justify-center"
+      >
+        <div className="text-center">
+          {/* Error code display with brand styling */}
+          <div className="mb-8">
+            <h1 className="text-8xl font-bold text-primary mb-4">404</h1>
+            <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              Page Not Found
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              The page you're looking for doesn't exist or has been moved. 
+              Let's get you back on track.
+            </p>
+          </div>
+          
+          {/* Navigation buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={handleGoHome}
+              variant="cta"
+              className="group"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Go Home
+            </Button>
+            
+            <Button 
+              onClick={handleGoBack}
+              variant="cta-outline"
+              className="group"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Go Back
+            </Button>
+          </div>
+          
+          {/* Additional help text */}
+          <p className="text-sm text-muted-foreground mt-8">
+            If you believe this is an error, please contact our support team.
           </p>
         </div>
-        
-        {/* Navigation buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button 
-            onClick={handleGoHome}
-            variant="cta"
-            className="group"
-          >
-            <Home className="w-4 h-4 mr-2" />
-            Go Home
-          </Button>
-          
-          <Button 
-            onClick={handleGoBack}
-            variant="cta-outline"
-            className="group"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Go Back
-          </Button>
-        </div>
-        
-        {/* Additional help text */}
-        <p className="text-sm text-muted-foreground mt-8">
-          If you believe this is an error, please contact our support team.
-        </p>
-      </div>
-    </div>
+      </SectionTemplate>
+    </PageTemplate>
   );
 };
 

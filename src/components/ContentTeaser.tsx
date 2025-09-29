@@ -63,7 +63,7 @@ const ContentTeaser = () => {
   return (
     <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Stay ahead with{" "}
             <span className="text-primary">actionable insights</span>
           </h2>
@@ -81,14 +81,14 @@ const ContentTeaser = () => {
                 key={insight.title}
                 delay={index * 100}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1 cursor-pointer"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer"
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
                   style={{ backgroundColor: insight.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8" 
+                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
                     style={{ color: insight.iconColor }}
                   />
                 </div>
@@ -105,7 +105,7 @@ const ContentTeaser = () => {
                   {insight.description}
                 </p>
 
-                <div className="mt-4 flex items-center text-base text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-4 flex items-center justify-center text-base text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Access now →
                 </div>
               </AnimatedCard>

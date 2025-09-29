@@ -1,9 +1,19 @@
 /**
- * TypeScript Type Definitions for Google Gemini AI API
+ * @fileoverview TypeScript Type Definitions for Google Gemini AI API
  * 
- * These interfaces define the structure of requests and responses
- * for the Google Gemini AI API, ensuring type safety throughout
- * the application when interacting with the AI service.
+ * Comprehensive type definitions for Google's Gemini AI API, ensuring type safety
+ * and IntelliSense support throughout the application when interacting with AI services.
+ * 
+ * @module types/gemini
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
+ * 
+ * @features
+ * - 🎯 Complete type coverage for Gemini API requests and responses
+ * - 🔒 Type safety for AI content generation operations
+ * - 📝 Comprehensive JSDoc documentation for all interfaces
+ * - 🛡️ Safety rating and content validation types
+ * - ⚡ Optimized for TypeScript IntelliSense and autocompletion
  */
 
 /**

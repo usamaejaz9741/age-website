@@ -1,15 +1,30 @@
 /**
- * Email Step Component for AI Growth Score Assessment
+ * @fileoverview Email Step Component for AI Growth Score Assessment
  * 
- * This component handles the email capture step of the assessment flow.
- * It collects the user's email address and consent for receiving the
- * AI Growth Audit report and future communications.
+ * Handles the email capture and consent collection step of the assessment flow,
+ * providing secure email validation, GDPR compliance, and seamless form submission.
  * 
- * Features:
- * - Email input validation
- * - GDPR-compliant consent checkbox
- * - Loading state during audit generation
- * - Form submission handling
+ * @component
+ * @example
+ * ```tsx
+ * <EmailStep 
+ *   onSubmit={(email) => handleEmailSubmit(email)}
+ *   isLoading={false}
+ * />
+ * ```
+ * 
+ * @features
+ * - 📧 Advanced email validation with real-time feedback
+ * - ✅ GDPR-compliant consent checkbox with clear terms
+ * - ⏳ Loading state management during audit generation
+ * - 🛡️ Form security with rate limiting and sanitization
+ * - ♿ Full accessibility support with ARIA labels
+ * - 📱 Responsive design with mobile optimization
+ * - 🎨 Consistent styling with design system
+ * - ⚡ Optimized performance with React.memo
+ * 
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
  */
 
 import { Button } from "@/components/ui/button";
@@ -17,7 +32,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { validateEmail, sanitizeEmail, formRateLimiter } from "@/lib/security";
 
 /**
@@ -44,7 +59,7 @@ interface EmailStepProps {
  * @param props - Component props for email capture and form handling
  * @returns JSX element for email capture form
  */
-const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoading }: EmailStepProps) => {
+const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoading }: EmailStepProps) => {
   const [emailError, setEmailError] = useState<string>('');
 
   /**
@@ -117,14 +132,18 @@ const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoa
             value={email}
             onChange={(e) => handleEmailChange(e.target.value)}
             required
-            className="mt-1.5"
+            className="mt-1.5 focus:ring-2 focus:ring-primary focus:ring-offset-2"
             aria-describedby={emailError ? "email-error" : undefined}
             aria-invalid={emailError ? "true" : "false"}
+            aria-required="true"
+            autoComplete="email"
           />
           {emailError && (
-            <p id="email-error" className="text-destructive text-sm mt-1" role="alert" aria-live="polite">
-              {emailError}
-            </p>
+            <div className="mt-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+              <p id="email-error" className="text-destructive text-sm font-medium" role="alert" aria-live="polite">
+                {emailError}
+              </p>
+            </div>
           )}
         </div>
         
@@ -143,7 +162,7 @@ const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoa
         <Button
           type="submit"
           size="lg"
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           disabled={!email || !hasConsent || isLoading}
         >
           {isLoading ? (
@@ -161,6 +180,8 @@ const EmailStep = ({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoa
       </form>
     </div>
   );
-};
+});
+
+EmailStep.displayName = 'EmailStep';
 
 export default EmailStep;

@@ -68,7 +68,7 @@ const ServicesGrid = () => {
   return (
     <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Complete business{" "}
             <span className="text-primary">ecosystems</span>
           </h2>
@@ -86,15 +86,15 @@ const ServicesGrid = () => {
                 key={service.title}
                 delay={index * 100}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
-                  style={{ backgroundColor: `${service.bgColor} !important` }}
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                  style={{ backgroundColor: service.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8" 
-                    style={{ color: `${service.iconColor} !important` }}
+                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                    style={{ color: service.iconColor }}
                   />
                 </div>
                 

@@ -52,10 +52,47 @@ export default defineConfig(({ mode }) => ({
     sourcemap: true,
     rollupOptions: {
       output: {
-        // Manual chunk splitting for better caching
+        // Enhanced manual chunk splitting for better caching
         manualChunks: {
-          // Vendor chunk for third-party libraries
-          'vendor': ['react', 'react-dom', 'react-router-dom']
+          // Core React libraries
+          'vendor-react': ['react', 'react-dom'],
+          // Routing and navigation
+          'vendor-router': ['react-router-dom'],
+          // UI component libraries
+          'vendor-ui': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog'
+          ],
+          // Utility libraries
+          'vendor-utils': [
+            'clsx',
+            'tailwind-merge',
+            'class-variance-authority',
+            'date-fns',
+            'zod'
+          ],
+          // Data fetching and state management
+          'vendor-data': [
+            '@tanstack/react-query',
+            '@supabase/supabase-js'
+          ],
+          // AI and external services
+          'vendor-ai': [
+            '@google/generative-ai'
+          ],
+          // Form handling
+          'vendor-forms': [
+            'react-hook-form',
+            '@hookform/resolvers'
+          ],
+          // Charts and visualization
+          'vendor-charts': [
+            'recharts'
+          ]
         }
       }
     }
@@ -64,6 +101,16 @@ export default defineConfig(({ mode }) => ({
   // Dependency optimization
   optimizeDeps: {
     // Pre-bundle these dependencies for faster dev server startup
-    include: ['react', 'react-dom', 'react-router-dom']
+    include: [
+      'react', 
+      'react-dom', 
+      'react-router-dom',
+      '@tanstack/react-query',
+      '@supabase/supabase-js',
+      '@google/generative-ai',
+      'react-hook-form',
+      'clsx',
+      'tailwind-merge'
+    ]
   }
 }));

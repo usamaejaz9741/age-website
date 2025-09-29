@@ -1,19 +1,32 @@
 /**
- * Hero Component - Main Landing Section
+ * @fileoverview Hero Component - Main Landing Section
  * 
- * This component provides the primary hero section for the Alvi Global Enterprises website landing page.
- * It includes:
- * - Compelling headline and value proposition
- * - Call-to-action buttons for lead generation
- * - Background image with gradient overlay
- * - Growth audit modal integration
- * - Responsive design with mobile optimization
+ * Primary hero section for the Alvi Global Enterprises website, featuring compelling
+ * value proposition, strategic CTAs, and seamless modal integration for lead generation.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <Hero />
+ * ```
+ * 
+ * @features
+ * - 🎯 Compelling headline with clear value proposition
+ * - 🚀 Strategic call-to-action buttons for lead generation
+ * - 🎨 Animated background blobs with gradient overlay
+ * - 📱 Fully responsive design with mobile optimization
+ * - 🔗 Seamless modal integration for growth audit booking
+ * - ⚡ Optimized performance with React.memo
+ * - ♿ Full accessibility support with proper ARIA labels
+ * - 🎭 Smooth animations and micro-interactions
+ * 
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
  */
 
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
-import heroImage from "@/assets/hero-bg.jpg";
-import { useState } from "react";
+import { useState, memo } from "react";
 import GrowthAuditModal from "./GrowthAuditModal";
 
 /**
@@ -27,23 +40,14 @@ import GrowthAuditModal from "./GrowthAuditModal";
  * - Responsive typography and spacing
  * - Smooth animations and hover effects
  */
-const Hero = () => {
+const Hero = memo(() => {
   const [showGrowthAudit, setShowGrowthAudit] = useState(false);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden" role="banner" aria-labelledby="hero-heading">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="AI-powered business automation" 
-          className="w-full h-full object-cover opacity-5"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
-      </div>
 
       {/* Animated Floating Gradient Blobs - Above background, below text */}
-      <div className="absolute inset-0 z-10">
+      <div className="fixed inset-0 z-10 pointer-events-none">
         {/* Blob 1 - Top Left */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-resolution-blue-600/10 to-malibu-300/8 sm:from-resolution-blue-600/30 sm:to-malibu-300/25 rounded-full blur-3xl animate-float-slow" />
         
@@ -66,15 +70,23 @@ const Hero = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-resolution-blue-600/5 to-malibu-300/7 sm:from-resolution-blue-600/15 sm:to-malibu-300/20 rounded-full blur-3xl animate-float-slow" />
       </div>
 
+      {/* Gradient Overlay - Seamless blend with proof bar */}
+      <div 
+        className="fixed inset-0 z-20 pointer-events-none" 
+        style={{
+          background: 'linear-gradient(to top, #fbfbfc, transparent)'
+        }}
+      />
+
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 py-20 text-center">
+      <div className="relative z-30 max-w-7xl mx-auto px-6 py-20 text-center">
         <div className="animate-fade-in">
-          <h1 id="hero-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
+          <h1 id="hero-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
             Engineer revenue,{" "}
             <span className="text-primary font-bold">not just software</span>
           </h1>
           
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 sm:mb-12" style={{ lineHeight: 'var(--line-height-relaxed)' }}>
             AI automation + product engineering + go-to-market strategy under one roof. 
             We build performance-driven business ecosystems that generate revenue from day one 
             in emerging markets.
@@ -120,6 +132,8 @@ const Hero = () => {
       </div>
     </div>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;

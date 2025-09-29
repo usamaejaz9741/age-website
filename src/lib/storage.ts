@@ -72,12 +72,14 @@ export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
       await saveToLocalStorage(data);
     }
     
-    // Create downloadable file for manual collection
-    await createDownloadableFile(data);
+    // Note: Automatic file download removed - data is now stored in database
+    // await createDownloadableFile(data);
 
     return true;
   } catch (error) {
-    console.error('Error saving user data:', error);
+    if (import.meta.env.DEV) {
+      console.error('Error saving user data:', error);
+    }
     return false;
   }
 };
@@ -104,47 +106,12 @@ const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
     localStorage.setItem(individualKey, JSON.stringify(data));
 
   } catch (error) {
-    console.error('Error saving to localStorage:', error);
+    if (import.meta.env.DEV) {
+      console.error('Error saving to localStorage:', error);
+    }
   }
 };
 
-/**
- * Create downloadable file for manual collection
- */
-const createDownloadableFile = async (data: UserSubmission): Promise<void> => {
-  try {
-    // Create a downloadable file with the data
-    const fileData = {
-      timestamp: new Date().toISOString(),
-      submission: data,
-      metadata: {
-        userAgent: navigator.userAgent,
-        url: window.location.href,
-        referrer: document.referrer
-      }
-    };
-
-    // Data prepared for download
-
-    // Create downloadable file
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const sanitizedEmail = data.email.replace('@', '_at_').replace(/[^a-zA-Z0-9._-]/g, '_');
-    
-    const blob = new Blob([JSON.stringify(fileData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `age_submission_${sanitizedEmail}_${timestamp}.json`;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-  } catch (fileError) {
-    console.warn('Failed to create downloadable file:', fileError);
-  }
-};
 
 /**
  * Exports all user submissions to CSV format for analysis
@@ -219,7 +186,9 @@ export const exportToCSV = (): boolean => {
 
     return true;
   } catch (error) {
-    console.error('Error exporting to CSV:', error);
+    if (import.meta.env.DEV) {
+      console.error('Error exporting to CSV:', error);
+    }
     return false;
   }
 };

@@ -1,26 +1,41 @@
 /**
- * AI Growth Results Component
+ * @fileoverview AI Growth Results Component
  * 
- * This component displays the results of the AI Growth Score assessment,
- * including the overall score, dimension breakdown, AI-generated recommendations,
- * and call-to-action for consultation booking.
+ * Displays comprehensive results from the AI Growth Score assessment, including
+ * personalized recommendations, dimension analysis, and consultation booking.
  * 
- * Features:
- * - Score visualization with progress bars
- * - Dimension breakdown with individual scores
- * - AI-generated personalized recommendations
- * - Email confirmation and audit delivery
- * - Consultation booking call-to-action
- * - Data persistence to database
+ * @component
+ * @example
+ * ```tsx
+ * <AIGrowthResults 
+ *   results={quizResults}
+ *   userEmail="user@example.com"
+ *   quizAnswers={answers}
+ * />
+ * ```
+ * 
+ * @features
+ * - 📊 Interactive score visualization with animated progress bars
+ * - 🎯 Detailed dimension breakdown with individual metrics
+ * - 🤖 AI-generated personalized recommendations with fallback
+ * - 📧 Email confirmation and audit delivery system
+ * - 📅 Integrated consultation booking via Calendly
+ * - 💾 Automatic data persistence to database with localStorage fallback
+ * - 🎨 Responsive design with smooth animations
+ * - ♿ Full accessibility support with ARIA labels
+ * 
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
  */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QuizResults } from "@/pages/ai-growth-score";
 import { GeminiAPI } from "@/lib/geminiAPI";
 import { openCalendlyBooking } from "@/lib/calendly";
+import { toast } from "@/components/ui/use-toast";
 import { 
   TrendingUp, 
   Target, 
@@ -36,27 +51,37 @@ import {
 
 /**
  * Props interface for the AIGrowthResults component
+ * 
+ * @interface AIGrowthResultsProps
  */
 interface AIGrowthResultsProps {
   /** Quiz results containing score, band, and dimension breakdown */
   results: QuizResults;
-  /** User's email address for follow-up */
+  /** User's email address for follow-up and audit delivery */
   userEmail: string;
-  /** UTM parameters for marketing attribution */
+  /** UTM parameters for marketing attribution and analytics */
   utmParams: {[key: string]: string};
-  /** Individual quiz answers for detailed analysis */
+  /** Individual quiz answers for detailed analysis and recommendations */
   quizAnswers: {[key: string]: number};
-  /** Generated AI audit content */
+  /** Generated AI audit content for comprehensive report */
   auditContent: string;
 }
 
 /**
  * AI Growth Results component that displays assessment results and recommendations
  * 
+ * This component handles the complete results display workflow:
+ * 1. Generates AI-powered recommendations based on quiz results
+ * 2. Displays interactive score visualization and dimension breakdown
+ * 3. Provides consultation booking and audit delivery options
+ * 4. Persists user data to database with fallback to localStorage
+ * 
  * @param props - Component props containing results, user data, and audit content
- * @returns JSX element displaying the assessment results
+ * @returns JSX element displaying the comprehensive assessment results
+ * 
+ * @throws {Error} When AI recommendation generation fails (handled gracefully with fallback)
  */
-const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditContent }: AIGrowthResultsProps) => {
+const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, auditContent }: AIGrowthResultsProps) => {
   // State for managing recommendations and loading status
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -102,15 +127,39 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
           const { saveUserData } = await import('@/lib/storage');
           await saveUserData(userData);
         } catch (error) {
+          if (import.meta.env.DEV) {
           console.error('Error saving user data:', error);
         }
+        }
       } catch (error) {
-        console.error('Error generating recommendations:', error);
-        const defaultRecommendations = [
+        if (import.meta.env.DEV) {
+          console.error('Error generating recommendations:', error);
+        }
+        
+        // Show user-friendly notification about AI service
+        if (error instanceof Error && error.message.includes('temporarily unavailable')) {
+          toast({
+            title: "AI Service Temporarily Unavailable",
+            description: "We're using pre-generated recommendations. The AI service will be back online shortly.",
+            variant: "default",
+          });
+        }
+        
+        // Provide context-aware fallback recommendations based on score
+        const defaultRecommendations = results.score < 40 ? [
           'Develop a comprehensive AI strategy aligned with business goals',
           'Implement data governance and quality improvement processes',
           'Create an AI training program to build organizational capabilities'
+        ] : results.score < 70 ? [
+          'Scale AI initiatives across multiple business functions',
+          'Enhance data integration and analytics capabilities',
+          'Develop advanced AI governance and risk management frameworks'
+        ] : [
+          'Optimize AI operations for maximum business impact',
+          'Explore cutting-edge AI technologies and partnerships',
+          'Share AI expertise to drive industry innovation'
         ];
+        
         setRecommendations(defaultRecommendations);
         
         // Save user data with default recommendations
@@ -130,7 +179,9 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
           const { saveUserData } = await import('@/lib/storage');
           await saveUserData(userData);
         } catch (error) {
+          if (import.meta.env.DEV) {
           console.error('Error saving user data:', error);
+        }
         }
       } finally {
         setLoading(false);
@@ -203,7 +254,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
             Your AI Growth Score
           </h1>
           <p className="text-xl text-muted-foreground">
@@ -242,10 +293,10 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
                 
                 // Assign different colors to different dimensions
                 const dimensionColors = {
-                  strategy: 'var(--icon-purple) !important',
-                  implementation: 'var(--icon-blue) !important',
-                  data: 'var(--icon-green) !important',
-                  culture: 'var(--icon-indigo) !important'
+                  strategy: 'var(--icon-purple)',
+                  implementation: 'var(--icon-blue)',
+                  data: 'var(--icon-green)',
+                  culture: 'var(--icon-indigo)'
                 };
                 
                 return (
@@ -272,17 +323,25 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
         <Card className="shadow-medium mb-12">
           <CardHeader>
             <CardTitle className="text-2xl flex items-center">
-              <Target className="w-6 h-6 mr-2" style={{ color: 'var(--icon-blue) !important' }} />
+              <Target className="w-6 h-6 mr-2 text-[var(--icon-blue)]" />
               AI-Powered Recommendations
             </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--icon-blue) !important' }} />
-                <span className="ml-2 text-muted-foreground">
-                  Generating personalized recommendations...
-                </span>
+              <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                <div className="relative">
+                  <Loader2 className="w-8 h-8 animate-spin text-[var(--icon-blue)]" />
+                  <div className="absolute inset-0 w-8 h-8 border-2 border-primary/20 rounded-full animate-pulse"></div>
+                </div>
+                <div className="text-center">
+                  <p className="text-muted-foreground font-medium">
+                    Generating personalized recommendations...
+                  </p>
+                  <p className="text-sm text-muted-foreground/70 mt-1">
+                    This may take a few moments
+                  </p>
+                </div>
               </div>
             ) : (
               <div className="grid md:grid-cols-3 gap-6">
@@ -303,7 +362,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
 
         {/* Next Steps */}
         <div className="bg-gradient-hero rounded-xl p-8 text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
             Ready to Accelerate Your AI Journey?
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
@@ -329,6 +388,7 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
               size="xl"
               className="group min-w-[280px]"
               onClick={() => window.location.href = 'mailto:hello@alviglobal.com?subject=AI Growth Score Results&body=Hi, I just completed the AI Growth Score assessment and would like to discuss my results.'}
+              aria-label="Send email to discuss AI Growth Score results"
             >
               <Mail className="mr-2" />
               Email Results
@@ -344,21 +404,21 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 mx-auto mb-4" style={{ color: 'var(--icon-green) !important' }} />
+              <CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" />
               <h4 className="font-semibold mb-2">Deep Dive Analysis</h4>
               <p className="text-muted-foreground text-sm">
                 Detailed review of your assessment results and current AI maturity
               </p>
             </div>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 mx-auto mb-4" style={{ color: 'var(--icon-green) !important' }} />
+              <CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" />
               <h4 className="font-semibold mb-2">Custom Roadmap</h4>
               <p className="text-muted-foreground text-sm">
                 90-day action plan with prioritized initiatives and success metrics
               </p>
             </div>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 mx-auto mb-4" style={{ color: 'var(--icon-green) !important' }} />
+              <CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" />
               <h4 className="font-semibold mb-2">Resource Recommendations</h4>
               <p className="text-muted-foreground text-sm">
                 Specific tools, partners, and capabilities needed for your next phase
@@ -369,6 +429,8 @@ const AIGrowthResults = ({ results, userEmail, utmParams, quizAnswers, auditCont
       </div>
     </div>
   );
-};
+});
+
+AIGrowthResults.displayName = 'AIGrowthResults';
 
 export default AIGrowthResults;

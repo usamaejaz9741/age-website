@@ -79,8 +79,10 @@ const Preloader = ({
     );
     
     const currentStage = loadingStages[stageIndex];
-    setLoadingText(currentStage.text);
-    setProgress(currentStage.progress);
+    if (currentStage) {
+      setLoadingText(currentStage.text);
+      setProgress(currentStage.progress);
+    }
   }, [minDuration]);
 
   // Check if all resources are loaded
@@ -141,10 +143,26 @@ const Preloader = ({
     // Initial check
     checkCompletion();
 
+    // Enhanced cleanup function to prevent memory leaks
     return () => {
-      if (progressInterval.current) clearInterval(progressInterval.current);
-      if (completionTimeout.current) clearTimeout(completionTimeout.current);
-      if (forceCompleteTimeout.current) clearTimeout(forceCompleteTimeout.current);
+      // Clear all intervals and timeouts
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+        progressInterval.current = undefined;
+      }
+      if (completionTimeout.current) {
+        clearTimeout(completionTimeout.current);
+        completionTimeout.current = undefined;
+      }
+      if (forceCompleteTimeout.current) {
+        clearTimeout(forceCompleteTimeout.current);
+        forceCompleteTimeout.current = undefined;
+      }
+      
+      // Reset state to prevent stale closures
+      setIsVisible(false);
+      setIsAnimating(false);
+      setProgress(0);
     };
   }, [minDuration, maxDuration, showProgress, updateProgress, checkResourcesLoaded, completePreloader]);
 
@@ -168,7 +186,7 @@ const Preloader = ({
           {!showFallback ? (
             <img
               src="/assets/preloader.gif"
-              alt="Loading animation"
+              alt="Loading application, please wait"
               className={cn(
                 "w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain transition-opacity duration-300",
                 gifLoaded ? "opacity-100" : "opacity-0"

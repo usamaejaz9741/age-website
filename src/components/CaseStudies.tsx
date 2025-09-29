@@ -52,7 +52,7 @@ const CaseStudies = () => {
   return (
     <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
             Results that{" "}
             <span className="text-primary">speak numbers</span>
           </h2>
@@ -67,11 +67,11 @@ const CaseStudies = () => {
               key={caseStudy.company}
               delay={index * 200}
               direction="up"
-              className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle"
+              className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out"
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
-                <div>
+                <div className="text-left">
                   <h3 className="text-2xl font-bold text-foreground mb-1">
                     {caseStudy.company}
                   </h3>
@@ -103,20 +103,20 @@ const CaseStudies = () => {
                 <div className="text-center">
                   <div className="text-base text-muted-foreground mb-1">Revenue</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.revenue}</div>
-                  <TrendingUp className="w-4 h-4 mx-auto mb-1" style={{ color: 'var(--icon-green) !important' }} />
-                  <div className="text-base font-semibold" style={{ color: 'var(--icon-green) !important' }}>{caseStudy.results.after.revenue}</div>
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1 text-[var(--icon-green)] flex-shrink-0" />
+                  <div className="text-base font-semibold text-[var(--icon-green)]">{caseStudy.results.after.revenue}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-base text-muted-foreground mb-1">Conversion</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.conversion}</div>
-                  <TrendingUp className="w-4 h-4 mx-auto mb-1" style={{ color: 'var(--icon-blue) !important' }} />
-                  <div className="text-base font-semibold" style={{ color: 'var(--icon-blue) !important' }}>{caseStudy.results.after.conversion}</div>
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1 text-[var(--icon-blue)] flex-shrink-0" />
+                  <div className="text-base font-semibold text-[var(--icon-blue)]">{caseStudy.results.after.conversion}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-base text-muted-foreground mb-1">CAC</div>
                   <div className="text-xs text-destructive mb-1">{caseStudy.results.before.cac}</div>
-                  <TrendingUp className="w-4 h-4 mx-auto mb-1 rotate-180" style={{ color: 'var(--icon-red) !important' }} />
-                  <div className="text-base font-semibold" style={{ color: 'var(--icon-red) !important' }}>{caseStudy.results.after.cac}</div>
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1 rotate-180 text-[var(--icon-red)] flex-shrink-0" />
+                  <div className="text-base font-semibold text-[var(--icon-red)]">{caseStudy.results.after.cac}</div>
                 </div>
               </div>
             </AnimatedCard>

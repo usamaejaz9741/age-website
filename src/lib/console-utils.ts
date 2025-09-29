@@ -49,7 +49,9 @@ export const suppressConsoleWarnings = () => {
         message.includes('go.microsoft.com/fwlink') ||
         message.includes('React does not recognize the `fetchPriority` prop') ||
         message.includes('fetchpriority') ||
-        message.includes('React DevTools')
+        message.includes('React DevTools') ||
+        message.includes('Download the React DevTools for a better development experience') ||
+        message.includes('https://reactjs.org/link/react-devtools')
       );
     }
     return false;
@@ -57,24 +59,31 @@ export const suppressConsoleWarnings = () => {
   
   // Override console.warn with filtered version
   console.warn = (...args: unknown[]) => {
-    if (shouldSuppress(args[0])) {
-      return; // Suppress these warnings
+    // Only log in development mode
+    if (import.meta.env.DEV) {
+      if (shouldSuppress(args[0])) {
+        return; // Suppress these warnings
+      }
+      originalWarn.apply(console, args);
     }
-    originalWarn.apply(console, args);
   };
   
   // Override console.log with filtered version (for development messages)
   console.log = (...args: unknown[]) => {
-    if (shouldSuppress(args[0])) {
-      return; // Suppress these development messages
+    // Only log in development mode
+    if (import.meta.env.DEV) {
+      if (shouldSuppress(args[0])) {
+        return; // Suppress these development messages
+      }
+      originalLog.apply(console, args);
     }
-    originalLog.apply(console, args);
   };
   
   // Override console.error with filtered version (for React warnings)
   console.error = (...args: unknown[]) => {
-    if (shouldSuppress(args[0])) {
-      return; // Suppress these React warnings
+    // Always log errors, but filter in development
+    if (import.meta.env.DEV && shouldSuppress(args[0])) {
+      return; // Suppress these React warnings in development
     }
     originalError.apply(console, args);
   };

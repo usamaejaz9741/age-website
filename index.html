@@ -122,6 +122,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0050ff" />
+    <meta name="color-scheme" content="light" />
     
     <!-- Security Meta Tags -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
@@ -297,7 +298,60 @@
       })();
     </script>
     
-    <!-- Console Warning Suppression -->
+    <!-- Console Warning Suppression - Ultra Early Override -->
+    <script>
+      // Ultra early suppression - must be first script
+      (function() {
+        // Store original methods before any other scripts can override them
+        const originalWarn = console.warn;
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalInfo = console.info;
+        
+        const shouldSuppress = (message) => {
+          if (typeof message === 'string') {
+            return (
+              message.includes('Download the React DevTools') ||
+              message.includes('reactjs.org/link/react-devtools') ||
+              message.includes('React DevTools') ||
+              message.includes('Download the React DevTools for a better development experience') ||
+              message.includes('https://reactjs.org/link/react-devtools') ||
+              message.includes('react-devtools') ||
+              message.includes('React DevTools for a better development experience')
+            );
+          }
+          return false;
+        };
+        
+        // Override all console methods
+        console.warn = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalWarn.apply(console, args);
+        };
+        
+        console.log = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalLog.apply(console, args);
+        };
+        
+        console.error = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalError.apply(console, args);
+        };
+        
+        console.info = (...args) => {
+          if (shouldSuppress(args[0])) return;
+          originalInfo.apply(console, args);
+        };
+        
+        // Also try to prevent React from logging this specific warning
+        if (window.React) {
+          const originalReactWarn = window.React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.ReactDebugCurrentFrame?.getCurrentStack;
+        }
+      })();
+    </script>
+    
+    <!-- Console Warning Suppression - Full Version -->
     <script>
       // Suppress React DevTools and other development warnings
       (function() {
@@ -311,6 +365,8 @@
               message.includes('Download the React DevTools') ||
               message.includes('reactjs.org/link/react-devtools') ||
               message.includes('React DevTools') ||
+            message.includes('Download the React DevTools for a better development experience') ||
+            message.includes('https://reactjs.org/link/react-devtools') ||
               message.includes('React does not recognize the `fetchPriority` prop') ||
               message.includes('fetchpriority') ||
               message.includes('[Intervention] Images loaded lazily') ||

@@ -55,7 +55,7 @@ const HowWeWork = () => {
   return (
     <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             <span className="text-primary">90 days</span> to revenue
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -79,19 +79,19 @@ const HowWeWork = () => {
                   <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary/30 z-0" />
                 )}
                 
-                <div className="relative p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1">
+                <div className="relative p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1">
                   <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
-                    style={{ backgroundColor: `${step.bgColor} !important` }}
+                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                    style={{ backgroundColor: step.bgColor }}
                   >
                     <Icon 
-                      className="w-8 h-8" 
-                      style={{ color: `${step.iconColor} !important` }}
+                      className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                      style={{ color: step.iconColor }}
                     />
                   </div>
                   
                   <div className="mb-4">
-                    <div className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+                    <div className="text-2xl font-bold text-foreground leading-tight">
                       {step.title}
                     </div>
                     <div className="text-primary font-bold text-base sm:text-lg">
@@ -99,7 +99,7 @@ const HowWeWork = () => {
                     </div>
                   </div>
                   
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                  <p className="text-muted-foreground mb-8 leading-relaxed">
                     {step.description}
                   </p>
 

@@ -439,3 +439,54 @@ export function generatePerformanceMeta(pageData: {
   ];
 }
 
+/**
+ * Generates WebPage structured data
+ * 
+ * @param pageData - Page information
+ * @returns WebPage structured data
+ * 
+ * @example
+ * ```typescript
+ * generateWebPageSchema({
+ *   name: 'AI Growth Score Assessment',
+ *   description: 'Comprehensive AI readiness assessment',
+ *   url: '/ai-growth-score'
+ * });
+ * ```
+ */
+export function generateWebPageSchema(pageData: {
+  name: string;
+  description: string;
+  url: string;
+  datePublished?: string;
+  dateModified?: string;
+  author?: string;
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: pageData.name,
+    description: pageData.description,
+    url: generateCanonicalUrl(pageData.url),
+    isPartOf: {
+      '@type': 'WebSite',
+      name: SEO_CONFIG.SITE_NAME,
+      url: SEO_CONFIG.SITE_URL
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SEO_CONFIG.SITE_NAME,
+      url: SEO_CONFIG.SITE_URL
+    },
+    datePublished: pageData.datePublished,
+    dateModified: pageData.dateModified || pageData.datePublished,
+    author: pageData.author ? {
+      '@type': 'Organization',
+      name: pageData.author
+    } : {
+      '@type': 'Organization',
+      name: SEO_CONFIG.SITE_NAME
+    }
+  };
+}
+

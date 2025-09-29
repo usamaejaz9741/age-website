@@ -6,12 +6,13 @@ import AIGrowthQuiz from "@/components/AIGrowthQuiz";
 import AIGrowthResults from "@/components/AIGrowthResults";
 import AIGrowthFAQ from "@/components/AIGrowthFAQ";
 import EmailStep from "@/components/EmailStep";
-import { generateQuizAudit, sendAuditEmail, type QuizAuditData } from "@/lib/gemini";
+import { generateQuizAudit, type QuizAuditData } from "@/lib/gemini";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Target, Zap } from "lucide-react";
+import { isValidScore, isValidBand, isValidDimensionScores } from "@/lib/type-guards";
 
 // Interfaces for quiz functionality
-interface QuizAnswers {
+export interface QuizAnswers {
   [questionId: string]: number;
 }
 
@@ -89,11 +90,14 @@ const AIGrowthScore = () => {
       'q12': 'culture'     // AI ethics
     };
 
-    // Calculate dimension scores
+    // Calculate dimension scores with type safety
     Object.entries(answers).forEach(([questionId, score]) => {
       const dimension = questionDimensionMap[questionId];
       if (dimension && Object.prototype.hasOwnProperty.call(scores, dimension)) {
-        scores[dimension] += score as number;
+        // Use type guard to ensure score is a valid number
+        if (typeof score === 'number' && !isNaN(score) && score >= 0 && score <= 3) {
+          scores[dimension] += score;
+        }
       }
     });
 
@@ -102,11 +106,14 @@ const AIGrowthScore = () => {
     const maxScore = Object.keys(answers).length * 3; // 3-point scale (0-3)
     const percentage = Math.round((totalScore / maxScore) * 100);
 
-    // Determine band
+    // Validate percentage is within valid range
+    const validPercentage = Math.max(0, Math.min(100, percentage));
+
+    // Determine band with type safety
     let band: 'Explorer' | 'Experimenter' | 'Accelerator';
-    if (percentage < 40) {
+    if (validPercentage < 40) {
       band = 'Explorer';
-    } else if (percentage < 70) {
+    } else if (validPercentage < 70) {
       band = 'Experimenter';
     } else {
       band = 'Accelerator';
@@ -120,21 +127,18 @@ const AIGrowthScore = () => {
       culture: Math.round((scores.culture / 9) * 100)
     };
 
-    // Debug logging
-    console.log('Quiz Calculation Debug:', {
-      answers,
-      rawScores: scores,
-      breakdownPercentages,
-      totalScore,
-      maxScore,
-      percentage,
-      band
-    });
+    // Validate breakdown percentages
+    const validatedBreakdown = {
+      strategy: Math.max(0, Math.min(100, breakdownPercentages.strategy)),
+      implementation: Math.max(0, Math.min(100, breakdownPercentages.implementation)),
+      data: Math.max(0, Math.min(100, breakdownPercentages.data)),
+      culture: Math.max(0, Math.min(100, breakdownPercentages.culture))
+    };
 
     return {
-      score: percentage,
+      score: validPercentage,
       band,
-      breakdown: breakdownPercentages
+      breakdown: validatedBreakdown
     };
   };
 
@@ -149,8 +153,8 @@ const AIGrowthScore = () => {
         email: userEmail,
         score: quizResults.score,
         band: quizResults.band,
-        breakdown: quizResults.breakdown,
-        answers: quizAnswers
+        dimensions: quizResults.breakdown,
+        quizAnswers: quizAnswers
       };
 
       const audit = await generateQuizAudit(auditData);

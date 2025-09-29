@@ -1,14 +1,29 @@
 /**
- * Main entry point for the Alvi Global Enterprises Website application
+ * @fileoverview Application Entry Point
  * 
- * This file initializes the React application and mounts it to the DOM.
- * It sets up the root component and applies global styles.
+ * Main entry point for the Alvi Global Enterprises Website application.
+ * Initializes React, sets up global configurations, and mounts the application
+ * to the DOM with comprehensive error handling and development tools.
+ * 
+ * @module main
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
+ * 
+ * @features
+ * - ⚛️ React 18 with createRoot for optimal performance
+ * - 🎨 Global CSS styles and design system
+ * - 🔇 Console warning suppression for clean development
+ * - 🔧 Setup status validation and logging
+ * - 🛡️ Comprehensive error boundaries and fallback UI
+ * - 🎭 FOUC prevention with loaded class management
+ * - 📱 Mobile-optimized responsive design
  */
 
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 import { suppressConsoleWarnings } from "./lib/console-utils";
+import { logSetupStatus } from "./lib/setup-checker";
+import { AppWithErrorBoundary } from "./components/AppWithErrorBoundary";
 
 // Get the root DOM element and create React root
 const rootElement = document.getElementById("root");
@@ -19,19 +34,26 @@ if (!rootElement) {
 // Suppress console warnings in production
 suppressConsoleWarnings();
 
+// Check setup status in development
+if (import.meta.env.DEV) {
+  logSetupStatus();
+}
+
 // Create React root and render the App component
 const root = createRoot(rootElement);
 
 // Add error boundary for development
 try {
-  root.render(<App />);
+  root.render(<AppWithErrorBoundary />);
   
   // FOUC Prevention: Add loaded class when app is ready
   document.documentElement.classList.add('loaded');
   document.body.classList.add('loaded');
 } catch (error) {
   // Log error securely without exposing sensitive information
-  console.error('Error rendering app:', error);
+  if (import.meta.env.DEV) {
+    console.error('Error rendering app:', error);
+  }
   
   // Render secure error page without exposing internal details
   root.render(

@@ -1,71 +1,21 @@
 /**
- * @fileoverview Image Loading Utilities - Optimized Image Loading Strategies
+ * @fileoverview Image Utilities - Performance and Loading Optimization
  * 
- * This utility provides optimized image loading strategies to prevent browser
- * intervention warnings and improve performance. It includes:
- * - Smart loading attribute selection
- * - Performance-optimized image loading
- * - Error handling and fallbacks
- * - Accessibility improvements
+ * This module provides utilities for optimizing image loading and handling
+ * image-related operations with performance considerations.
  * 
+ * @module image-utils
  * @author Alvi Global Enterprises
  * @version 1.0.0
- * @since 1.0.0
  */
 
 /**
- * Determines the optimal loading strategy for images based on their position and importance
+ * Get optimized image loading attributes based on image type
  * 
- * @param isAboveFold - Whether the image is above the fold (visible without scrolling)
- * @param isCritical - Whether the image is critical for initial page load
- * @param isLarge - Whether the image is large and should be prioritized
+ * @param type - The type of image (hero, logo, thumbnail, background, icon)
  * @returns Object with optimized loading attributes
- * 
- * @example
- * ```typescript
- * const { loading, decoding, fetchPriority } = getImageLoadingStrategy(true, false, false);
- * // Returns: { loading: 'eager', decoding: 'sync', fetchPriority: 'high' }
- * ```
- * 
- * @since 1.0.0
  */
-export const getImageLoadingStrategy = (
-  isAboveFold: boolean = false,
-  isCritical: boolean = false,
-  isLarge: boolean = false
-) => {
-  // Above-the-fold or critical images should load immediately
-  if (isAboveFold || isCritical) {
-    return {
-      loading: 'eager' as const,
-      decoding: 'sync' as const,
-      fetchpriority: isLarge ? 'high' as const : 'auto' as const
-    };
-  }
-  
-  // Below-the-fold images can be lazy loaded
-  return {
-    loading: 'lazy' as const,
-    decoding: 'async' as const,
-    fetchpriority: 'low' as const
-  };
-};
-
-/**
- * Creates optimized image loading attributes for different use cases
- * 
- * @param type - The type of image (hero, logo, thumbnail, etc.)
- * @returns Object with optimized loading attributes
- * 
- * @example
- * ```typescript
- * const attrs = getOptimizedImageAttrs('hero');
- * // Returns optimized attributes for hero images
- * ```
- * 
- * @since 1.0.0
- */
-export const getOptimizedImageAttrs = (type: 'hero' | 'logo' | 'thumbnail' | 'background' | 'icon') => {
+export const getOptimizedImageAttrs = (type: string) => {
   switch (type) {
     case 'hero':
       return {
@@ -78,14 +28,7 @@ export const getOptimizedImageAttrs = (type: 'hero' | 'logo' | 'thumbnail' | 'ba
       return {
         loading: 'eager' as const,
         decoding: 'sync' as const,
-        fetchpriority: 'low' as const
-      };
-    
-    case 'thumbnail':
-      return {
-        loading: 'lazy' as const,
-        decoding: 'async' as const,
-        fetchpriority: 'low' as const
+        fetchpriority: 'high' as const
       };
     
     case 'background':
@@ -99,81 +42,33 @@ export const getOptimizedImageAttrs = (type: 'hero' | 'logo' | 'thumbnail' | 'ba
       return {
         loading: 'eager' as const,
         decoding: 'sync' as const,
-        fetchpriority: 'low' as const
+        fetchpriority: 'high' as const
       };
     
+    case 'thumbnail':
     default:
       return {
         loading: 'lazy' as const,
         decoding: 'async' as const,
-        fetchpriority: 'auto' as const
+        fetchpriority: 'low' as const
       };
   }
 };
 
 /**
- * Handles image loading errors gracefully with fallback strategies
+ * Handle image error with fallback
  * 
- * @param event - The error event from the image
- * @param fallbackSrc - Optional fallback image source
- * @param onError - Optional custom error handler
- * 
- * @example
- * ```typescript
- * <img 
- *   src="/image.jpg"
- *   onError={(e) => handleImageError(e, '/fallback.jpg')}
- * />
- * ```
- * 
- * @since 1.0.0
+ * @param event - The error event
+ * @param fallbackSrc - Fallback image source
  */
-export const handleImageError = (
-  event: React.SyntheticEvent<HTMLImageElement, Event>,
-  fallbackSrc?: string,
-  onError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void
-) => {
-  const target = event.target as HTMLImageElement;
+export const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc?: string) => {
+  const img = event.currentTarget;
   
-  // Try fallback image if provided
-  if (fallbackSrc && target.src !== fallbackSrc) {
-    target.src = fallbackSrc;
-    return;
+  // Log error for debugging
+  console.warn('Image failed to load:', img.src);
+  
+  // If fallback is provided and we're not already using it, try the fallback
+  if (fallbackSrc && img.src !== fallbackSrc) {
+    img.src = fallbackSrc;
   }
-  
-  // Hide broken images gracefully
-  target.style.display = 'none';
-  
-  // Call custom error handler if provided
-  if (onError) {
-    onError(event);
-  }
-};
-
-/**
- * Preloads critical images to improve perceived performance
- * 
- * @param imageSrc - The source URL of the image to preload
- * @param imageType - The MIME type of the image (optional)
- * 
- * @example
- * ```typescript
- * preloadCriticalImage('/hero-image.jpg', 'image/jpeg');
- * ```
- * 
- * @since 1.0.0
- */
-export const preloadCriticalImage = (imageSrc: string, imageType?: string) => {
-  if (typeof window === 'undefined') return; // SSR safety
-  
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.as = 'image';
-  link.href = imageSrc;
-  
-  if (imageType) {
-    link.type = imageType;
-  }
-  
-  document.head.appendChild(link);
 };

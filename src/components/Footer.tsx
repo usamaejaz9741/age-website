@@ -17,6 +17,7 @@
  */
 
 import { MapPin, Mail, Phone, Linkedin, Twitter, Globe } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /**
  * Footer component with comprehensive site information
@@ -34,27 +35,48 @@ import { MapPin, Mail, Phone, Linkedin, Twitter, Globe } from "lucide-react";
  * - Copyright notice
  */
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  /**
+   * Handle navigation to page sections
+   * 
+   * @param id - Section ID to navigate to
+   */
+  const handleNavigation = (id: string) => {
+    // If we're on the home page, scroll to section
+    if (location.pathname === '/') {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If we're on a different page, navigate to home and then scroll
+      navigate('/', { state: { scrollTo: id } });
+    }
+  };
+
   const links = {
     services: [
-      "AI & Automation",
-      "Product Engineering", 
-      "Growth & GTM",
-      "Creative & Content",
-      "Revenue Operations"
+      { label: "AI & Automation", id: "services" },
+      { label: "Product Engineering", id: "services" }, 
+      { label: "Growth & GTM", id: "services" },
+      { label: "Creative & Content", id: "services" },
+      { label: "Revenue Operations", id: "services" }
     ],
     company: [
-      "About Us",
-      "Case Studies",
-      "Careers",
-      "Contact",
-      "Blog"
+      { label: "About Us", id: "about" },
+      { label: "Case Studies", id: "case-studies" },
+      { label: "Careers", id: "careers" },
+      { label: "Contact", id: "contact" },
+      { label: "Blog", id: "blog" }
     ],
     resources: [
-      "Market Insights",
-      "Growth Playbook",
-      "ROI Calculator",
-      "Documentation",
-      "Support"
+      { label: "Market Insights", id: "insights" },
+      { label: "Growth Playbook", id: "playbook" },
+      { label: "ROI Calculator", id: "calculator" },
+      { label: "Documentation", id: "docs" },
+      { label: "Support", id: "support" }
     ]
   };
 
@@ -112,9 +134,12 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Services</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
               {links.services.map((link) => (
-                <li key={link}>
-                  <button className="hover:text-primary-foreground transition-colors text-left">
-                    {link}
+                <li key={link.label}>
+                  <button 
+                    onClick={() => handleNavigation(link.id)}
+                    className="hover:text-primary-foreground transition-colors text-left"
+                  >
+                    {link.label}
                   </button>
                 </li>
               ))}
@@ -126,9 +151,12 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
               {links.company.map((link) => (
-                <li key={link}>
-                  <button className="hover:text-primary-foreground transition-colors text-left">
-                    {link}
+                <li key={link.label}>
+                  <button 
+                    onClick={() => handleNavigation(link.id)}
+                    className="hover:text-primary-foreground transition-colors text-left"
+                  >
+                    {link.label}
                   </button>
                 </li>
               ))}
@@ -140,9 +168,12 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Resources</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
               {links.resources.map((link) => (
-                <li key={link}>
-                  <button className="hover:text-primary-foreground transition-colors text-left">
-                    {link}
+                <li key={link.label}>
+                  <button 
+                    onClick={() => handleNavigation(link.id)}
+                    className="hover:text-primary-foreground transition-colors text-left"
+                  >
+                    {link.label}
                   </button>
                 </li>
               ))}

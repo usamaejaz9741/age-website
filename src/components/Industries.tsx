@@ -63,7 +63,7 @@ const Industries = () => {
   return (
     <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
             Industries we{" "}
             <span className="text-primary">accelerate</span>
           </h2>
@@ -80,14 +80,14 @@ const Industries = () => {
                 key={industry.name}
                 delay={index * 100}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1 cursor-pointer"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer"
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
                   style={{ backgroundColor: industry.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8" 
+                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
                     style={{ color: industry.iconColor }}
                   />
                 </div>
@@ -100,7 +100,7 @@ const Industries = () => {
                   {industry.description}
                 </p>
 
-                <div className="mt-6 flex items-center text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-6 flex items-center justify-center text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Learn more →
                 </div>
               </AnimatedCard>

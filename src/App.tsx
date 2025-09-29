@@ -1,13 +1,25 @@
 /**
- * @fileoverview Main App component for Alvi Global Enterprises Website
+ * @fileoverview Main App Component - Application Root
  * 
- * This is the root component that sets up the application's core infrastructure:
- * - React Query for data fetching and caching
- * - React Router for client-side routing
- * - Helmet for SEO meta tag management
- * - Toast notifications and tooltips
- * - Preloader with intelligent loading detection
- * - FOUC (Flash of Unstyled Content) prevention
+ * Root component that initializes the complete application infrastructure including
+ * routing, state management, SEO optimization, and user experience enhancements.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <App />
+ * ```
+ * 
+ * @features
+ * - 🚀 React Query for efficient data fetching and caching
+ * - 🛣️ React Router for client-side navigation and routing
+ * - 🔍 Helmet for dynamic SEO meta tag management
+ * - 🔔 Toast notifications and tooltip system
+ * - ⏳ Intelligent preloader with loading state detection
+ * - 🎨 FOUC (Flash of Unstyled Content) prevention
+ * - ♿ Full accessibility support with error boundaries
+ * - 📱 Responsive design with mobile optimization
+ * - 🎭 Smooth page transitions and animations
  * 
  * @author Alvi Global Enterprises
  * @version 1.0.0
@@ -19,11 +31,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import Preloader from "./components/Preloader";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Index from "./pages/Index";
-import AIGrowthScore from "./pages/ai-growth-score";
-import NotFound from "./pages/NotFound";
+
+// Lazy load heavy components for better performance
+const AIGrowthScore = lazy(() => import("./pages/ai-growth-score"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 /**
  * React Query client configuration
@@ -128,11 +143,12 @@ const App = () => {
   };
 
   return (
-    <HelmetProvider>
-      {/* React Query for data fetching and caching */}
-      <QueryClientProvider client={queryClient}>
-        {/* Tooltip system provider */}
-        <TooltipProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        {/* React Query for data fetching and caching */}
+        <QueryClientProvider client={queryClient}>
+          {/* Tooltip system provider */}
+          <TooltipProvider>
           {/* Conditional preloader with intelligent loading detection */}
           {showPreloader && (
             <Preloader 
@@ -159,14 +175,27 @@ const App = () => {
               {/* Homepage route */}
               <Route path="/" element={<Index />} />
               {/* AI Growth Score assessment page */}
-              <Route path="/ai-growth-score" element={<AIGrowthScore />} />
+              <Route path="/ai-growth-score" element={
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>}>
+                  <AIGrowthScore />
+                </Suspense>
+              } />
               {/* 404 fallback route */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>}>
+                  <NotFound />
+                </Suspense>
+              } />
             </Routes>
           </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 };
 

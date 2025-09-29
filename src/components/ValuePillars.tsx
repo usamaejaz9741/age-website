@@ -56,11 +56,11 @@ const ValuePillars = () => {
   return (
     <div>
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
             Built different, built to{" "}
             <span className="text-primary">win</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto" style={{ lineHeight: 'var(--line-height-relaxed)' }}>
             We don't just build software—we engineer complete revenue systems 
             designed for the realities of emerging markets.
           </p>
@@ -74,21 +74,21 @@ const ValuePillars = () => {
                 key={pillar.title}
                 delay={index * 100}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-500 ease-gentle hover:-translate-y-1"
+                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce"
-                  style={{ backgroundColor: `${pillar.bgColor} !important` }}
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                  style={{ backgroundColor: pillar.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8" 
-                    style={{ color: `${pillar.iconColor} !important` }}
+                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                    style={{ color: pillar.iconColor }}
                   />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-4 leading-tight">
+                <h3 className="text-xl font-bold text-foreground mb-4" style={{ lineHeight: 'var(--line-height-tight)' }}>
                   {pillar.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground" style={{ lineHeight: 'var(--line-height-relaxed)' }}>
                   {pillar.description}
                 </p>
               </AnimatedCard>

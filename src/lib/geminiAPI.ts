@@ -1,18 +1,39 @@
 /**
- * Gemini API Client for AI Content Generation
+ * @fileoverview Gemini API Client for AI Content Generation
  * 
- * This class provides a TypeScript wrapper for Google's Gemini AI API,
- * specifically designed for generating AI-powered recommendations and content
- * for the AI Growth Score assessment.
+ * TypeScript wrapper for Google's Gemini AI API, providing secure and efficient
+ * access to AI-powered content generation for the AI Growth Score assessment.
+ * 
+ * @module geminiAPI
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
+ * 
+ * @features
+ * - 🤖 Integration with Google's Gemini 2.0 Flash model
+ * - 🔒 Secure API key management and validation
+ * - 📊 Comprehensive error handling with specific status codes
+ * - 🎯 Optimized for AI Growth Score assessment content
+ * - ⚡ Efficient request/response handling
+ * - 🛡️ Input validation and sanitization
+ * - 📝 Detailed error logging for debugging
  */
 
 import { GeminiContent, GeminiRequest, GeminiResponse } from '../types/gemini';
+import { apiRateLimiter } from './security';
 
 /**
  * Client class for interacting with Google's Gemini AI API
  * 
- * Provides methods for generating AI content using the Gemini 2.0 Flash model.
- * Handles authentication, request formatting, and error handling.
+ * Provides secure and efficient methods for generating AI content using the
+ * Gemini 2.0 Flash model. Handles authentication, request formatting, and
+ * comprehensive error handling with specific status code responses.
+ * 
+ * @class GeminiAPI
+ * @example
+ * ```typescript
+ * const geminiAPI = new GeminiAPI();
+ * const response = await geminiAPI.generateContent('Generate AI recommendations');
+ * ```
  */
 export class GeminiAPI {
   /** API key for authenticating with Gemini API */
@@ -49,6 +70,13 @@ export class GeminiAPI {
    * @throws Error if API request fails or response is invalid
    */
   async generateContent(prompt: string): Promise<string> {
+    // Check rate limiting before making API call
+    const clientId = 'anonymous'; // In a real app, use user ID or IP
+    if (!apiRateLimiter.isAllowed(clientId)) {
+      const remaining = apiRateLimiter.getRemainingRequests(clientId);
+      throw new Error(`Rate limit exceeded. Please wait before making another request. Remaining requests: ${remaining}`);
+    }
+
     // Format request according to Gemini API specification
     const request: GeminiRequest = {
       contents: [
@@ -79,7 +107,17 @@ export class GeminiAPI {
       // Check for HTTP errors
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Gemini API error: ${response.status} ${response.statusText} - ${errorText}`);
+        
+        // Handle specific error codes
+        if (response.status === 503) {
+          throw new Error('AI service is temporarily unavailable. Please try again in a few moments.');
+        } else if (response.status === 429) {
+          throw new Error('API rate limit exceeded. Please wait a moment before trying again.');
+        } else if (response.status === 401) {
+          throw new Error('API authentication failed. Please check your API key.');
+        } else {
+          throw new Error(`AI service error: ${response.status} ${response.statusText}`);
+        }
       }
 
       // Parse and validate response
@@ -92,11 +130,20 @@ export class GeminiAPI {
       
       return data.candidates[0].content.parts[0].text;
     } catch (error) {
-      // Error calling Gemini API
-      
-      // Re-throw with more context for debugging
+      // Enhanced error handling with specific error types
       if (error instanceof Error) {
-        throw new Error(`Failed to generate AI content: ${error.message}`);
+        // Check for specific error types
+        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+          throw new Error('API authentication failed. Please check your API key.');
+        } else if (error.message.includes('429') || error.message.includes('rate limit')) {
+          throw new Error('API rate limit exceeded. Please try again later.');
+        } else if (error.message.includes('500') || error.message.includes('Internal Server Error')) {
+          throw new Error('AI service is temporarily unavailable. Please try again later.');
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          throw new Error('Network error. Please check your connection and try again.');
+        } else {
+          throw new Error(`Failed to generate AI content: ${error.message}`);
+        }
       } else {
         throw new Error('Unknown error occurred while calling Gemini API');
       }

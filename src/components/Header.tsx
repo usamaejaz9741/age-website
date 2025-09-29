@@ -10,7 +10,7 @@
  * - Cross-page navigation with scroll-to-section support
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Calendar } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -28,6 +28,7 @@ import { openCalendlyBooking } from "@/lib/calendly";
  */
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -95,6 +96,32 @@ const Header = () => {
     { label: "Industries", id: "industries" },
   ];
 
+  // Scroll detection effect
+  useEffect(() => {
+    const handleScroll = () => {
+      // Only apply scroll effect on home page
+      if (location.pathname === '/') {
+        const scrollY = window.scrollY;
+        // Trigger background when scrolled past 100px (hero section height threshold)
+        setIsScrolled(scrollY > 100);
+      } else {
+        // On other pages, always show background
+        setIsScrolled(true);
+      }
+    };
+
+    // Set initial state
+    handleScroll();
+
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [location.pathname]);
+
   return (
     <>
       {/* Skip to main content link for accessibility */}
@@ -104,7 +131,14 @@ const Header = () => {
       >
         Skip to main content
       </a>
-      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-neutral-10 z-50" role="banner">
+      <header 
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ease-out ${
+          isScrolled 
+            ? 'bg-background/80 backdrop-blur-md border-b border-neutral-10' 
+            : 'bg-transparent backdrop-blur-none border-b-0'
+        }`} 
+        role="banner"
+      >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -119,6 +153,9 @@ const Header = () => {
                 className="h-full w-auto"
                 loading="eager"
                 decoding="sync"
+                width="120"
+                height="40"
+                fetchpriority="high"
               />
             </button>
           </div>
@@ -153,7 +190,9 @@ const Header = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-neutral-75 hover:text-resolution-blue-700 transition-colors"
+              className="text-neutral-75 hover:text-resolution-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md p-1"
+              aria-label="Toggle mobile menu"
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -168,7 +207,7 @@ const Header = () => {
                 <button
                   key={item.id}
                   onClick={() => handleNavigation(item.id)}
-                  className="block w-full text-left px-3 py-2 text-neutral-75 hover:text-resolution-blue-700 hover:bg-neutral-5 font-medium transition-colors duration-500 ease-gentle"
+                  className="block w-full text-left px-3 py-2 text-neutral-75 hover:text-resolution-blue-700 hover:bg-neutral-5 font-medium transition-all duration-300 ease-out rounded-md active:bg-primary/10"
                 >
                   {item.label}
                 </button>

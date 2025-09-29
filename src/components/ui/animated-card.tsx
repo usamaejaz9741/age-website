@@ -77,7 +77,7 @@ export function AnimatedCard({
    */
   const getAnimationClasses = () => {
     // Base transition classes with custom easing
-    const baseClasses = 'transition-all ease-gentle duration-500';
+    const baseClasses = 'transition-all ease-gentle duration-300';
     
     // Hidden state classes (before animation)
     if (!isIntersecting) {

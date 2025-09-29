@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Calendar, TrendingUp, ExternalLink } from "lucide-react";
 import { openCalendlyBooking } from "@/lib/calendly";
+import { useFocusTrap } from "@/hooks/use-focus-trap";
 
 /**
  * Props interface for GrowthAuditModal component
@@ -45,6 +46,9 @@ interface GrowthAuditModalProps {
  * @param onClose - Function to close the modal
  */
 const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
+  // Set up focus trap for accessibility
+  const trapRef = useFocusTrap(isOpen);
+
   /**
    * Handle Calendly booking button click
    * 
@@ -75,10 +79,15 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-6">
+      <DialogContent 
+        ref={trapRef}
+        className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-6"
+        role="dialog"
+        aria-modal="true"
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center text-xl sm:text-2xl md:text-3xl font-heading font-bold text-foreground mb-2">
-            <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-3 sm:mr-4" style={{ color: 'var(--icon-blue) !important' }} />
+            <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-3 sm:mr-4 text-[var(--icon-blue)]" />
             Book Your Growth Audit
           </DialogTitle>
         </DialogHeader>
@@ -86,11 +95,11 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
         <div className="py-4 sm:py-6">
           <div className="bg-gradient-card p-4 sm:p-6 md:p-8 rounded-xl mb-6 sm:mb-8 shadow-soft hover:shadow-medium transition-all">
             <div className="flex items-start md:items-center mb-6 gap-4">
-              <div className="bg-primary/10 p-3 rounded-lg group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-6 h-6" style={{ color: 'var(--icon-green) !important' }} />
+              <div className="p-3 rounded-lg group-hover:scale-110 transition-transform flex items-center justify-center" style={{ backgroundColor: 'var(--icon-green-bg)' }}>
+                <TrendingUp className="w-6 h-6 text-[var(--icon-green)] flex-shrink-0 mx-auto my-auto" />
               </div>
               <div>
-                <h3 className="text-xl font-kufam font-semibold text-foreground mb-1">
+                <h3 className="text-xl font-semibold text-foreground mb-1" style={{ lineHeight: 'var(--line-height-tight)' }}>
                   Free AI Growth Consultation
                 </h3>
                 <p className="text-muted-foreground/80">

@@ -47,6 +47,17 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     params: {
       eventsPerSecond: 2
     }
+  },
+  // Connection pooling and performance optimizations
+  global: {
+    headers: {
+      'Connection': 'keep-alive',
+      'Keep-Alive': 'timeout=5, max=1000'
+    }
+  },
+  // Database connection settings
+  db: {
+    schema: 'public'
   }
 })
 

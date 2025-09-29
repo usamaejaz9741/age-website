@@ -146,22 +146,22 @@ const Index = () => {
       </SectionTemplate>
       
       {/* Services Grid Section */}
-      <SectionTemplate variant="muted" padding="xl" maxWidth="7xl" align="center">
+      <SectionTemplate id="services" variant="muted" padding="xl" maxWidth="7xl" align="center">
         <ServicesGrid />
       </SectionTemplate>
       
       {/* Case Studies Section */}
-      <SectionTemplate variant="default" padding="xl" maxWidth="7xl" align="center">
+      <SectionTemplate id="case-studies" variant="default" padding="xl" maxWidth="7xl" align="center">
         <CaseStudies />
       </SectionTemplate>
       
       {/* How We Work Section */}
-      <SectionTemplate variant="muted" padding="xl" maxWidth="7xl" align="center">
+      <SectionTemplate id="how-we-work" variant="muted" padding="xl" maxWidth="7xl" align="center">
         <HowWeWork />
       </SectionTemplate>
       
       {/* Industries Section */}
-      <SectionTemplate variant="default" padding="xl" maxWidth="7xl" align="center">
+      <SectionTemplate id="industries" variant="default" padding="xl" maxWidth="7xl" align="center">
         <Industries />
       </SectionTemplate>
       

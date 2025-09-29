@@ -30,7 +30,9 @@ const NotFound = () => {
    * This helps identify broken links or user navigation patterns
    */
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    if (import.meta.env.DEV) {
+      console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    }
     
     // Track 404 errors in Google Analytics if available
     if (typeof window !== 'undefined' && window.gtag) {

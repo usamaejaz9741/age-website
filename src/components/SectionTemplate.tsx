@@ -17,7 +17,7 @@
  * - Performance optimizations
  */
 
-import { ReactNode, useRef, useEffect, useState } from "react";
+import { ReactNode, useRef, useEffect, useState, memo } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -123,7 +123,7 @@ interface SectionTemplateProps {
  * @param scrollSpyOffset - Scroll spy offset
  * @returns JSX element with enhanced section structure
  */
-const SectionTemplate = ({
+const SectionTemplate = memo(({
   children,
   id,
   variant = 'default',
@@ -387,6 +387,8 @@ const SectionTemplate = ({
       </div>
     </section>
   );
-};
+});
+
+SectionTemplate.displayName = 'SectionTemplate';
 
 export default SectionTemplate;

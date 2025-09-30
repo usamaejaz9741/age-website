@@ -13,7 +13,7 @@
  * @features
  * - 🎯 Compelling headline with clear value proposition
  * - 🚀 Strategic call-to-action buttons for lead generation
- * - 🎨 Animated background blobs with gradient overlay
+ * - 🎨 3D interactive Spline background with gradient overlay
  * - 📱 Fully responsive design with mobile optimization
  * - 🔗 Seamless modal integration for growth audit booking
  * - ⚡ Optimized performance with React.memo
@@ -28,12 +28,13 @@ import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 import { useState, memo } from "react";
 import GrowthAuditModal from "./GrowthAuditModal";
+import SplineBackground from "./SplineBackground";
 
 /**
  * Hero section component with main value proposition and CTAs
  * 
  * Features:
- * - Full-screen hero with background image
+ * - Full-screen hero with 3D interactive Spline background
  * - Compelling headline emphasizing revenue engineering
  * - Dual CTA buttons (primary consultation booking, secondary assessment)
  * - Growth audit modal integration
@@ -46,29 +47,8 @@ const Hero = memo(() => {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden" role="banner" aria-labelledby="hero-heading">
 
-      {/* Animated Floating Gradient Blobs - Above background, below text */}
-      <div className="fixed inset-0 z-10 pointer-events-none">
-        {/* Blob 1 - Top Left */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-resolution-blue-600/10 to-malibu-300/8 sm:from-resolution-blue-600/30 sm:to-malibu-300/25 rounded-full blur-3xl animate-float-slow" />
-        
-        {/* Blob 2 - Top Right */}
-        <div className="absolute top-32 right-16 w-96 h-96 bg-gradient-to-bl from-malibu-300/12 to-resolution-blue-600/7 sm:from-malibu-300/35 sm:to-resolution-blue-600/20 rounded-full blur-3xl animate-float-medium" />
-        
-        {/* Blob 3 - Center Left */}
-        <div className="absolute top-1/2 left-8 w-80 h-80 bg-gradient-to-tr from-resolution-blue-600/8 to-malibu-300/10 sm:from-resolution-blue-600/25 sm:to-malibu-300/30 rounded-full blur-3xl animate-float-fast" />
-        
-        {/* Blob 4 - Center Right */}
-        <div className="absolute top-1/3 right-8 w-64 h-64 bg-gradient-to-tl from-malibu-300/10 to-resolution-blue-600/8 sm:from-malibu-300/30 sm:to-resolution-blue-600/25 rounded-full blur-3xl animate-float-slow" />
-        
-        {/* Blob 5 - Bottom Left */}
-        <div className="absolute bottom-20 left-20 w-88 h-88 bg-gradient-to-tr from-resolution-blue-600/7 to-malibu-300/12 sm:from-resolution-blue-600/20 sm:to-malibu-300/35 rounded-full blur-3xl animate-float-medium" />
-        
-        {/* Blob 6 - Bottom Right */}
-        <div className="absolute bottom-32 right-12 w-72 h-72 bg-gradient-to-bl from-malibu-300/8 to-resolution-blue-600/10 sm:from-malibu-300/25 sm:to-resolution-blue-600/30 rounded-full blur-3xl animate-float-fast" />
-        
-        {/* Blob 7 - Center */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-resolution-blue-600/5 to-malibu-300/7 sm:from-resolution-blue-600/15 sm:to-malibu-300/20 rounded-full blur-3xl animate-float-slow" />
-      </div>
+      {/* 3D Interactive Spline Background */}
+      <SplineBackground />
 
       {/* Gradient Overlay - Seamless blend with proof bar */}
       <div 
@@ -76,7 +56,7 @@ const Hero = memo(() => {
       />
 
       {/* Content */}
-      <div className="relative z-30 max-w-7xl mx-auto px-6 py-20 text-center">
+      <div className="relative z-30 max-w-7xl mx-auto px-6 py-20 text-center pointer-events-none">
         <div className="animate-fade-in">
           <h1 id="hero-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
             Engineer revenue,{" "}
@@ -90,7 +70,7 @@ const Hero = memo(() => {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up pointer-events-auto">
             <Button 
               variant="cta" 
               size="xl"

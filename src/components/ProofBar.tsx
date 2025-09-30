@@ -16,6 +16,7 @@
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { getOptimizedImageAttrs, handleImageError } from "@/lib/image-utils";
+import { ANIMATION_DURATIONS, ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
  * Proof Bar component displaying key metrics and client logos
@@ -42,46 +43,51 @@ const ProofBar = () => {
   return (
     <div>
         {/* Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+        <section aria-label="Key performance metrics" className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {metrics.map((metric, index) => (
             <AnimatedCard
               key={metric.label}
-              delay={index * 100}
+              delay={index * ANIMATION_DELAYS.SMALL}
               direction="up"
               className="text-center"
             >
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2">
+              <div 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2"
+                aria-label={`${metric.prefix || ''}${metric.value}${metric.suffix || ''} ${metric.label}`}
+              >
                 <AnimatedCounter
                   endValue={metric.value}
-                  duration={2000}
-                  delay={index * 200}
+                  duration={ANIMATION_DURATIONS.COUNTER_DEFAULT}
+                  delay={index * ANIMATION_DURATIONS.METRIC_STAGGER}
                   prefix={metric.prefix}
                   suffix={metric.suffix}
+                  aria-hidden="true"
                 />
               </div>
-              <div className="text-xs sm:text-sm text-muted-foreground font-medium uppercase tracking-wide">
+              <div className="text-xs sm:text-sm text-muted-foreground font-medium uppercase tracking-wide" aria-hidden="true">
                 {metric.label}
               </div>
             </AnimatedCard>
           ))}
-        </div>
+        </section>
 
         {/* Client Logos */}
-        <div className="text-center">
+        <section aria-label="Client logos and partnerships" className="text-center">
           <p className="text-base text-muted-foreground uppercase tracking-wide mb-8 font-medium">
             Trusted by industry leaders
           </p>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-12 items-center">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-12 items-center" role="list">
             {clientLogos.map((client, index) => (
               <div 
                 key={client.name}
                 className="text-center opacity-60 hover:opacity-100 transition-opacity"
                 style={{ animationDelay: `${index * 0.1}s` }}
+                role="listitem"
               >
                 <div className="h-8 flex items-center justify-center">
                 <img 
                   src={client.logo}
-                  alt={`${client.name} logo`}
+                  alt={`${client.name} - Trusted client partner`}
                   className="max-h-8 max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 ease-gentle"
                   {...getOptimizedImageAttrs('logo')}
                   onLoad={() => {
@@ -93,7 +99,7 @@ const ProofBar = () => {
               </div>
             ))}
           </div>
-        </div>
+        </section>
     </div>
   );
 };

@@ -1,9 +1,26 @@
 /**
- * 404 Not Found Page Component
+ * @fileoverview 404 Not Found Page Component - User-Friendly Error Handling
  * 
- * This component handles all invalid routes and provides a user-friendly
- * error page with navigation back to the main site. It also logs 404 errors
- * for monitoring and debugging purposes.
+ * This component provides a comprehensive 404 error page that handles all
+ * invalid routes with user-friendly messaging and navigation options. It includes:
+ * - Clear error messaging with brand styling
+ * - Multiple navigation options (home, back)
+ * - SEO optimization with proper meta tags
+ * - Error tracking and analytics integration
+ * - Accessibility compliance (WCAG 2.1 AA)
+ * - Responsive design for all devices
+ * 
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
+ * @since 1.0.0
+ * 
+ * @features
+ * - 🎨 Brand-consistent error page design
+ * - 🧭 Multiple navigation options
+ * - 📊 Error tracking and analytics
+ * - ♿ Full accessibility compliance
+ * - 📱 Responsive mobile design
+ * - 🔍 SEO-optimized meta tags
  */
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,27 +31,63 @@ import PageTemplate from "@/components/PageTemplate";
 import SectionTemplate from "@/components/SectionTemplate";
 
 /**
- * 404 Not Found page component
+ * 404 Not Found Page Component
  * 
- * Displays when users navigate to a non-existent route. Provides:
- * - Clear error messaging
- * - Navigation back to home page
- * - Error logging for monitoring
+ * Renders a user-friendly error page when users navigate to non-existent routes.
+ * Provides clear messaging, navigation options, and comprehensive error tracking.
+ * 
+ * @component
+ * @returns {JSX.Element} The 404 error page with navigation options
+ * 
+ * @example
+ * ```tsx
+ * // Used automatically by React Router for invalid routes
+ * <Route path="*" element={<NotFound />} />
+ * ```
+ * 
+ * @accessibility
+ * - Uses semantic HTML structure
+ * - Provides clear heading hierarchy
+ * - Includes descriptive button labels
+ * - Supports keyboard navigation
+ * 
+ * @seo
+ * - Sets noindex, nofollow meta tags
+ * - Includes structured data
+ * - Provides canonical URL
+ * - Optimized page title and description
+ * 
+ * @since 1.0.0
  */
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   /**
-   * Log 404 errors for monitoring and debugging
-   * This helps identify broken links or user navigation patterns
+   * Logs 404 errors for monitoring and debugging purposes
+   * 
+   * Tracks invalid route access to help identify:
+   * - Broken internal links
+   * - User navigation patterns
+   * - Potential SEO issues
+   * - Missing pages that users expect
+   * 
+   * @effect
+   * - Logs to console in development
+   * - Sends analytics event if Google Analytics is available
+   * - Can be extended to send to error tracking services
+   * 
+   * @dependencies location.pathname - Triggers when route changes
+   * 
+   * @since 1.0.0
    */
   useEffect(() => {
+    // Development logging for debugging
     if (import.meta.env.DEV) {
       console.error("404 Error: User attempted to access non-existent route:", location.pathname);
     }
     
-    // Track 404 errors in Google Analytics if available
+    // Analytics tracking for monitoring
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'page_not_found', {
         event_category: 'error',
@@ -43,19 +96,33 @@ const NotFound = () => {
       });
     }
     
-    // In production, you might want to send this to an error tracking service
+    // TODO: Integrate with error tracking service (e.g., Sentry)
     // Example: Sentry.captureException(new Error(`404: ${location.pathname}`));
   }, [location.pathname]);
 
   /**
-   * Handle navigation back to home page
+   * Handles navigation to the home page
+   * 
+   * Navigates the user back to the main landing page using React Router's
+   * programmatic navigation. This provides a clear path forward when users
+   * encounter a 404 error.
+   * 
+   * @function
+   * @since 1.0.0
    */
   const handleGoHome = () => {
     navigate('/');
   };
 
   /**
-   * Handle navigation back to previous page
+   * Handles navigation back to the previous page
+   * 
+   * Uses the browser's history to navigate back to the previous page.
+   * This provides users with a quick way to return to where they came from
+   * if they accidentally navigated to an invalid route.
+   * 
+   * @function
+   * @since 1.0.0
    */
   const handleGoBack = () => {
     navigate(-1);

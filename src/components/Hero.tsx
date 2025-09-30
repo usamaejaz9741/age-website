@@ -72,10 +72,7 @@ const Hero = memo(() => {
 
       {/* Gradient Overlay - Seamless blend with proof bar */}
       <div 
-        className="fixed inset-0 z-20 pointer-events-none" 
-        style={{
-          background: 'linear-gradient(to top, #fbfbfc, transparent)'
-        }}
+        className="fixed inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#fbfbfc] to-transparent"
       />
 
       {/* Content */}
@@ -99,10 +96,11 @@ const Hero = memo(() => {
               size="xl"
               className="group w-full sm:min-w-[280px] sm:w-auto"
               onClick={() => setShowGrowthAudit(true)}
+              aria-label="Book a free AI growth consultation with Alvi Global Enterprises"
             >
-              <Calendar className="mr-2" />
+              <Calendar className="mr-2" aria-hidden="true" />
               Book Free Consultation
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Button>
             
             <Button 
@@ -110,9 +108,10 @@ const Hero = memo(() => {
               size="xl"
               className="group w-full sm:min-w-[280px] sm:w-auto"
               onClick={() => document.getElementById('case-studies')?.scrollIntoView({ behavior: 'smooth' })}
+              aria-label="Scroll to view our case studies and success stories"
             >
               See Case Studies
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Button>
           </div>
         </div>

@@ -38,6 +38,11 @@ export interface UserSubmission {
   auditContent?: string;
   /** Quiz answers for detailed analysis (optional) */
   quizAnswers?: { [key: string]: number };
+  /** Metadata for tracking and analytics (optional) */
+  metadata?: {
+    userAgent?: string;
+    referrer?: string;
+  };
 }
 
 /**
@@ -90,20 +95,52 @@ export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
 const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
   try {
     // Save to localStorage for client-side access
-    const existingData = localStorage.getItem('age_user_submissions');
-    const submissions: UserSubmission[] = existingData ? JSON.parse(existingData) : [];
+    const existingDataString = localStorage.getItem('age_user_submissions');
+    let submissions: UserSubmission[] = [];
+    
+    // Safely parse existing data
+    if (existingDataString) {
+      try {
+        submissions = JSON.parse(existingDataString);
+      } catch (parseError) {
+        if (import.meta.env.DEV) {
+          console.error('Error parsing existing localStorage data:', parseError);
+        }
+        // Reset to empty array if parse fails
+        submissions = [];
+      }
+    }
 
     // Add new submission to the array
     submissions.push(data);
 
-    // Update localStorage
-    localStorage.setItem('age_user_submissions', JSON.stringify(submissions));
+    // Update localStorage with error handling
+    try {
+      localStorage.setItem('age_user_submissions', JSON.stringify(submissions));
+    } catch (storageError) {
+      if (import.meta.env.DEV) {
+        console.error('Error setting localStorage:', storageError);
+      }
+      // Quota exceeded - try to clear old data and retry
+      if (submissions.length > 1) {
+        // Keep only the current submission
+        localStorage.setItem('age_user_submissions', JSON.stringify([data]));
+      }
+    }
 
     // Save individual submission with timestamp
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const sanitizedEmail = data.email.replace('@', '_at_').replace(/[^a-zA-Z0-9._-]/g, '_');
     const individualKey = `age_submission_${sanitizedEmail}_${timestamp}`;
-    localStorage.setItem(individualKey, JSON.stringify(data));
+    
+    try {
+      localStorage.setItem(individualKey, JSON.stringify(data));
+    } catch (storageError) {
+      // Individual submission storage failed - non-critical
+      if (import.meta.env.DEV) {
+        console.error('Error saving individual submission:', storageError);
+      }
+    }
 
   } catch (error) {
     if (import.meta.env.DEV) {
@@ -131,7 +168,15 @@ export const exportToCSV = (): boolean => {
       return false;
     }
 
-    const submissions: UserSubmission[] = JSON.parse(existingData);
+    let submissions: UserSubmission[] = [];
+    try {
+      submissions = JSON.parse(existingData);
+    } catch (parseError) {
+      if (import.meta.env.DEV) {
+        console.error('Error parsing localStorage data for export:', parseError);
+      }
+      return false;
+    }
 
     // Create CSV header row
     const csvHeader = [

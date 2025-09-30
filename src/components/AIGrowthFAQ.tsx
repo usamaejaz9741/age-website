@@ -14,6 +14,7 @@
  */
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, BORDER_RADIUS, SHADOWS } from "@/constants/design-system";
 
 /**
  * AI Growth FAQ component displaying frequently asked questions
@@ -51,11 +52,11 @@ const AIGrowthFAQ = () => {
   return (
     <section className="py-20 bg-muted/5">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground`}>
             Everything you need to know about the AI Growth Score
           </p>
         </div>
@@ -65,12 +66,12 @@ const AIGrowthFAQ = () => {
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              className="bg-gradient-card rounded-xl shadow-soft border px-6"
+              className={`bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} border px-6`}
             >
-              <AccordionTrigger className="text-left font-semibold text-foreground hover:text-primary">
+              <AccordionTrigger className={`text-left font-semibold text-foreground hover:text-primary ${TEXT_SIZES.base}`}>
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground pt-2">
+              <AccordionContent className={`text-muted-foreground pt-2 ${TEXT_SIZES.base} leading-relaxed`}>
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

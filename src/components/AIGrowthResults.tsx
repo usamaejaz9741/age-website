@@ -28,7 +28,7 @@
  * @version 1.0.0
  */
 
-import { useState, useEffect, useMemo, memo } from "react";
+import { useState, useEffect, useMemo, memo, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,6 +36,9 @@ import { QuizResults } from "@/pages/ai-growth-score";
 import { GeminiAPI } from "@/lib/geminiAPI";
 import { openCalendlyBooking } from "@/lib/calendly";
 import { toast } from "@/components/ui/use-toast";
+import { ERROR_MESSAGES } from "@/constants/messages";
+import { getFallbackRecommendations } from "@/constants/recommendations";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { 
   TrendingUp, 
   Target, 
@@ -86,10 +89,19 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   
+  // Ref to track if component is mounted (prevents state updates after unmount)
+  const isMounted = useRef(true);
+  
   // Initialize Gemini API client for generating recommendations
   const geminiAPI = useMemo(() => new GeminiAPI(), []);
 
   useEffect(() => {
+    // Set mounted flag
+    isMounted.current = true;
+    
+    // Create AbortController for request cancellation
+    const abortController = new AbortController();
+    
     const generateRecommendations = async () => {
       try {
         const prompt = `Based on the following AI maturity assessment results, provide 3 specific, actionable recommendations for improvement:
@@ -106,8 +118,12 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         Please provide 3 concise, specific recommendations that will help improve the areas with the lowest scores.
         Format each recommendation in a single sentence without numbering.`;
 
-        const response = await geminiAPI.generateContent(prompt);
+        const response = await geminiAPI.generateContent(prompt, abortController.signal);
         const recommendations = response.split('\n').filter(r => r.trim().length > 0).slice(0, 3);
+        
+        // Only update state if component is still mounted
+        if (!isMounted.current) return;
+        
         setRecommendations(recommendations);
         
         // Save user data with complete information
@@ -126,39 +142,31 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         try {
           const { saveUserData } = await import('@/lib/storage');
           await saveUserData(userData);
-        } catch (error) {
+        } catch (saveError) {
+          // Error saving fallback data - non-critical, already logged elsewhere
           if (import.meta.env.DEV) {
-          console.error('Error saving user data:', error);
-        }
+            console.error('Error saving fallback user data:', saveError);
+          }
         }
       } catch (error) {
         if (import.meta.env.DEV) {
           console.error('Error generating recommendations:', error);
         }
         
+        // Only proceed if component is still mounted
+        if (!isMounted.current) return;
+        
         // Show user-friendly notification about AI service
         if (error instanceof Error && error.message.includes('temporarily unavailable')) {
           toast({
-            title: "AI Service Temporarily Unavailable",
-            description: "We're using pre-generated recommendations. The AI service will be back online shortly.",
+            title: ERROR_MESSAGES.AI_UNAVAILABLE,
+            description: ERROR_MESSAGES.AI_UNAVAILABLE_DESCRIPTION,
             variant: "default",
           });
         }
         
-        // Provide context-aware fallback recommendations based on score
-        const defaultRecommendations = results.score < 40 ? [
-          'Develop a comprehensive AI strategy aligned with business goals',
-          'Implement data governance and quality improvement processes',
-          'Create an AI training program to build organizational capabilities'
-        ] : results.score < 70 ? [
-          'Scale AI initiatives across multiple business functions',
-          'Enhance data integration and analytics capabilities',
-          'Develop advanced AI governance and risk management frameworks'
-        ] : [
-          'Optimize AI operations for maximum business impact',
-          'Explore cutting-edge AI technologies and partnerships',
-          'Share AI expertise to drive industry innovation'
-        ];
+        // Get context-aware fallback recommendations based on score
+        const defaultRecommendations = Array.from(getFallbackRecommendations(results.score));
         
         setRecommendations(defaultRecommendations);
         
@@ -178,29 +186,39 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         try {
           const { saveUserData } = await import('@/lib/storage');
           await saveUserData(userData);
-        } catch (error) {
+        } catch (fallbackSaveError) {
+          // Error saving fallback user data - non-critical
           if (import.meta.env.DEV) {
-          console.error('Error saving user data:', error);
-        }
+            console.error('Error saving fallback user data:', fallbackSaveError);
+          }
         }
       } finally {
-        setLoading(false);
+        // Only update loading state if component is still mounted
+        if (isMounted.current) {
+          setLoading(false);
+        }
       }
     };
 
     generateRecommendations();
+    
+    // Cleanup function to prevent state updates after unmount and cancel in-flight requests
+    return () => {
+      isMounted.current = false;
+      abortController.abort(); // Cancel any in-flight API requests
+    };
   }, [results, geminiAPI, userEmail, utmParams, auditContent, quizAnswers]);
 
-  const getBandColor = (band: string) => {
+  const getBandColor = useCallback((band: string) => {
     switch (band) {
       case 'Accelerator': return 'text-green-600 bg-green-50 border-green-200';
       case 'Experimenter': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
       case 'Explorer': return 'text-blue-600 bg-blue-50 border-blue-200';
       default: return 'text-muted-foreground bg-muted border-border';
     }
-  };
+  }, []);
 
-  const getBandDescription = (band: string) => {
+  const getBandDescription = useCallback((band: string) => {
     switch (band) {
       case 'Accelerator':
         return 'You\'re leading the AI transformation with mature capabilities and strong execution. Focus on optimization and scaling successful initiatives.';
@@ -211,7 +229,7 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
       default:
         return '';
     }
-  };
+  }, []);
 
   const dimensionIcons = {
     strategy: TrendingUp,
@@ -329,20 +347,12 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
           </CardHeader>
           <CardContent>
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                <div className="relative">
-                  <Loader2 className="w-8 h-8 animate-spin text-[var(--icon-blue)]" />
-                  <div className="absolute inset-0 w-8 h-8 border-2 border-primary/20 rounded-full animate-pulse"></div>
-                </div>
-                <div className="text-center">
-                  <p className="text-muted-foreground font-medium">
-                    Generating personalized recommendations...
-                  </p>
-                  <p className="text-sm text-muted-foreground/70 mt-1">
-                    This may take a few moments
-                  </p>
-                </div>
-              </div>
+              <LoadingSpinner
+                size="lg"
+                message="Generating personalized recommendations..."
+                description="This may take a few moments"
+                className="py-12"
+              />
             ) : (
               <div className="grid md:grid-cols-3 gap-6">
                 {recommendations.map((recommendation, index) => (

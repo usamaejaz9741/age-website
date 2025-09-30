@@ -64,8 +64,10 @@ export const getOptimizedImageAttrs = (type: string) => {
 export const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc?: string) => {
   const img = event.currentTarget;
   
-  // Log error for debugging
-  console.warn('Image failed to load:', img.src);
+  // Log error for debugging (development only)
+  if (import.meta.env.DEV) {
+    console.warn('Image failed to load:', img.src);
+  }
   
   // If fallback is provided and we're not already using it, try the fallback
   if (fallbackSrc && img.src !== fallbackSrc) {

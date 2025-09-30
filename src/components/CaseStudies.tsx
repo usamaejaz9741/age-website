@@ -17,6 +17,19 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { ANIMATION_DURATIONS } from "@/constants/animations";
+import { 
+  HEADING_SIZES, 
+  TEXT_SIZES, 
+  MARGIN_BOTTOM, 
+  CARD_PADDING, 
+  BORDER_RADIUS,
+  SHADOWS,
+  GAP,
+  GRID_COLS,
+  TRANSITIONS,
+  HOVER_EFFECTS
+} from "@/constants/design-system";
 
 /**
  * Case Studies component displaying client success stories and metrics
@@ -51,37 +64,38 @@ const CaseStudies = () => {
 
   return (
     <div>
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             Results that{" "}
             <span className="text-primary">speak numbers</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
             Real companies, real growth, real revenue impact.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className={`${GRID_COLS.twoLarge} gap-12 ${MARGIN_BOTTOM.section}`} role="list" aria-label="Client case studies">
           {cases.map((caseStudy, index) => (
             <AnimatedCard
               key={caseStudy.company}
-              delay={index * 200}
+              delay={index * ANIMATION_DURATIONS.CASE_STUDY_STAGGER}
               direction="up"
-              className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out"
+              className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out`}
+              role="listitem"
             >
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
+              <div className={`flex items-center justify-between ${MARGIN_BOTTOM.default}`}>
                 <div className="text-left">
-                  <h3 className="text-2xl font-bold text-foreground mb-1">
+                  <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground mb-1`}>
                     {caseStudy.company}
                   </h3>
-                  <p className="text-muted-foreground">{caseStudy.industry}</p>
+                  <p className="text-muted-foreground" aria-label={`Industry: ${caseStudy.industry}`}>{caseStudy.industry}</p>
                 </div>
                 <div className="text-right">
                   <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
                     <AnimatedCounter
                       endValue={caseStudy.highlight.value}
-                      duration={2500}
+                      duration={ANIMATION_DURATIONS.COUNTER_SLOW}
                       delay={index * 300}
                       suffix={caseStudy.highlight.suffix}
                     />

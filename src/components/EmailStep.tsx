@@ -31,9 +31,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { useState, memo } from "react";
+import { ArrowRight } from "lucide-react";
+import { useState, memo, useCallback } from "react";
 import { validateEmail, sanitizeEmail, formRateLimiter } from "@/lib/security";
+import { ERROR_MESSAGES } from "@/constants/messages";
+import { InlineSpinner } from "@/components/ui/loading-spinner";
+import { ErrorMessage } from "@/components/ui/error-message";
 
 /**
  * Props interface for the EmailStep component
@@ -67,47 +70,45 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
    * @param inputEmail - Email string to validate
    * @returns boolean - Whether email is valid
    */
-  const validateEmailInput = (inputEmail: string): boolean => {
+  const validateEmailInput = useCallback((inputEmail: string): boolean => {
     if (!validateEmail(inputEmail)) {
-      setEmailError('Please enter a valid email address');
+      setEmailError(ERROR_MESSAGES.INVALID_EMAIL);
       return false;
     }
     
     setEmailError('');
     return true;
-  };
+  }, []);
 
   /**
    * Handle email input change with validation
    * @param value - New email value
    */
-  const handleEmailChange = (value: string) => {
+  const handleEmailChange = useCallback((value: string) => {
     // Sanitize input using security utilities
     const sanitizedEmail = sanitizeEmail(value);
     
     setEmail(sanitizedEmail);
     
     // Clear error when user starts typing
-    if (emailError) {
-      setEmailError('');
-    }
-  };
+    setEmailError('');
+  }, [setEmail]);
 
   /**
    * Handle form submission with validation and rate limiting
    */
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     // Check rate limiting
     const userIdentifier = email || 'anonymous';
     if (!formRateLimiter.isAllowed(userIdentifier)) {
-      setEmailError('Too many submissions. Please wait before trying again.');
+      setEmailError(ERROR_MESSAGES.RATE_LIMIT);
       return;
     }
 
     if (validateEmailInput(email) && hasConsent) {
       onSubmit();
     }
-  };
+  }, [email, hasConsent, onSubmit, validateEmailInput]);
 
   return (
     <div className="max-w-xl mx-auto text-center animate-fade-in">
@@ -139,10 +140,13 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
             autoComplete="email"
           />
           {emailError && (
-            <div className="mt-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-              <p id="email-error" className="text-destructive text-sm font-medium" role="alert" aria-live="polite">
-                {emailError}
-              </p>
+            <div className="mt-2">
+              <ErrorMessage
+                id="email-error"
+                message={emailError}
+                variant="box"
+                severity="error"
+              />
             </div>
           )}
         </div>
@@ -162,18 +166,19 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
         <Button
           type="submit"
           size="lg"
-          className="w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+          variant="cta"
+          className="w-full sm:w-auto"
           disabled={!email || !hasConsent || isLoading}
         >
           {isLoading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <InlineSpinner />
               Generating Audit...
             </>
           ) : (
             <>
               Get My Audit
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
             </>
           )}
         </Button>

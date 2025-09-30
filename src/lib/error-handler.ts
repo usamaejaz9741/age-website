@@ -72,6 +72,8 @@ export interface ErrorHandlingOptions {
   customMessage?: string;
   /** Error severity level */
   severity?: ErrorSeverity;
+  /** Additional error details */
+  details?: Record<string, unknown>;
 }
 
 /**
@@ -114,11 +116,10 @@ export const classifyError = (error: unknown): ErrorType => {
 };
 
 /**
- * Determine error severity based on error type and context
+ * Determine error severity based on error type
  */
-export const determineSeverity = (errorType: ErrorType, context?: string): ErrorSeverity => {
+export const determineSeverity = (errorType: ErrorType): ErrorSeverity => {
   switch (errorType) {
-    case ErrorType.CRITICAL:
     case ErrorType.SERVER:
       return ErrorSeverity.CRITICAL;
     
@@ -148,7 +149,7 @@ export const createErrorResponse = (
   options: ErrorHandlingOptions = {}
 ): ErrorResponse => {
   const errorType = classifyError(error);
-  const severity = options.severity || determineSeverity(errorType, options.context);
+  const severity = options.severity || determineSeverity(errorType);
   
   let message = 'An unexpected error occurred';
   

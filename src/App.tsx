@@ -31,7 +31,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense, useCallback } from "react";
 import Preloader from "./components/Preloader";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Index from "./pages/Index";
@@ -136,11 +136,14 @@ const App = () => {
    * Handles preloader completion
    * Adds a small delay to ensure smooth transition
    */
-  const handlePreloaderComplete = () => {
-    setTimeout(() => {
+  const handlePreloaderComplete = useCallback(() => {
+    const timeoutId = setTimeout(() => {
       setShowPreloader(false);
     }, 100);
-  };
+    
+    // Return cleanup function
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <ErrorBoundary>

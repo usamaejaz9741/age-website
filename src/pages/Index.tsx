@@ -73,12 +73,16 @@ const Index = () => {
       const element = document.getElementById(location.state.scrollTo);
       if (element) {
         // Small delay to ensure the page has rendered
-        setTimeout(() => {
+        const scrollTimeout = setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' });
         }, 100);
+        
+        // Clear the state to prevent re-scrolling on refresh
+        window.history.replaceState({}, document.title);
+        
+        // Cleanup timeout on unmount
+        return () => clearTimeout(scrollTimeout);
       }
-      // Clear the state to prevent re-scrolling on refresh
-      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
 

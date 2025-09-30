@@ -15,6 +15,21 @@
 
 import { Calendar, BarChart3, Rocket } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
+import { 
+  HEADING_SIZES, 
+  TEXT_SIZES, 
+  MARGIN_BOTTOM, 
+  CARD_PADDING, 
+  ICON_CONTAINER, 
+  ICON_SIZES, 
+  BORDER_RADIUS,
+  SHADOWS,
+  GAP,
+  GRID_COLS,
+  TRANSITIONS,
+  HOVER_EFFECTS
+} from "@/constants/design-system";
+import { ANIMATION_DURATIONS } from "@/constants/animations";
 
 /**
  * How We Work component displaying the 90-day methodology
@@ -54,23 +69,23 @@ const HowWeWork = () => {
 
   return (
     <div>
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             <span className="text-primary">90 days</span> to revenue
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
             Our proven methodology delivers measurable results in 3 months, 
             not 3 years.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className={`${GRID_COLS.three} ${GAP.medium} ${MARGIN_BOTTOM.section}`}>
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
               <AnimatedCard
                 key={step.title}
-                delay={index * 200}
+                delay={index * ANIMATION_DURATIONS.CASE_STUDY_STAGGER}
                 direction="up"
                 className="relative group"
               >
@@ -79,19 +94,19 @@ const HowWeWork = () => {
                   <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary/30 z-0" />
                 )}
                 
-                <div className="relative p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1">
+                <div className={`relative ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift}`}>
                   <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                    className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                     style={{ backgroundColor: step.bgColor }}
                   >
                     <Icon 
-                      className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                      className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
                       style={{ color: step.iconColor }}
                     />
                   </div>
                   
-                  <div className="mb-4">
-                    <div className="text-2xl font-bold text-foreground leading-tight">
+                  <div className={MARGIN_BOTTOM.small}>
+                    <div className={`${HEADING_SIZES.h4} font-bold text-foreground leading-tight`}>
                       {step.title}
                     </div>
                     <div className="text-primary font-bold text-base sm:text-lg">
@@ -118,7 +133,7 @@ const HowWeWork = () => {
         </div>
 
         {/* Timeline Visualization */}
-        <div className="relative p-8 bg-gradient-card rounded-xl shadow-soft">
+        <div className={`relative ${CARD_PADDING.large} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft}`}>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="text-3xl font-bold text-primary mb-2">30</div>

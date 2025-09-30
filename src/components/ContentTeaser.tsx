@@ -17,7 +17,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { Mail, FileText, TrendingUp } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { validateEmail, sanitizeEmail } from "@/lib/security";
+import { ErrorMessage } from "@/components/ui/error-message";
+import { 
+  HEADING_SIZES, 
+  TEXT_SIZES, 
+  MARGIN_BOTTOM, 
+  CARD_PADDING, 
+  ICON_CONTAINER, 
+  ICON_SIZES, 
+  BORDER_RADIUS,
+  SHADOWS,
+  GAP,
+  GRID_COLS,
+  TRANSITIONS,
+  HOVER_EFFECTS
+} from "@/constants/design-system";
+import { ANIMATION_DELAYS } from "@/constants/animations";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 /**
  * Content Teaser component displaying content offerings and subscription form
@@ -26,12 +44,31 @@ import { useState } from "react";
  */
 const ContentTeaser = () => {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleEmailChange = useCallback((value: string) => {
+    // Sanitize email input
+    const sanitized = sanitizeEmail(value);
+    setEmail(sanitized);
+    setEmailError(""); // Clear error when user starts typing
+  }, []);
+
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate email before submission
+    if (!validateEmail(email)) {
+      setEmailError(ERROR_MESSAGES.INVALID_EMAIL);
+      return;
+    }
+    
     // Handle email subscription
+    // TODO: Implement actual subscription logic
+    
+    // Clear form after successful submission
     setEmail("");
-  };
+    setEmailError("");
+  }, [email]);
 
   const insights = [
     {
@@ -62,50 +99,50 @@ const ContentTeaser = () => {
 
   return (
     <div>
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             Stay ahead with{" "}
             <span className="text-primary">actionable insights</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
             Get exclusive access to growth strategies, market intelligence, 
             and revenue optimization tactics that work in emerging markets.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className={`${GRID_COLS.three} ${GAP.medium} ${MARGIN_BOTTOM.section}`}>
           {insights.map((insight, index) => {
             const Icon = insight.icon;
             return (
               <AnimatedCard
                 key={insight.title}
-                delay={index * 100}
+                delay={index * ANIMATION_DELAYS.SMALL}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer"
+                className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} cursor-pointer`}
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                   style={{ backgroundColor: insight.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
                     style={{ color: insight.iconColor }}
                   />
                 </div>
                 
-                <div className="text-xs text-primary font-semibold uppercase tracking-wide mb-2">
+                <div className={`${TEXT_SIZES.xs} text-primary font-semibold uppercase tracking-wide ${MARGIN_BOTTOM.xs}`}>
                   {insight.type}
                 </div>
                 
-                <h3 className="text-2xl font-bold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
+                <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors`}>
                   {insight.title}
                 </h3>
                 
-                <p className="text-base text-muted-foreground leading-relaxed">
+                <p className={`${TEXT_SIZES.base} text-muted-foreground leading-relaxed`}>
                   {insight.description}
                 </p>
 
-                <div className="mt-4 flex items-center justify-center text-base text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className={`mt-4 flex items-center justify-center ${TEXT_SIZES.base} text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity`}>
                   Access now →
                 </div>
               </AnimatedCard>
@@ -114,9 +151,9 @@ const ContentTeaser = () => {
         </div>
 
         {/* Email Capture */}
-        <div className="max-w-2xl mx-auto p-8 bg-gradient-card rounded-xl shadow-medium">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-foreground mb-4 leading-tight">
+        <div className={`max-w-2xl mx-auto ${CARD_PADDING.large} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.medium}`}>
+          <div className={`text-center ${MARGIN_BOTTOM.default}`}>
+            <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.small} leading-tight`}>
               Get started today
             </h3>
             <p className="text-muted-foreground">
@@ -125,23 +162,51 @@ const ContentTeaser = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
-            <Input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1"
-              required
-            />
-            <Button type="submit" variant="cta" size="lg" className="sm:w-auto">
-              <Mail className="mr-2 w-4 h-4" />
+            <div className="flex-1">
+              <Input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => handleEmailChange(e.target.value)}
+                className="w-full min-h-[44px]"
+                required
+                aria-label="Email address for subscription"
+                aria-invalid={emailError ? "true" : "false"}
+                aria-describedby={emailError ? "email-subscription-error" : undefined}
+              />
+              {emailError && (
+                <div className="mt-2">
+                  <ErrorMessage
+                    id="email-subscription-error"
+                    message={emailError}
+                    variant="inline"
+                    severity="error"
+                  />
+                </div>
+              )}
+            </div>
+            <Button 
+              type="submit" 
+              variant="cta" 
+              size="lg" 
+              className="sm:w-auto min-h-[44px]"
+              disabled={!email}
+            >
+              <Mail className="mr-2 w-4 h-4" aria-hidden="true" />
               Subscribe
             </Button>
           </form>
 
           <p className="text-sm text-muted-foreground text-center mt-4">
             No spam. Unsubscribe anytime. Read our{" "}
-            <button className="text-primary hover:underline">privacy policy</button>.
+            <button 
+              type="button"
+              className="text-primary hover:underline"
+              onClick={() => window.open('/privacy-policy', '_blank', 'noopener,noreferrer')}
+              aria-label="Read our privacy policy in a new tab"
+            >
+              privacy policy
+            </button>.
           </p>
         </div>
     </div>

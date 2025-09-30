@@ -15,6 +15,21 @@
 
 import { Bot, Code, TrendingUp, Palette, Settings } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
+import { 
+  HEADING_SIZES, 
+  TEXT_SIZES, 
+  MARGIN_BOTTOM, 
+  CARD_PADDING, 
+  ICON_CONTAINER, 
+  ICON_SIZES, 
+  BORDER_RADIUS,
+  SHADOWS,
+  GAP,
+  GRID_COLS,
+  TRANSITIONS,
+  HOVER_EFFECTS
+} from "@/constants/design-system";
+import { ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
  * Services Grid component displaying core service offerings
@@ -67,42 +82,42 @@ const ServicesGrid = () => {
 
   return (
     <div>
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             Complete business{" "}
             <span className="text-primary">ecosystems</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
             Five integrated service pillars that work together to create 
             revenue-generating business systems.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className={`${GRID_COLS.three} ${GAP.medium}`}>
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <AnimatedCard
                 key={service.title}
-                delay={index * 100}
+                delay={index * ANIMATION_DELAYS.SMALL}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
+                className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} ${HOVER_EFFECTS.scale} ${HOVER_EFFECTS.scaleDown}`}
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                   style={{ backgroundColor: service.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
                     style={{ color: service.iconColor }}
                   />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-foreground mb-4 leading-tight">
+                <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.small} leading-tight`}>
                   {service.title}
                 </h3>
                 
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className={`text-muted-foreground ${MARGIN_BOTTOM.default} leading-relaxed`}>
                   {service.description}
                 </p>
 

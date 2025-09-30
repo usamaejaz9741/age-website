@@ -66,10 +66,11 @@ export class GeminiAPI {
    * assessment use case.
    * 
    * @param prompt - The text prompt to send to the AI model
+   * @param signal - Optional AbortSignal for request cancellation
    * @returns Promise<string> - The generated AI response text
    * @throws Error if API request fails or response is invalid
    */
-  async generateContent(prompt: string): Promise<string> {
+  async generateContent(prompt: string, signal?: AbortSignal): Promise<string> {
     // Check rate limiting before making API call
     const clientId = 'anonymous'; // In a real app, use user ID or IP
     if (!apiRateLimiter.isAllowed(clientId)) {
@@ -100,7 +101,8 @@ export class GeminiAPI {
             'Content-Type': 'application/json',
             'X-goog-api-key': this.apiKey
           },
-          body: JSON.stringify(request)
+          body: JSON.stringify(request),
+          signal // Add AbortSignal for cancellation support
         }
       );
 

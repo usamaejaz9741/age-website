@@ -114,58 +114,130 @@ export function sanitizeEmail(email: string): string {
 }
 
 /**
- * Validate and sanitize text input
- * @param input - Text to validate and sanitize
- * @param maxLength - Maximum allowed length
- * @returns Sanitized text
+ * Validates and sanitizes text input for safe storage and display
+ * 
+ * Performs comprehensive text validation and sanitization:
+ * - Type checking for input safety
+ * - HTML sanitization to prevent XSS
+ * - Length validation with configurable maximum
+ * - Trimming of whitespace
+ * 
+ * @param {string} input - The text input to validate and sanitize
+ * @param {number} [maxLength=1000] - Maximum allowed length (default: 1000)
+ * @returns {string} Sanitized and validated text
+ * 
+ * @example
+ * ```typescript
+ * const cleanText = validateAndSanitizeText('<script>alert("xss")</script>Hello World', 50);
+ * console.log(cleanText); // "Hello World"
+ * 
+ * const longText = validateAndSanitizeText('A'.repeat(2000), 100);
+ * console.log(longText.length); // 100
+ * ```
+ * 
+ * @security
+ * - Prevents XSS attacks through HTML sanitization
+ * - Limits input length to prevent DoS attacks
+ * - Type-safe input validation
+ * 
+ * @since 1.0.0
  */
 export function validateAndSanitizeText(input: string, maxLength: number = 1000): string {
+  // Type safety check
   if (typeof input !== 'string') {
     return '';
   }
   
+  // Sanitize HTML, limit length, and trim whitespace
   return sanitizeHtml(input)
     .substring(0, maxLength)
     .trim();
 }
 
 /**
- * Validate numeric input
- * @param value - Value to validate
- * @param min - Minimum allowed value
- * @param max - Maximum allowed value
- * @returns boolean - Whether value is valid
+ * Validates numeric input within specified bounds
+ * 
+ * Performs comprehensive numeric validation including:
+ * - Type checking for number type
+ * - NaN (Not a Number) detection
+ * - Range validation with configurable min/max
+ * - Safe handling of edge cases
+ * 
+ * @param {unknown} value - The value to validate
+ * @param {number} [min=0] - Minimum allowed value (default: 0)
+ * @param {number} [max=100] - Maximum allowed value (default: 100)
+ * @returns {boolean} True if value is a valid number within bounds
+ * 
+ * @example
+ * ```typescript
+ * validateNumeric(50); // true (within 0-100)
+ * validateNumeric(150); // false (exceeds max)
+ * validateNumeric(-10); // false (below min)
+ * validateNumeric('50'); // false (not a number)
+ * validateNumeric(NaN); // false (NaN)
+ * ```
+ * 
+ * @since 1.0.0
  */
 export function validateNumeric(value: unknown, min: number = 0, max: number = 100): boolean {
+  // Type and NaN validation
   if (typeof value !== 'number' || isNaN(value)) {
     return false;
   }
   
+  // Range validation
   return value >= min && value <= max;
 }
 
 /**
- * Check for suspicious patterns in input
- * @param input - Input to check
- * @returns boolean - Whether input contains suspicious patterns
+ * Detects suspicious patterns that could indicate malicious input
+ * 
+ * Scans input for common attack patterns including:
+ * - Script injection attempts
+ * - Event handler injections
+ * - Data URI schemes
+ * - CSS expression attacks
+ * - JavaScript function calls
+ * - Dynamic code execution patterns
+ * 
+ * @param {string} input - The input string to scan for suspicious patterns
+ * @returns {boolean} True if suspicious patterns are detected
+ * 
+ * @example
+ * ```typescript
+ * containsSuspiciousPatterns('Hello World'); // false
+ * containsSuspiciousPatterns('<script>alert("xss")</script>'); // true
+ * containsSuspiciousPatterns('javascript:void(0)'); // true
+ * containsSuspiciousPatterns('onclick="malicious()"'); // true
+ * ```
+ * 
+ * @security
+ * - Detects XSS attack vectors
+ * - Identifies script injection attempts
+ * - Prevents CSS-based attacks
+ * - Blocks dynamic code execution
+ * 
+ * @since 1.0.0
  */
 export function containsSuspiciousPatterns(input: string): boolean {
+  // Type safety check
   if (typeof input !== 'string') {
     return false;
   }
   
+  // Comprehensive suspicious pattern detection
   const suspiciousPatterns = [
-    /<script/i,
-    /javascript:/i,
-    /on\w+\s*=/i,
-    /data:/i,
-    /vbscript:/i,
-    /expression\s*\(/i,
-    /url\s*\(/i,
-    /@import/i,
-    /eval\s*\(/i,
-    /setTimeout\s*\(/i,
-    /setInterval\s*\(/i
+    /<script/i,           // Script tag injection
+    /javascript:/i,       // JavaScript protocol
+    /on\w+\s*=/i,        // Event handler injection (onclick, onload, etc.)
+    /data:/i,            // Data URI schemes
+    /vbscript:/i,        // VBScript protocol
+    /expression\s*\(/i,  // CSS expression attacks
+    /url\s*\(/i,         // CSS url() function
+    /@import/i,          // CSS import statements
+    /eval\s*\(/i,        // JavaScript eval() function
+    /setTimeout\s*\(/i,  // JavaScript setTimeout
+    /setInterval\s*\(/i  // JavaScript setInterval
   ];
   
   return suspiciousPatterns.some(pattern => pattern.test(input));

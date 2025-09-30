@@ -15,6 +15,21 @@
 
 import { Brain, DollarSign, Home, Plane, ShoppingCart } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animated-card";
+import { 
+  HEADING_SIZES, 
+  TEXT_SIZES, 
+  MARGIN_BOTTOM, 
+  CARD_PADDING, 
+  ICON_CONTAINER, 
+  ICON_SIZES, 
+  BORDER_RADIUS,
+  SHADOWS,
+  GAP,
+  GRID_COLS,
+  TRANSITIONS,
+  HOVER_EFFECTS
+} from "@/constants/design-system";
+import { ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
  * Industries component displaying industry expertise areas
@@ -62,37 +77,37 @@ const Industries = () => {
 
   return (
     <div>
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             Industries we{" "}
             <span className="text-primary">accelerate</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
             Deep domain expertise across high-growth sectors in emerging markets.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className={`${GRID_COLS.three} ${GAP.medium}`}>
           {industries.map((industry, index) => {
             const Icon = industry.icon;
             return (
               <AnimatedCard
                 key={industry.name}
-                delay={index * 100}
+                delay={index * ANIMATION_DELAYS.SMALL}
                 direction="up"
-                className="group p-4 sm:p-6 md:p-8 bg-gradient-card rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer"
+                className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} cursor-pointer`}
               >
                 <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ease-bounce mx-auto"
+                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                   style={{ backgroundColor: industry.bgColor }}
                 >
                   <Icon 
-                    className="w-8 h-8 flex-shrink-0 mx-auto my-auto" 
+                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
                     style={{ color: industry.iconColor }}
                   />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-foreground mb-4 leading-tight group-hover:text-primary transition-colors">
+                <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.small} leading-tight group-hover:text-primary transition-colors`}>
                   {industry.name}
                 </h3>
                 
@@ -109,8 +124,8 @@ const Industries = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-16 text-center p-8 bg-gradient-hero rounded-xl">
-          <h3 className="text-2xl font-bold text-foreground mb-6 leading-tight">
+        <div className={`mt-16 text-center ${CARD_PADDING.large} bg-gradient-hero ${BORDER_RADIUS.xl}`}>
+          <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
             Don't see your industry?
           </h3>
           <p className="text-muted-foreground mb-6">

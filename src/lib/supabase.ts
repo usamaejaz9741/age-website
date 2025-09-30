@@ -91,9 +91,9 @@ export interface DatabaseSubmission {
 }
 
 /**
- * Convert UserSubmission to DatabaseSubmission format
+ * Input type for database conversion (matches UserSubmission structure)
  */
-export function convertToDatabaseFormat(submission: {
+export interface ConversionInput {
   email: string;
   score: number;
   band: string;
@@ -111,15 +111,37 @@ export function convertToDatabaseFormat(submission: {
     userAgent?: string;
     referrer?: string;
   };
-}): DatabaseSubmission {
+}
+
+/**
+ * Convert UserSubmission to DatabaseSubmission format
+ * 
+ * @param submission - User submission data to convert
+ * @returns DatabaseSubmission object ready for database insertion
+ */
+export function convertToDatabaseFormat(submission: ConversionInput): DatabaseSubmission {
+  // Validate dimensions are all numbers
+  const dimensions = submission.dimensions;
+  if (typeof dimensions.strategy !== 'number' || 
+      typeof dimensions.implementation !== 'number' ||
+      typeof dimensions.data !== 'number' ||
+      typeof dimensions.culture !== 'number') {
+    throw new Error('Invalid dimension scores: all must be numbers');
+  }
+
+  // Validate score range
+  if (submission.score < 0 || submission.score > 100) {
+    throw new Error('Invalid score: must be between 0 and 100');
+  }
+
   return {
-    email: submission.email,
-    score: submission.score,
+    email: submission.email.trim().toLowerCase(),
+    score: Math.round(submission.score),
     band: submission.band,
-    strategy_score: submission.dimensions.strategy,
-    implementation_score: submission.dimensions.implementation,
-    data_score: submission.dimensions.data,
-    culture_score: submission.dimensions.culture,
+    strategy_score: Math.round(dimensions.strategy),
+    implementation_score: Math.round(dimensions.implementation),
+    data_score: Math.round(dimensions.data),
+    culture_score: Math.round(dimensions.culture),
     recommendations: submission.recommendations,
     audit_content: submission.auditContent,
     utm_params: submission.utmParams,
@@ -130,9 +152,9 @@ export function convertToDatabaseFormat(submission: {
 }
 
 /**
- * Convert DatabaseSubmission back to UserSubmission format
+ * Output type for database conversion
  */
-export function convertFromDatabaseFormat(dbSubmission: DatabaseSubmission): {
+export interface ConversionOutput {
   timestamp: string | undefined;
   email: string;
   score: number;
@@ -147,7 +169,20 @@ export function convertFromDatabaseFormat(dbSubmission: DatabaseSubmission): {
   auditContent?: string;
   utmParams?: Record<string, string | number | boolean>;
   quizAnswers?: Record<string, number>;
-} {
+}
+
+/**
+ * Convert DatabaseSubmission back to UserSubmission format
+ * 
+ * @param dbSubmission - Database submission to convert
+ * @returns ConversionOutput object with UserSubmission structure
+ */
+export function convertFromDatabaseFormat(dbSubmission: DatabaseSubmission): ConversionOutput {
+  // Validate required fields exist
+  if (!dbSubmission.email || !dbSubmission.band) {
+    throw new Error('Invalid database submission: missing required fields');
+  }
+
   return {
     timestamp: dbSubmission.created_at,
     email: dbSubmission.email,
@@ -159,7 +194,7 @@ export function convertFromDatabaseFormat(dbSubmission: DatabaseSubmission): {
       data: dbSubmission.data_score,
       culture: dbSubmission.culture_score
     },
-    recommendations: dbSubmission.recommendations,
+    recommendations: dbSubmission.recommendations || [],
     auditContent: dbSubmission.audit_content,
     utmParams: dbSubmission.utm_params,
     quizAnswers: dbSubmission.quiz_answers

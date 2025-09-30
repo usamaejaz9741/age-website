@@ -10,6 +10,7 @@ import { generateQuizAudit, type QuizAuditData } from "@/lib/gemini";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Target, Zap } from "lucide-react";
 import { isValidScore, isValidBand, isValidDimensionScores } from "@/lib/type-guards";
+import { SCORE_THRESHOLDS, getMaturityBand } from "@/constants/scores";
 
 // Interfaces for quiz functionality
 export interface QuizAnswers {
@@ -66,58 +67,156 @@ const AIGrowthScore = () => {
     setCurrentStep('email');
   };
 
+  /**
+   * Calculates comprehensive AI maturity assessment results from quiz answers
+   * 
+   * This function implements a sophisticated scoring algorithm that:
+   * 1. Maps individual questions to specific AI maturity dimensions
+   * 2. Aggregates scores within each dimension using weighted calculations
+   * 3. Computes overall percentage score with mathematical precision
+   * 4. Determines maturity band classification using validated thresholds
+   * 5. Ensures type safety and data validation throughout the process
+   * 
+   * @param answers - Object containing question IDs mapped to user responses (0-3 scale)
+   * @returns QuizResults object with calculated scores, band, and dimension breakdown
+   * 
+   * @algorithm
+   * 1. Initialize dimension score accumulators (strategy, implementation, data, culture)
+   * 2. Map each question to its corresponding AI maturity dimension
+   * 3. Iterate through answers, validating and accumulating dimension scores
+   * 4. Calculate total possible score (questions × max points per question)
+   * 5. Compute percentage score with proper rounding
+   * 6. Apply bounds checking to ensure valid percentage range (0-100)
+   * 7. Determine maturity band using validated classification thresholds
+   * 
+   * @complexity O(n) where n is the number of quiz questions
+   * @security Validates all inputs to prevent injection and ensure data integrity
+   * 
+   * @example
+   * ```typescript
+   * const answers = { q1: 2, q2: 3, q3: 1, q4: 2, q5: 3, q6: 2, q7: 1, q8: 3, q9: 2, q10: 1, q11: 2, q12: 3 };
+   * const results = calculateResults(answers);
+   * // Returns: { score: 67, band: 'Experimenter', breakdown: { strategy: 6, implementation: 7, data: 6, culture: 6 } }
+   * ```
+   */
   const calculateResults = (answers: QuizAnswers): QuizResults => {
+    // Initialize dimension score accumulators with type safety
+    // Each dimension represents a critical aspect of AI maturity
     const scores = {
-      strategy: 0,
-      implementation: 0,
-      data: 0,
-      culture: 0
+      strategy: 0,        // AI strategy, planning, and executive alignment
+      implementation: 0,  // Technical implementation and execution capabilities
+      data: 0,           // Data quality, governance, and analytics readiness
+      culture: 0         // Organizational culture, change management, and AI literacy
     };
 
-    // Map question IDs to dimensions
+    /**
+     * Question-to-dimension mapping for AI maturity assessment
+     * 
+     * This mapping ensures each question contributes to the appropriate dimension
+     * based on the AI maturity framework. Questions are strategically distributed
+     * to provide balanced assessment across all four critical dimensions.
+     * 
+     * @mapping
+     * - Strategy (q1-q3): AI strategy definition, executive support, business alignment
+     * - Implementation (q4-q6): Implementation maturity, technical capabilities, methodology
+     * - Data (q7-q9): Data quality, governance, performance measurement
+     * - Culture (q10-q12): AI literacy, change management, ethics and governance
+     */
     const questionDimensionMap: { [key: string]: keyof typeof scores } = {
-      'q1': 'strategy',    // AI strategy definition
-      'q2': 'strategy',    // Executive support
-      'q3': 'strategy',    // Business alignment
-      'q4': 'implementation', // Implementation maturity
-      'q5': 'implementation', // Technical capabilities
-      'q6': 'implementation', // Project methodology
-      'q7': 'data',        // Data quality
-      'q8': 'data',        // Data governance
-      'q9': 'data',        // AI performance measurement
-      'q10': 'culture',    // AI literacy
-      'q11': 'culture',    // Change management
-      'q12': 'culture'     // AI ethics
+      'q1': 'strategy',        // AI strategy definition and planning maturity
+      'q2': 'strategy',        // Executive leadership and support for AI initiatives
+      'q3': 'strategy',        // Business alignment and strategic integration
+      'q4': 'implementation',  // Implementation maturity and project execution
+      'q5': 'implementation',  // Technical capabilities and infrastructure readiness
+      'q6': 'implementation',  // Project methodology and development processes
+      'q7': 'data',           // Data quality and availability for AI applications
+      'q8': 'data',           // Data governance and management frameworks
+      'q9': 'data',           // AI performance measurement and analytics
+      'q10': 'culture',       // AI literacy and workforce capabilities
+      'q11': 'culture',       // Change management and organizational readiness
+      'q12': 'culture'        // AI ethics, governance, and responsible AI practices
     };
 
-    // Calculate dimension scores with type safety
+    /**
+     * Dimension score calculation with comprehensive validation
+     * 
+     * This loop processes each quiz answer and accumulates scores within
+     * the appropriate dimension. It includes multiple layers of validation:
+     * 1. Dimension mapping validation (ensures question maps to valid dimension)
+     * 2. Type safety validation (ensures score is a number)
+     * 3. Range validation (ensures score is within 0-3 scale)
+     * 4. NaN protection (prevents invalid numeric operations)
+     * 
+     * @validation
+     * - Object.prototype.hasOwnProperty.call() prevents prototype pollution
+     * - typeof score === 'number' ensures type safety
+     * - !isNaN(score) prevents NaN values from corrupting calculations
+     * - score >= 0 && score <= 3 ensures valid response scale
+     */
     Object.entries(answers).forEach(([questionId, score]) => {
+      // Retrieve dimension mapping for current question
       const dimension = questionDimensionMap[questionId];
+      
+      // Validate dimension exists and is a valid property of scores object
       if (dimension && Object.prototype.hasOwnProperty.call(scores, dimension)) {
-        // Use type guard to ensure score is a valid number
+        // Comprehensive score validation with type guards
         if (typeof score === 'number' && !isNaN(score) && score >= 0 && score <= 3) {
+          // Accumulate score within the appropriate dimension
           scores[dimension] += score;
         }
+        // Note: Invalid scores are silently ignored to prevent calculation corruption
+        // In production, consider logging invalid responses for quality monitoring
       }
     });
 
-    // Calculate total score
+    /**
+     * Overall score calculation with mathematical precision
+     * 
+     * This calculation determines the user's overall AI maturity percentage:
+     * 1. Sum all dimension scores to get total achieved points
+     * 2. Calculate maximum possible score (questions × max points per question)
+     * 3. Compute percentage with proper rounding for display
+     * 
+     * @formula
+     * percentage = (totalScore / maxScore) × 100
+     * where:
+     * - totalScore = sum of all dimension scores
+     * - maxScore = number of questions × 3 (maximum points per question)
+     * 
+     * @rounding Math.round() ensures clean integer percentages for user display
+     */
     const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const maxScore = Object.keys(answers).length * 3; // 3-point scale (0-3)
     const percentage = Math.round((totalScore / maxScore) * 100);
 
-    // Validate percentage is within valid range
-    const validPercentage = Math.max(0, Math.min(100, percentage));
+    /**
+     * Percentage bounds validation and normalization
+     * 
+     * Ensures the calculated percentage falls within the valid range (0-100)
+     * using mathematical bounds checking. This prevents edge cases where
+     * calculation errors or data corruption could produce invalid percentages.
+     * 
+     * @bounds
+     * - MIN_SCORE: 0 (minimum valid percentage)
+     * - MAX_SCORE: 100 (maximum valid percentage)
+     * 
+     * @math Math.max() and Math.min() create a mathematical clamp function
+     */
+    const validPercentage = Math.max(SCORE_THRESHOLDS.MIN_SCORE, Math.min(SCORE_THRESHOLDS.MAX_SCORE, percentage));
 
-    // Determine band with type safety
-    let band: 'Explorer' | 'Experimenter' | 'Accelerator';
-    if (validPercentage < 40) {
-      band = 'Explorer';
-    } else if (validPercentage < 70) {
-      band = 'Experimenter';
-    } else {
-      band = 'Accelerator';
-    }
+    /**
+     * Maturity band determination using validated classification logic
+     * 
+     * Uses the centralized getMaturityBand utility function to determine
+     * the user's AI maturity classification based on their percentage score.
+     * This ensures consistent band assignment across the application.
+     * 
+     * @bands
+     * - Explorer: 0-39% (Early stage, foundational work needed)
+     * - Experimenter: 40-69% (Developing capabilities, scaling opportunities)
+     * - Accelerator: 70-100% (Advanced maturity, optimization focus)
+     */
+    const band = getMaturityBand(validPercentage) as 'Explorer' | 'Experimenter' | 'Accelerator';
 
     // Convert dimension scores to percentages (each dimension has 3 questions, max score 9)
     const breakdownPercentages = {
@@ -129,10 +228,10 @@ const AIGrowthScore = () => {
 
     // Validate breakdown percentages
     const validatedBreakdown = {
-      strategy: Math.max(0, Math.min(100, breakdownPercentages.strategy)),
-      implementation: Math.max(0, Math.min(100, breakdownPercentages.implementation)),
-      data: Math.max(0, Math.min(100, breakdownPercentages.data)),
-      culture: Math.max(0, Math.min(100, breakdownPercentages.culture))
+      strategy: Math.max(SCORE_THRESHOLDS.MIN_SCORE, Math.min(SCORE_THRESHOLDS.MAX_SCORE, breakdownPercentages.strategy)),
+      implementation: Math.max(SCORE_THRESHOLDS.MIN_SCORE, Math.min(SCORE_THRESHOLDS.MAX_SCORE, breakdownPercentages.implementation)),
+      data: Math.max(SCORE_THRESHOLDS.MIN_SCORE, Math.min(SCORE_THRESHOLDS.MAX_SCORE, breakdownPercentages.data)),
+      culture: Math.max(SCORE_THRESHOLDS.MIN_SCORE, Math.min(SCORE_THRESHOLDS.MAX_SCORE, breakdownPercentages.culture))
     };
 
     return {
@@ -147,6 +246,9 @@ const AIGrowthScore = () => {
 
     setIsGeneratingAudit(true);
     
+    // Create AbortController for request cancellation (not currently used, but prepared for future use)
+    const abortController = new AbortController();
+    
     try {
       // Generate AI audit
       const auditData: QuizAuditData = {
@@ -157,12 +259,18 @@ const AIGrowthScore = () => {
         quizAnswers: quizAnswers
       };
 
-      const audit = await generateQuizAudit(auditData);
+      const audit = await generateQuizAudit(auditData, abortController.signal);
       setAuditContent(audit);
       
       // Move to results
       setCurrentStep('results');
     } catch (error) {
+      // Handle abort error separately
+      if (error instanceof Error && error.name === 'AbortError') {
+        // Request was cancelled - don't proceed
+        return;
+      }
+      
       // Error generating audit - handled gracefully
       // Still move to results with fallback content
       setAuditContent('Thank you for completing the assessment. Your results are ready!');

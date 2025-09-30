@@ -102,14 +102,14 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
     if (error) {
       // Log error securely without exposing sensitive information
       if (import.meta.env.DEV) {
-        if (error.message.includes('row-level security policy')) {
+        if (error.message && error.message.includes('row-level security policy')) {
           console.error('Database RLS policy violation. You need to run the database setup scripts in Supabase SQL Editor.');
           console.error('Required scripts: 1) Your audit submissions table SQL, 2) Your RLS policy reset SQL, 3) database-views-security-fix.sql');
-        } else if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+        } else if (error.message && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
           console.error('Database authentication failed. Your environment variables are set, but the database may not be properly configured.');
           console.error('Please run the database setup scripts in your Supabase SQL Editor.');
         } else {
-          console.error('Database error:', error.message);
+          console.error('Database error:', error.message || 'Unknown database error');
         }
       }
       return false

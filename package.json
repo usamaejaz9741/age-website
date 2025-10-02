@@ -21,7 +21,7 @@
     "vite"
   ],
   "engines": {
-    "node": "20.x",
+    "node": "22.x",
     "npm": ">=8.0.0"
   },
   "scripts": {
@@ -40,7 +40,6 @@
     "lint:security": "eslint . --ext .ts,.tsx --rule 'no-eval: error' --rule 'no-implied-eval: error'"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",

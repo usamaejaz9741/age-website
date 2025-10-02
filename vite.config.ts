@@ -80,10 +80,6 @@ export default defineConfig(({ mode }) => ({
             '@tanstack/react-query',
             '@supabase/supabase-js'
           ],
-          // AI and external services
-          'vendor-ai': [
-            '@google/generative-ai'
-          ],
           // Form handling
           'vendor-forms': [
             'react-hook-form',

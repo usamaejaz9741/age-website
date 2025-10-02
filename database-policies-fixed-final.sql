@@ -310,3 +310,4 @@ BEGIN
   RAISE NOTICE '- Security monitoring functions';
   RAISE NOTICE '- NO NEW references in policies (fixed)';
 END $$;
+

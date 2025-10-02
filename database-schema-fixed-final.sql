@@ -290,13 +290,3 @@ BEGIN
   RAISE NOTICE '- Analytics views and functions';
   RAISE NOTICE '- Automatic cleanup of expired data';
 END $$;
-
-
-
-
-
-
-
-
-
-

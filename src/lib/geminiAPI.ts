@@ -18,7 +18,7 @@
  * - 📝 Detailed error logging for debugging
  */
 
-import { GeminiContent, GeminiRequest, GeminiResponse } from '../types/gemini';
+import { GeminiRequest, GeminiResponse } from '../types/gemini';
 import { apiRateLimiter } from './security';
 
 /**
@@ -109,6 +109,7 @@ export class GeminiAPI {
       // Check for HTTP errors
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('API Error:', errorText);
         
         // Handle specific error codes
         if (response.status === 503) {

@@ -95,9 +95,10 @@ export function openCalendlyBooking(
       // Focus the new window
       newWindow.focus();
     }
-        } catch (error) {
-          // Error opening Calendly - handled gracefully
-        }
+    } catch (error) {
+      // Error opening Calendly - handled gracefully
+      console.warn('Failed to open Calendly:', error);
+    }
 }
 
 

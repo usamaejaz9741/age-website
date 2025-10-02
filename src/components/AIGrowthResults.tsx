@@ -32,6 +32,7 @@ import { useState, useEffect, useMemo, memo, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getBandColors } from "@/constants/colors";
 import { QuizResults } from "@/pages/ai-growth-score";
 import { GeminiAPI } from "@/lib/geminiAPI";
 import { openCalendlyBooking } from "@/lib/calendly";
@@ -48,7 +49,6 @@ import {
   CheckCircle2,
   ArrowRight,
   Mail,
-  Loader2,
   ExternalLink
 } from "lucide-react";
 
@@ -210,12 +210,8 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
   }, [results, geminiAPI, userEmail, utmParams, auditContent, quizAnswers]);
 
   const getBandColor = useCallback((band: string) => {
-    switch (band) {
-      case 'Accelerator': return 'text-green-600 bg-green-50 border-green-200';
-      case 'Experimenter': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'Explorer': return 'text-blue-600 bg-blue-50 border-blue-200';
-      default: return 'text-muted-foreground bg-muted border-border';
-    }
+    const colors = getBandColors(band);
+    return `${colors.text} ${colors.bg} ${colors.border}`;
   }, []);
 
   const getBandDescription = useCallback((band: string) => {

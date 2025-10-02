@@ -55,13 +55,13 @@ export default {
       colors: {
         // Malibu (secondary/accent colors)
         malibu: {
-          '300': '#4db8ff', /* Light accent color - 65% lightness */
-          '400': '#4285f4', /* Accent hover state - 52% lightness */
+          '300': 'hsl(var(--malibu-300))', /* Light accent color - 65% lightness */
+          '400': 'hsl(var(--malibu-400))', /* Accent hover state - 52% lightness */
         },
         // Resolution Blue (primary brand color)
         'resolution-blue': {
-          '600': '#0050ff', /* Primary brand color */
-          '700': '#0033a6', /* Primary hover state - 42% lightness */
+          '600': 'hsl(var(--resolution-blue-600))', /* Primary brand color */
+          '700': 'hsl(var(--resolution-blue-700))', /* Primary hover state - 42% lightness */
         },
         // Base colors
         black: '#000000',
@@ -69,29 +69,29 @@ export default {
         // Neutral grays with opacity variants
         neutral: {
           DEFAULT: '#000000',
-          75: 'rgb(0 0 0 / 0.75)',  // 75% opacity black
-          50: 'rgb(0 0 0 / 0.5)',   // 50% opacity black
-          25: 'rgb(0 0 0 / 0.25)',  // 25% opacity black
-          10: 'rgb(0 0 0 / 0.1)',   // 10% opacity black
-          5: 'rgb(0 0 0 / 0.05)',   // 5% opacity black
+          75: 'hsl(var(--neutral-75))',  // 75% opacity black
+          50: 'hsl(var(--neutral-50))',  // 50% opacity black
+          25: 'hsl(var(--neutral-25))',  // 25% opacity black
+          10: 'hsl(var(--neutral-10))',  // 10% opacity black
+          5: 'hsl(var(--neutral-5))',    // 5% opacity black
         },
         // shadcn/ui semantic colors (using CSS variables)
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#ffffff",
-        foreground: "#000000",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         // Primary color system
         primary: {
           DEFAULT: "hsl(var(--resolution-blue-600))",
           hover: "hsl(var(--resolution-blue-700))",
-          foreground: "#ffffff",
+          foreground: "hsl(var(--primary-foreground))",
         },
         // Secondary color system
         secondary: {
           DEFAULT: "hsl(var(--malibu-300))",
           hover: "hsl(var(--malibu-400))",
-          foreground: "#000000",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         // Status colors
         success: {

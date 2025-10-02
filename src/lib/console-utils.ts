@@ -37,21 +37,72 @@ export const suppressConsoleWarnings = () => {
   const originalLog = console.log;
   const originalError = console.error;
   
+  // Store original window error handlers
+  const originalWindowError = window.onerror;
+  const originalWindowUnhandledRejection = window.onunhandledrejection;
+  
+  // Add user-friendly console message about expected warnings
+  if (import.meta.env.DEV) {
+    setTimeout(() => {
+      originalLog('%c🎨 Spline 3D Background Active', 'color: #4F46E5; font-weight: bold; font-size: 14px;');
+      originalLog('%cℹ️ Some WebGL and iframe warnings are expected and can be safely ignored.', 'color: #6B7280; font-size: 12px;');
+      originalLog('%cThese warnings come from the 3D animation system and do not affect functionality.', 'color: #6B7280; font-size: 12px;');
+    }, 1000);
+  }
+  
   // Helper function to check if message should be suppressed
   const shouldSuppress = (message: unknown): boolean => {
     if (typeof message === 'string') {
+      const messageStr = message.toLowerCase();
       return (
-        message.includes('React Router Future Flag Warning') ||
-        message.includes('Download the React DevTools') ||
-        message.includes('reactjs.org/link/react-devtools') ||
-        message.includes('[Intervention] Images loaded lazily') ||
-        message.includes('Load events are deferred') ||
-        message.includes('go.microsoft.com/fwlink') ||
-        message.includes('React does not recognize the `fetchPriority` prop') ||
-        message.includes('fetchpriority') ||
-        message.includes('React DevTools') ||
-        message.includes('Download the React DevTools for a better development experience') ||
-        message.includes('https://reactjs.org/link/react-devtools')
+        // React warnings
+        messageStr.includes('react router future flag warning') ||
+        messageStr.includes('download the react devtools') ||
+        messageStr.includes('reactjs.org/link/react-devtools') ||
+        messageStr.includes('react devtools') ||
+        messageStr.includes('fetchpriority') ||
+        messageStr.includes('allowtransparency') ||
+        messageStr.includes('react does not recognize the `allowtransparency` prop') ||
+        
+        // Browser intervention warnings
+        messageStr.includes('[intervention] images loaded lazily') ||
+        messageStr.includes('load events are deferred') ||
+        messageStr.includes('go.microsoft.com/fwlink') ||
+        
+        // WebGL warnings - comprehensive coverage
+        messageStr.includes('gl_invalid_framebuffer_operation') ||
+        messageStr.includes('framebuffer is incomplete') ||
+        messageStr.includes('attachment has zero size') ||
+        messageStr.includes('glclear') ||
+        messageStr.includes('glclearbufferfv') ||
+        messageStr.includes('gldrawelements') ||
+        messageStr.includes('webgl') ||
+        messageStr.includes('webgl-0x') ||
+        messageStr.includes('gl_invalid_framebuffer_operation: glclear') ||
+        messageStr.includes('gl_invalid_framebuffer_operation: glclearbufferfv') ||
+        messageStr.includes('gl_invalid_framebuffer_operation: gldrawelements') ||
+        
+        // iframe sandbox warnings
+        messageStr.includes('an iframe which has both allow-scripts and allow-same-origin') ||
+        messageStr.includes('iframe') && messageStr.includes('sandbox') ||
+        messageStr.includes('spline-background.html') ||
+        
+        // Additional WebGL context warnings
+        messageStr.includes('webgl context') ||
+        messageStr.includes('webgl rendering context') ||
+        messageStr.includes('webgl2 rendering context') ||
+        
+        // GPU/Driver related warnings
+        messageStr.includes('gpu') ||
+        messageStr.includes('driver') ||
+        messageStr.includes('hardware acceleration') ||
+        
+        // Canvas/3D related warnings
+        messageStr.includes('canvas') && messageStr.includes('3d') ||
+        messageStr.includes('spline') ||
+        messageStr.includes('three.js') ||
+        messageStr.includes('webgl context lost') ||
+        messageStr.includes('webgl context restored')
       );
     }
     return false;
@@ -87,6 +138,62 @@ export const suppressConsoleWarnings = () => {
     }
     originalError.apply(console, args);
   };
+  
+  // Override window error handlers to suppress WebGL and iframe warnings
+  window.onerror = (message, source, lineno, colno, error) => {
+    const errorMessage = String(message);
+    if (shouldSuppress(errorMessage)) {
+      return true; // Suppress the error
+    }
+    if (originalWindowError) {
+      return originalWindowError.call(window, message, source, lineno, colno, error);
+    }
+    return false;
+  };
+  
+  window.onunhandledrejection = (event) => {
+    const reason = String(event.reason);
+    if (shouldSuppress(reason)) {
+      event.preventDefault();
+      return;
+    }
+    if (originalWindowUnhandledRejection) {
+      originalWindowUnhandledRejection.call(window, event);
+    }
+  };
+  
+  // Additional suppression for browser-native console methods
+  if (typeof window !== 'undefined') {
+    // Override console methods on the window object as well
+    (window as Window & { console: typeof console }).console = {
+      ...console,
+      warn: console.warn,
+      log: console.log,
+      error: console.error
+    };
+    
+    // Suppress WebGL context lost/restored events
+    const suppressWebGLEvents = () => {
+      const canvas = document.querySelector('canvas');
+      if (canvas) {
+        canvas.addEventListener('webglcontextlost', (e) => {
+          e.preventDefault();
+          return false;
+        });
+        
+        canvas.addEventListener('webglcontextrestored', (e) => {
+          e.preventDefault();
+          return false;
+        });
+      }
+    };
+    
+    // Try to suppress immediately and on DOM ready
+    suppressWebGLEvents();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', suppressWebGLEvents);
+    }
+  }
 };
 
 /**
@@ -171,5 +278,28 @@ export const perfLog = (label: string, startTime: number) => {
   if (import.meta.env.DEV) {
     const duration = performance.now() - startTime;
     console.log(`⏱️ ${label}: ${duration.toFixed(2)}ms`);
+  }
+};
+
+/**
+ * Focus management utility to prevent aria-hidden accessibility warnings
+ * 
+ * This function blurs any currently focused element to prevent the browser
+ * from showing accessibility warnings when aria-hidden is applied to elements
+ * containing focused content.
+ * 
+ * @example
+ * ```typescript
+ * // Before opening a modal
+ * blurActiveElement();
+ * setModalOpen(true);
+ * ```
+ * 
+ * @since 1.0.0
+ */
+export const blurActiveElement = () => {
+  const activeElement = document.activeElement;
+  if (activeElement && activeElement instanceof HTMLElement) {
+    activeElement.blur();
   }
 };

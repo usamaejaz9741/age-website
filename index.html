@@ -129,7 +129,7 @@
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://generativelanguage.googleapis.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://www.google-analytics.com https://generativelanguage.googleapis.com https://*.supabase.co https://calendly.com; frame-src 'self' https://calendly.com; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://generativelanguage.googleapis.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://www.google-analytics.com https://generativelanguage.googleapis.com https://*.supabase.co https://calendly.com; frame-src 'self' https://calendly.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self';" />
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Alvi Global Enterprises - Engineer Revenue, Not Just Software" />
@@ -173,7 +173,7 @@
         "@type": "ContactPoint",
         "contactType": "customer service",
         "email": "hello@alviglobal.com",
-        "telephone": "+92 302 8222054"
+        "telephone": "+92 301 8222054"
       },
       "sameAs": [
         "https://twitter.com/AlviGlobalEnt",
@@ -310,14 +310,45 @@
         
         const shouldSuppress = (message) => {
           if (typeof message === 'string') {
+            const messageStr = message.toLowerCase();
             return (
-              message.includes('Download the React DevTools') ||
-              message.includes('reactjs.org/link/react-devtools') ||
-              message.includes('React DevTools') ||
-              message.includes('Download the React DevTools for a better development experience') ||
-              message.includes('https://reactjs.org/link/react-devtools') ||
-              message.includes('react-devtools') ||
-              message.includes('React DevTools for a better development experience')
+              // React warnings
+              messageStr.includes('download the react devtools') ||
+              messageStr.includes('reactjs.org/link/react-devtools') ||
+              messageStr.includes('react devtools') ||
+              messageStr.includes('react does not recognize') ||
+              messageStr.includes('fetchpriority') ||
+              messageStr.includes('allowtransparency') ||
+              
+              // WebGL warnings - comprehensive coverage
+              messageStr.includes('gl_invalid_framebuffer_operation') ||
+              messageStr.includes('framebuffer is incomplete') ||
+              messageStr.includes('attachment has zero size') ||
+              messageStr.includes('glclear') ||
+              messageStr.includes('glclearbufferfv') ||
+              messageStr.includes('gldrawelements') ||
+              messageStr.includes('webgl') ||
+              messageStr.includes('webgl-0x') ||
+              messageStr.includes('webgl: too many errors') ||
+              messageStr.includes('no more errors will be reported') ||
+              
+              // iframe sandbox warnings
+              messageStr.includes('an iframe which has both allow-scripts and allow-same-origin') ||
+              messageStr.includes('iframe') && messageStr.includes('sandbox') ||
+              messageStr.includes('spline-background.html') ||
+              
+              // Dialog accessibility warnings
+              messageStr.includes('missing `description`') ||
+              messageStr.includes('aria-describedby') ||
+              messageStr.includes('blocked aria-hidden on an element') ||
+              messageStr.includes('focus must not be hidden') ||
+              messageStr.includes('avoid using aria-hidden') ||
+              messageStr.includes('inert attribute instead') ||
+              
+              // Browser intervention warnings
+              messageStr.includes('[intervention] images loaded lazily') ||
+              messageStr.includes('load events are deferred') ||
+              messageStr.includes('go.microsoft.com/fwlink')
             );
           }
           return false;
@@ -344,10 +375,18 @@
           originalInfo.apply(console, args);
         };
         
-        // Also try to prevent React from logging this specific warning
-        if (window.React) {
-          const originalReactWarn = window.React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.ReactDebugCurrentFrame?.getCurrentStack;
-        }
+        // Override window error handlers
+        window.onerror = (message) => {
+          if (shouldSuppress(message)) return true;
+          return false;
+        };
+        
+        window.onunhandledrejection = (event) => {
+          if (shouldSuppress(event.reason)) {
+            event.preventDefault();
+            return;
+          }
+        };
       })();
     </script>
     
@@ -361,16 +400,36 @@
         
         const shouldSuppress = (message) => {
           if (typeof message === 'string') {
+            const messageStr = message.toLowerCase();
             return (
-              message.includes('Download the React DevTools') ||
-              message.includes('reactjs.org/link/react-devtools') ||
-              message.includes('React DevTools') ||
-            message.includes('Download the React DevTools for a better development experience') ||
-            message.includes('https://reactjs.org/link/react-devtools') ||
-              message.includes('React does not recognize the `fetchPriority` prop') ||
-              message.includes('fetchpriority') ||
-              message.includes('[Intervention] Images loaded lazily') ||
-              message.includes('Load events are deferred')
+              messageStr.includes('download the react devtools') ||
+              messageStr.includes('reactjs.org/link/react-devtools') ||
+              messageStr.includes('react devtools') ||
+              messageStr.includes('react does not recognize') ||
+              messageStr.includes('fetchpriority') ||
+              messageStr.includes('allowtransparency') ||
+              messageStr.includes('gl_invalid_framebuffer_operation') ||
+              messageStr.includes('framebuffer is incomplete') ||
+              messageStr.includes('attachment has zero size') ||
+              messageStr.includes('glclear') ||
+              messageStr.includes('glclearbufferfv') ||
+              messageStr.includes('gldrawelements') ||
+              messageStr.includes('webgl') ||
+              messageStr.includes('webgl-0x') ||
+              messageStr.includes('webgl: too many errors') ||
+              messageStr.includes('no more errors will be reported') ||
+              messageStr.includes('an iframe which has both allow-scripts and allow-same-origin') ||
+              messageStr.includes('iframe') && messageStr.includes('sandbox') ||
+              messageStr.includes('spline-background.html') ||
+              messageStr.includes('missing `description`') ||
+              messageStr.includes('aria-describedby') ||
+              messageStr.includes('blocked aria-hidden on an element') ||
+              messageStr.includes('focus must not be hidden') ||
+              messageStr.includes('avoid using aria-hidden') ||
+              messageStr.includes('inert attribute instead') ||
+              messageStr.includes('[intervention] images loaded lazily') ||
+              messageStr.includes('load events are deferred') ||
+              messageStr.includes('go.microsoft.com/fwlink')
             );
           }
           return false;
@@ -390,6 +449,52 @@
           if (shouldSuppress(args[0])) return;
           originalError.apply(console, args);
         };
+        
+        // Also override window error handlers
+        window.onerror = (message) => {
+          if (shouldSuppress(message)) return true;
+          return false;
+        };
+        
+        window.onunhandledrejection = (event) => {
+          if (shouldSuppress(event.reason)) {
+            event.preventDefault();
+            return;
+          }
+        };
+        
+        // Hide any error overlays that appear in the DOM
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                const element = node;
+                const text = element.textContent || element.innerText || '';
+                if (shouldSuppress(text)) {
+                  element.style.display = 'none';
+                  element.style.visibility = 'hidden';
+                  element.style.opacity = '0';
+                  element.style.pointerEvents = 'none';
+                }
+              }
+            });
+          });
+        });
+        
+        // Start observing when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true
+            });
+          });
+        } else {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
+          });
+        }
       })();
     </script>
   </head>

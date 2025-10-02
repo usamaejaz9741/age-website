@@ -59,14 +59,16 @@ const Preloader = ({
   const progressInterval = useRef<NodeJS.Timeout>();
   const completionTimeout = useRef<NodeJS.Timeout>();
   const forceCompleteTimeout = useRef<NodeJS.Timeout>();
+  const isCompleting = useRef(false); // Prevent multiple completion calls
 
   // Progress simulation
   const updateProgress = useCallback(() => {
     // Loading stages with progress targets
     const loadingStages = [
-      { text: 'Initializing...', progress: 20 },
-      { text: 'Loading fonts...', progress: 40 },
-      { text: 'Preparing assets...', progress: 60 },
+      { text: 'Initializing...', progress: 15 },
+      { text: 'Loading fonts...', progress: 30 },
+      { text: 'Preparing assets...', progress: 45 },
+      { text: 'Loading 3D animation...', progress: 65 },
       { text: 'Optimizing performance...', progress: 80 },
       { text: 'Almost ready...', progress: 95 },
       { text: 'Complete!', progress: 100 }
@@ -96,31 +98,53 @@ const Preloader = ({
       () => {
         const criticalImages = document.querySelectorAll('img[loading="eager"]');
         return Array.from(criticalImages).every(img => (img as HTMLImageElement).complete);
+      },
+      // Check if Spline iframe is loaded
+      () => {
+        const splineIframe = document.querySelector('iframe[src*="spline-background.html"]') as HTMLIFrameElement;
+        if (splineIframe) {
+          try {
+            // Check if iframe is loaded and ready
+            return splineIframe.contentDocument?.readyState === 'complete' || 
+                   splineIframe.contentWindow?.document.readyState === 'complete';
+          } catch {
+            // If we can't access iframe content (cross-origin), assume it's loaded after a reasonable delay
+            return true;
+          }
+        }
+        return true; // No Spline iframe found, continue
       }
     ];
-
+    
     return checks.every(check => check());
   }, []);
 
   // Complete the preloader
   const completePreloader = useCallback(() => {
+    // Prevent multiple completion calls
+    if (isCompleting.current) return;
+    isCompleting.current = true;
+    
     setProgress(100);
     setLoadingText('Complete!');
     
-    setTimeout(() => {
-      setIsAnimating(true);
-      
+    // Use requestAnimationFrame for smoother transitions
+    requestAnimationFrame(() => {
       setTimeout(() => {
-        setIsVisible(false);
-        onComplete?.();
-      }, 300); // Faster fade duration
-    }, 200);
+        setIsAnimating(true);
+        
+        setTimeout(() => {
+          setIsVisible(false);
+          onComplete?.();
+        }, 200); // Reduced fade duration for better performance
+      }, 100); // Reduced delay
+    });
   }, [onComplete]);
 
   useEffect(() => {
-    // Start progress simulation
+    // Start progress simulation with throttled updates
     if (showProgress) {
-      progressInterval.current = setInterval(updateProgress, 100);
+      progressInterval.current = setInterval(updateProgress, 150); // Reduced frequency for better performance
     }
 
     // Force completion after max duration
@@ -171,13 +195,17 @@ const Preloader = ({
   return (
     <div 
       className={cn(
-        "fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-opacity duration-300 ease-out",
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-opacity duration-200 ease-out will-change-auto",
         isAnimating && "opacity-0",
         className
       )}
       role="status"
       aria-label="Loading application"
       aria-live="polite"
+      style={{
+        backfaceVisibility: 'hidden',
+        transform: 'translateZ(0)', // Force hardware acceleration
+      }}
     >
       {/* Loading Animation Container */}
       <div className="flex flex-col items-center justify-center space-y-6 px-4">
@@ -188,11 +216,15 @@ const Preloader = ({
               src="/assets/preloader.gif"
               alt="Loading application, please wait"
               className={cn(
-                "w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain transition-opacity duration-300",
+                "w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain transition-opacity duration-200",
                 gifLoaded ? "opacity-100" : "opacity-0"
               )}
               loading="eager"
               decoding="sync"
+              style={{
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
+              }}
               onLoad={() => setGifLoaded(true)}
               onError={() => {
                 setShowFallback(true);
@@ -237,17 +269,17 @@ const Preloader = ({
         
         {/* Enhanced Loading Text with Progress */}
         <div className="text-center max-w-sm">
-          <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-3 leading-tight">
-            Loading Alvi Global Enterprises
-          </h2>
-          
           {/* Progress Bar */}
           {showProgress && (
             <div className="mb-4">
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+              <div className="w-64 bg-muted rounded-full h-2 overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-resolution-blue-600 to-malibu-300 rounded-full transition-all duration-300 ease-out"
-                  style={{ width: `${progress}%` }}
+                  className="h-full bg-gradient-to-r from-resolution-blue-600 to-malibu-300 rounded-full transition-all duration-150 ease-out will-change-transform"
+                  style={{ 
+                    width: `${progress}%`,
+                    backfaceVisibility: 'hidden',
+                    transform: 'translateZ(0)',
+                  }}
                   role="progressbar"
                   aria-valuenow={progress}
                   aria-valuemin={0}
@@ -261,10 +293,6 @@ const Preloader = ({
               </div>
             </div>
           )}
-          
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            {showProgress ? loadingText : 'Preparing your experience...'}
-          </p>
         </div>
       </div>
       

@@ -53,7 +53,7 @@ Alvi Global Enterprises is a technology company specializing in AI-powered busin
 ## Contact Information
 
 **Email**: hello@alviglobal.com
-**Phone**: +92 302 8222054
+**Phone**: +92 301 8222054
 **Website**: https://alviglobal.com
 **Social Media**: 
 - Twitter: @AlviGlobalEnt
@@ -86,7 +86,6 @@ Alvi Global Enterprises is a technology company specializing in AI-powered busin
 
 ## Recent Updates
 
-- **ITCN Asia 2025**: Participating in Karachi Expo Centre, Sept 23-25
 - **AI Growth Score**: Launched comprehensive AI maturity assessment
 - **Case Studies**: Published results showing 312% revenue growth for fintech client
 - **Technology**: Implemented Google Gemini AI for audit generation

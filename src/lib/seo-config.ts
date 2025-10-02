@@ -33,8 +33,7 @@ export const DEFAULT_SEO_CONFIG = {
     'growth consulting',
     'AI maturity assessment',
     'Pakistan',
-    'Karachi',
-    'ITCN Asia 2025'
+    'Karachi'
   ],
   defaultOgImage: 'https://alviglobal.com/og-image.jpg',
   twitterHandle: '@AlviGlobalEnt',
@@ -71,8 +70,7 @@ export const PAGE_SEO_CONFIG = {
       'growth consulting',
       'AI maturity assessment',
       'Pakistan',
-      'Karachi',
-      'ITCN Asia 2025'
+      'Karachi'
     ],
     ogImage: 'https://alviglobal.com/og-image.jpg',
     canonicalUrl: 'https://alviglobal.com',
@@ -198,7 +196,7 @@ export const STRUCTURED_DATA_TEMPLATES = {
       '@type': 'ContactPoint',
       contactType: 'customer service',
       email: DEFAULT_SEO_CONFIG.contactEmail,
-      telephone: '+92 302 8222054'
+      telephone: '+92 301 8222054'
     },
     sameAs: Object.values(DEFAULT_SEO_CONFIG.socialLinks)
   },
@@ -341,6 +339,12 @@ export function generateSEOProps(
 ) {
   const pageConfig = getPageSEOConfig(pageKey);
   
+  // Type-safe access to robots property
+  const robotsContent = 'robots' in pageConfig ? pageConfig.robots : undefined;
+  
+  // Type-safe access to customMeta
+  const customMeta = Array.isArray(customProps.customMeta) ? customProps.customMeta : [];
+  
   return {
     pageTitle: pageConfig.title,
     pageDescription: pageConfig.description,
@@ -351,8 +355,8 @@ export function generateSEOProps(
     pageType: pageConfig.pageType,
     customMeta: [
       ...DEFAULT_META_TAGS,
-      ...(pageConfig.robots ? [{ name: 'robots', content: pageConfig.robots }] : []),
-      ...(customProps.customMeta || [])
+      ...(robotsContent ? [{ name: 'robots', content: robotsContent }] : []),
+      ...customMeta
     ],
     ...customProps
   };

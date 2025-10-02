@@ -188,7 +188,7 @@ const PageTemplate = ({
           "@type": "ContactPoint",
           "contactType": "customer service",
           "email": "hello@alviglobal.com",
-          "telephone": "+92 302 8222054"
+          "telephone": "+92 301 8222054"
         },
         "sameAs": [
           "https://twitter.com/AlviGlobalEnt",

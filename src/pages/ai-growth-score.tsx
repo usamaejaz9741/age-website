@@ -9,7 +9,7 @@ import EmailStep from "@/components/EmailStep";
 import { generateQuizAudit, type QuizAuditData } from "@/lib/gemini";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Target, Zap } from "lucide-react";
-import { isValidScore, isValidBand, isValidDimensionScores } from "@/lib/type-guards";
+// import { isValidScore, isValidBand, isValidDimensionScores } from "@/lib/type-guards"; // Unused imports removed
 import { SCORE_THRESHOLDS, getMaturityBand } from "@/constants/scores";
 
 // Interfaces for quiz functionality
@@ -30,7 +30,6 @@ export interface QuizResults {
 
 const AIGrowthScore = () => {
   const [currentStep, setCurrentStep] = useState<'hero' | 'quiz' | 'email' | 'results'>('hero');
-  const [isIndicatorExpanded, setIsIndicatorExpanded] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
   const [quizResults, setQuizResults] = useState<QuizResults | null>(null);
   const [userEmail, setUserEmail] = useState('');
@@ -322,26 +321,6 @@ const AIGrowthScore = () => {
     >
       {currentStep === 'hero' && (
         <SectionTemplate variant="gradient" padding="xl" maxWidth="7xl" align="center">
-          <div className="mb-8 animate-fade-in">
-            <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6 max-w-full">
-              <div className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse flex-shrink-0" />
-              <span className="hidden sm:inline">
-                Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25
-              </span>
-              <button 
-                className="sm:hidden text-left cursor-pointer rounded-full px-2 -mx-2 py-1 -my-1"
-                onClick={() => setIsIndicatorExpanded(!isIndicatorExpanded)}
-                aria-label="Toggle full event details"
-              >
-                <span className={isIndicatorExpanded ? '' : 'truncate max-w-[200px] block'}>
-                  {isIndicatorExpanded 
-                    ? 'Live from ITCN Asia 2025 • Karachi Expo Centre • Sept 23-25'
-                    : 'Live from ITCN Asia 2025 • Karachi • Sept 23-25'
-                  }
-                </span>
-              </button>
-            </div>
-          </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight animate-fade-in">
             Discover Your AI{" "}

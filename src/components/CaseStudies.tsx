@@ -25,10 +25,8 @@ import {
   CARD_PADDING, 
   BORDER_RADIUS,
   SHADOWS,
-  GAP,
   GRID_COLS,
-  TRANSITIONS,
-  HOVER_EFFECTS
+  TRANSITIONS
 } from "@/constants/design-system";
 
 /**

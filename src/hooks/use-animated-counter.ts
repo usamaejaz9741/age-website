@@ -39,7 +39,7 @@ export function useAnimatedCounter(
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasStarted) {
+        if (entry?.isIntersecting && !hasStarted) {
           setHasStarted(true);
           
           // Start animation after delay

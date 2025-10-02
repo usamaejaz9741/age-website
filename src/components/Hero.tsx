@@ -29,6 +29,7 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { useState, memo } from "react";
 import GrowthAuditModal from "./GrowthAuditModal";
 import SplineBackground from "./SplineBackground";
+import { blurActiveElement } from "@/lib/console-utils";
 
 /**
  * Hero section component with main value proposition and CTAs
@@ -74,8 +75,11 @@ const Hero = memo(() => {
             <Button 
               variant="cta" 
               size="xl"
-              className="group w-full sm:min-w-[280px] sm:w-auto"
-              onClick={() => setShowGrowthAudit(true)}
+              className="group w-full sm:min-w-[var(--button-min-width)] sm:w-auto"
+              onClick={() => {
+                blurActiveElement();
+                setShowGrowthAudit(true);
+              }}
               aria-label="Book a free AI growth consultation with Alvi Global Enterprises"
             >
               <Calendar className="mr-2" aria-hidden="true" />
@@ -86,7 +90,7 @@ const Hero = memo(() => {
             <Button 
               variant="cta-outline" 
               size="xl"
-              className="group w-full sm:min-w-[280px] sm:w-auto"
+              className="group w-full sm:min-w-[var(--button-min-width)] sm:w-auto"
               onClick={() => document.getElementById('case-studies')?.scrollIntoView({ behavior: 'smooth' })}
               aria-label="Scroll to view our case studies and success stories"
             >
@@ -104,7 +108,7 @@ const Hero = memo(() => {
       />
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-pulse-soft z-20">
+      <div className="absolute bottom-[var(--space-2xl)] left-1/2 transform -translate-x-1/2 animate-pulse-soft z-20">
         <div className="w-6 h-10 border-2 border-muted-foreground rounded-full flex justify-center">
           <div className="w-1 h-3 bg-muted-foreground rounded-full mt-2 animate-bounce" />
         </div>

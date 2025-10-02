@@ -163,6 +163,26 @@ const App = () => {
             />
           )}
           
+          {/* Preload Spline iframe during preloader phase */}
+          {showPreloader && (
+            <iframe
+              src="/spline-background.html"
+              style={{
+                position: 'absolute',
+                top: '-9999px',
+                left: '-9999px',
+                width: '1px',
+                height: '1px',
+                opacity: 0,
+                pointerEvents: 'none',
+                border: 'none',
+                overflow: 'hidden'
+              }}
+              sandbox="allow-scripts allow-pointer-lock allow-forms allow-popups allow-same-origin"
+              title="Spline Preload"
+            />
+          )}
+          
           {/* Toast notification systems */}
           <Toaster />
           <Sonner />

@@ -61,10 +61,10 @@ export function AnimatedCard({
   className,
   delay = 0,
   direction = 'up',
-  duration = 600
+  duration: _duration = 600
 }: AnimatedCardProps) {
   // Set up intersection observer to detect when element enters viewport
-  const { ref, isIntersecting } = useIntersectionObserver({
+  const { ref, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
     threshold: 0.1,                    // Trigger when 10% of element is visible
     rootMargin: '0px 0px -50px 0px',  // Start animation 50px before element enters viewport
     triggerOnce: true                  // Only animate once (don't re-trigger on scroll out)
@@ -76,8 +76,8 @@ export function AnimatedCard({
    * @returns CSS class string for animation state
    */
   const getAnimationClasses = () => {
-    // Base transition classes with custom easing
-    const baseClasses = 'transition-all ease-gentle duration-300';
+    // Base transition classes with design system easing and duration
+    const baseClasses = 'transition-all duration-300 ease-out';
     
     // Hidden state classes (before animation)
     if (!isIntersecting) {

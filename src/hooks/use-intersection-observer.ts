@@ -16,7 +16,7 @@
  * @since 1.0.0
  */
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /**
  * Configuration options for the intersection observer
@@ -56,9 +56,9 @@ interface UseIntersectionObserverOptions {
  * 
  * @since 1.0.0
  */
-export function useIntersectionObserver(
+export function useIntersectionObserver<T extends HTMLElement = HTMLElement>(
   options: UseIntersectionObserverOptions = {}
-) {
+): { ref: React.RefObject<T>; isIntersecting: boolean } {
   // Destructure options with sensible defaults
   const {
     threshold = 0.1,                    // Trigger when 10% of element is visible
@@ -71,7 +71,7 @@ export function useIntersectionObserver(
   // State for tracking if element has ever intersected (for triggerOnce behavior)
   const [hasIntersected, setHasIntersected] = useState(false);
   // Ref to attach to the element we want to observe
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const element = ref.current;
@@ -80,7 +80,7 @@ export function useIntersectionObserver(
     // Create intersection observer with callback
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isElementIntersecting = entry.isIntersecting;
+        const isElementIntersecting = entry?.isIntersecting;
         setIsIntersecting(isElementIntersecting);
         
         // Track if element has ever intersected (for triggerOnce behavior)

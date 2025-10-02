@@ -279,11 +279,14 @@ const AIGrowthQuiz = memo(({ onComplete }: AIGrowthQuizProps) => {
               <button
                 key={index}
                 onClick={() => handleOptionSelect(option.score)}
-                className={`w-full p-3 sm:p-4 text-left rounded-xl border-2 transition-all duration-300 ease-out hover:shadow-soft touch-manipulation focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] ${
+                className={`w-full p-3 sm:p-4 text-left rounded-xl border-2 transition-all duration-300 ease-out hover:shadow-soft touch-manipulation focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] quiz-option-button ${
                   selectedOption === option.score
-                    ? 'border-primary bg-primary/5 text-foreground shadow-soft'
-                    : 'border-input bg-background text-muted-foreground hover:border-primary/50 hover:bg-primary/2'
+                    ? 'border-primary bg-primary/5 shadow-soft quiz-option-selected'
+                    : 'border-input bg-background hover:border-primary/50 hover:bg-primary/2 quiz-option-unselected'
                 }`}
+                style={{
+                  color: 'hsl(224, 100%, 50%) !important'
+                }}
                 aria-pressed={selectedOption === option.score}
                 aria-describedby={`option-${index}-description`}
                 aria-labelledby={`question-${currentQuestion}`}

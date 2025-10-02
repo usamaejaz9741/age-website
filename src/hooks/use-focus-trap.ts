@@ -27,7 +27,7 @@
  * @version 1.0.0
  */
 
-import { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 interface UseFocusTrapOptions {
   /** Whether the focus trap is active */
@@ -46,18 +46,18 @@ interface UseFocusTrapOptions {
  * 
  * @param isActive - Whether the focus trap should be active
  * @param options - Additional configuration options
- * @returns Ref to attach to the container element
+ * @returns Ref to attach to the container element (HTMLDivElement)
  */
 export const useFocusTrap = (
   isActive: boolean = true,
   options: UseFocusTrapOptions = {}
-) => {
+): React.RefObject<HTMLDivElement> => {
   const {
     restoreFocus = true,
     focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
   } = options;
 
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
   const firstFocusableElementRef = useRef<HTMLElement | null>(null);
   const lastFocusableElementRef = useRef<HTMLElement | null>(null);

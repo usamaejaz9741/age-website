@@ -21,8 +21,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Security: Validate URL format
 try {
   new URL(supabaseUrl);
-} catch (error) {
+  } catch (error) {
   // Invalid Supabase URL format
+  console.error('Invalid Supabase URL configuration:', error);
   throw new Error('Invalid Supabase URL configuration');
 }
 

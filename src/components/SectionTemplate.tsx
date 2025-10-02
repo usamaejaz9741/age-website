@@ -146,7 +146,7 @@ const SectionTemplate = memo(({
   containerQueries = false,
   isLoading = false,
   skeletonComponent,
-  focusTrap = false,
+  focusTrap: _focusTrap = false,
   ariaLabel,
   ariaDescribedBy,
   scrollSpy = false,
@@ -167,14 +167,14 @@ const SectionTemplate = memo(({
     accent: 'bg-primary/5'
   };
 
-  // Enhanced padding variants
+  // Enhanced padding variants - using design system spacing tokens
   const paddingVariants = {
-    xs: 'py-8',
-    sm: 'py-12',
-    md: 'py-16',
-    lg: 'py-24',
-    xl: 'py-32',
-    '2xl': 'py-40',
+    xs: 'py-[var(--space-2xl)]',      // 2rem (32px)
+    sm: 'py-[var(--space-3xl)]',      // 2.5rem (40px) 
+    md: 'py-[var(--space-4xl)]',      // 3.75rem (60px)
+    lg: 'py-[var(--space-4xl)]',      // 3.75rem (60px) - section spacing
+    xl: 'pt-[calc(var(--space-4xl)+4rem)] pb-[var(--space-4xl)]',      // 7.75rem (124px) top, 3.75rem (60px) bottom
+    '2xl': 'pt-[calc(var(--space-4xl)+6rem)] pb-[var(--space-4xl)]',   // 9.75rem (156px) top, 3.75rem (60px) bottom
     none: 'py-0'
   };
 
@@ -232,7 +232,7 @@ const SectionTemplate = memo(({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setIsVisible(true);
           setIsInView(true);
         }
@@ -253,30 +253,25 @@ const SectionTemplate = memo(({
     if (!scrollSpy || !id) return;
 
     const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const isInViewport = rect.top <= 100 && rect.bottom >= 100;
-        
-        if (isInViewport) {
-          // Update active navigation item
-          const navItems = document.querySelectorAll(`a[href="#${id}"]`);
-          navItems.forEach(item => {
-            item.classList.add('active');
-            item.setAttribute('aria-current', 'true');
-          });
-        } else {
-          const navItems = document.querySelectorAll(`a[href="#${id}"]`);
-          navItems.forEach(item => {
-            item.classList.remove('active');
-            item.removeAttribute('aria-current');
-          });
-        }
+      if (sectionRef.current && isInView) {
+        // Update active navigation item
+        const navItems = document.querySelectorAll(`a[href="#${id}"]`);
+        navItems.forEach(item => {
+          item.classList.add('active');
+          item.setAttribute('aria-current', 'true');
+        });
+      } else {
+        const navItems = document.querySelectorAll(`a[href="#${id}"]`);
+        navItems.forEach(item => {
+          item.classList.remove('active');
+          item.removeAttribute('aria-current');
+        });
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [scrollSpy, id]);
+  }, [scrollSpy, id, isInView]);
 
   // Animation styles
   const animationStyles = animate ? {

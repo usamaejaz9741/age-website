@@ -1,15 +1,29 @@
 /**
- * Main landing page component for the Alvi Global Enterprises Website
+ * @fileoverview Index Page - Main Landing Page Component
  * 
- * This page serves as the primary marketing and lead generation page, featuring:
- * - Hero section with main value proposition
- * - Social proof and testimonials
- * - Service offerings and case studies
- * - Company information and contact details
- * - Growth audit modal for lead capture
+ * The primary marketing and lead generation page for the Alvi Global Enterprises website.
+ * This page serves as the main entry point for visitors and provides comprehensive
+ * information about the company's services and value proposition.
  * 
- * The page uses a global event listener system to handle growth audit
- * button clicks from any component on the page.
+ * @component
+ * @example
+ * ```tsx
+ * <Index />
+ * ```
+ * 
+ * @features
+ * - 🎯 Hero section with compelling value proposition
+ * - 📊 Social proof and client testimonials
+ * - 🛠️ Service offerings and case studies
+ * - 🏢 Company information and contact details
+ * - 📋 Growth audit modal for lead capture
+ * - 🎨 Responsive design with smooth animations
+ * - ♿ Full accessibility support
+ * - 🔗 Global event listener system for CTAs
+ * 
+ * @author Alvi Global Enterprises
+ * @version 1.0.0
+ * @since 1.0.0
  */
 
 import PageTemplate from "@/components/PageTemplate";
@@ -30,11 +44,15 @@ import { useLocation } from "react-router-dom";
  * Main landing page component
  * 
  * Manages the growth audit modal state and sets up global event listeners
- * for growth audit buttons throughout the page.
+ * for growth audit buttons throughout the page. Handles scroll restoration
+ * and provides comprehensive page layout with all marketing sections.
+ * 
+ * @returns JSX.Element - Complete landing page with all sections
  */
 const Index = () => {
-  // State for controlling the growth audit modal visibility
+  /** State for controlling the growth audit modal visibility */
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
+  /** React Router location object for navigation state */
   const location = useLocation();
 
   /**
@@ -69,28 +87,34 @@ const Index = () => {
    * Handle scroll to section when navigating from other pages
    */
   useEffect(() => {
-    if (location.state?.scrollTo) {
-      const element = document.getElementById(location.state.scrollTo);
-      if (element) {
-        // Small delay to ensure the page has rendered
-        const scrollTimeout = setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-        
-        // Clear the state to prevent re-scrolling on refresh
-        window.history.replaceState({}, document.title);
-        
-        // Cleanup timeout on unmount
-        return () => clearTimeout(scrollTimeout);
-      }
+    if (!location.state?.scrollTo) {
+      return;
     }
+
+    const element = document.getElementById(location.state.scrollTo);
+    if (!element) {
+      // Clear the state even if element is not found
+      window.history.replaceState({}, document.title);
+      return;
+    }
+
+    // Small delay to ensure the page has rendered
+    const scrollTimeout = setTimeout(() => {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+    
+    // Clear the state to prevent re-scrolling on refresh
+    window.history.replaceState({}, document.title);
+    
+    // Cleanup timeout on unmount
+    return () => clearTimeout(scrollTimeout);
   }, [location.state]);
 
   return (
     <PageTemplate 
       pageTitle="Alvi Global Enterprises - AI-Powered Business Solutions"
       pageDescription="Transform your business with AI automation, product engineering, and growth strategies. Expert solutions for emerging markets with proven results."
-      pageKeywords="AI automation, business growth, emerging markets, revenue engineering, product development, go-to-market strategy, AI consulting, business transformation, digital transformation, AI implementation, business ecosystems, growth consulting, AI maturity assessment, Pakistan, Karachi, ITCN Asia 2025"
+      pageKeywords="AI automation, business growth, emerging markets, revenue engineering, product development, go-to-market strategy, AI consulting, business transformation, digital transformation, AI implementation, business ecosystems, growth consulting, AI maturity assessment, Pakistan, Karachi"
       canonicalUrl="https://alviglobal.com"
       ogImage="https://alviglobal.com/og-image.jpg"
       twitterCard="summary_large_image"

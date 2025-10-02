@@ -193,7 +193,7 @@ export function generateOrganizationSchema(additionalData: Record<string, unknow
       '@type': 'ContactPoint',
       contactType: 'customer service',
       email: SEO_CONFIG.CONTACT_EMAIL,
-      telephone: '+92 302 8222054'
+      telephone: '+92 301 8222054'
     },
     sameAs: Object.values(SEO_CONFIG.SOCIAL_LINKS),
     ...additionalData

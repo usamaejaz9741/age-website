@@ -13,11 +13,13 @@
  * - Accessibility features
  */
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar, TrendingUp, ExternalLink } from "lucide-react";
 import { openCalendlyBooking } from "@/lib/calendly";
 import { useFocusTrap } from "@/hooks/use-focus-trap";
+import { blurActiveElement } from "@/lib/console-utils";
+import { useEffect } from "react";
 
 /**
  * Props interface for GrowthAuditModal component
@@ -50,6 +52,17 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
   const trapRef = useFocusTrap(isOpen);
 
   /**
+   * Handle focus management when modal opens/closes
+   * Prevents aria-hidden accessibility warnings
+   */
+  useEffect(() => {
+    if (isOpen) {
+      // When modal opens, blur any currently focused element to prevent aria-hidden warning
+      blurActiveElement();
+    }
+  }, [isOpen]);
+
+  /**
    * Handle Calendly booking button click
    * 
    * Opens Calendly in a new tab with UTM tracking parameters
@@ -62,6 +75,10 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
       e.preventDefault();
       e.stopPropagation();
     }
+    
+    // Blur any currently focused element to prevent aria-hidden warning
+    blurActiveElement();
+    
     openCalendlyBooking(
       undefined, // No prefill data
       {
@@ -86,10 +103,13 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
         aria-modal="true"
       >
         <DialogHeader>
-          <DialogTitle className="flex items-center text-xl sm:text-2xl md:text-3xl font-heading font-bold text-foreground mb-2">
+          <DialogTitle className="flex items-center text-[var(--font-size-xl)] sm:text-[var(--font-size-2xl)] md:text-[var(--font-size-3xl)] font-heading font-bold text-foreground mb-2">
             <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-3 sm:mr-4 text-[var(--icon-blue)]" />
             Book Your Growth Audit
           </DialogTitle>
+          <DialogDescription className="text-[var(--font-size-base)] text-muted-foreground mb-4">
+            Schedule a free 30-minute consultation to assess your AI maturity and discover growth opportunities tailored to your business.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="py-4 sm:py-6">
@@ -99,7 +119,7 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
                 <TrendingUp className="w-6 h-6 text-[var(--icon-green)] flex-shrink-0 mx-auto my-auto" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-foreground mb-1" style={{ lineHeight: 'var(--line-height-tight)' }}>
+                <h3 className="text-[var(--font-size-xl)] font-semibold text-foreground mb-1" style={{ lineHeight: 'var(--line-height-tight)' }}>
                   Free AI Growth Consultation
                 </h3>
                 <p className="text-muted-foreground/80">

@@ -135,15 +135,15 @@ const HowWeWork = () => {
         {/* Timeline Visualization */}
         <div className={`relative ${CARD_PADDING.large} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft}`}>
           <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-small)" }}>
               <div className="text-3xl font-bold text-primary mb-2">30</div>
               <div className="text-base text-muted-foreground">Days to MVP</div>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-medium)" }}>
               <div className="text-3xl font-bold text-primary mb-2">60</div>
               <div className="text-base text-muted-foreground">Days to optimization</div>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
+            <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-large)" }}>
               <div className="text-3xl font-bold text-primary mb-2">90</div>
               <div className="text-base text-muted-foreground">Days to scale</div>
             </div>

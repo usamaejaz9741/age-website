@@ -74,6 +74,7 @@ export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
       }
     } catch (dbError) {
       // Fallback to localStorage if database fails
+      console.warn('Database save failed, falling back to localStorage:', dbError);
       await saveToLocalStorage(data);
     }
     

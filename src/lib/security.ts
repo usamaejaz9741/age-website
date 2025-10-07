@@ -17,12 +17,14 @@
  * @since 1.0.0
  */
 
+import DOMPurify from 'dompurify';
+
 /**
  * Sanitizes HTML content to prevent XSS attacks
  * 
- * This function removes potentially dangerous HTML elements and attributes
- * that could be used for cross-site scripting attacks. It's designed to
- * be safe for user-generated content display.
+ * This function uses DOMPurify to remove potentially dangerous HTML elements
+ * and attributes that could be used for cross-site scripting attacks. It's
+ * designed to be safe for user-generated content display.
  * 
  * @param input - The string to sanitize
  * @returns Sanitized string safe for display
@@ -40,13 +42,7 @@ export function sanitizeHtml(input: string): string {
     return '';
   }
   
-  return input
-    .replace(/[<>]/g, '') // Remove angle brackets to prevent HTML injection
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/data:/gi, '') // Remove data: protocol
-    .replace(/vbscript:/gi, '') // Remove vbscript: protocol
-    .replace(/on\w+\s*=/gi, '') // Remove event handlers (onclick, onload, etc.)
-    .trim();
+  return DOMPurify.sanitize(input);
 }
 
 /**
@@ -104,12 +100,11 @@ export function sanitizeEmail(email: string): string {
     return '';
   }
   
+  // Remove angle brackets to prevent HTML injection in emails
   return email
     .trim()
     .toLowerCase()
-    .replace(/[<>]/g, '') // Remove angle brackets to prevent HTML injection
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/data:/gi, '') // Remove data: protocol
+    .replace(/[<>]/g, '')
     .substring(0, 254); // Limit length
 }
 

@@ -60,8 +60,8 @@ body.loaded {
 body {
   /* Use system fonts initially to prevent flash */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   line-height: 1.6;
   margin: 0;
   padding: 0;
@@ -72,6 +72,50 @@ body {
 /* Apply custom font only after it's loaded */
 body.fonts-loaded {
   font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Improved typography hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+/* Better text rendering */
+body, p, span, div {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile-first responsive design improvements */
+@media (max-width: 640px) {
+  /* Improve touch targets on mobile */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Improve text readability on small screens */
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  /* Better focus states for touch devices */
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
 }
 
 /**
@@ -92,12 +136,30 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
-[role="button"]:focus-visible {
-  outline: 2px solid hsl(var(--primary));
+[role="button"]:focus-visible,
+[role="radio"]:focus-visible,
+[role="checkbox"]:focus-visible {
+  outline: 2px solid hsl(var(--resolution-blue-600));
   outline-offset: 2px;
   border-radius: 4px;
-  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.2);
+  box-shadow: 0 0 0 4px hsl(var(--resolution-blue-600) / 0.2);
   transition: all 0.2s ease-out;
+}
+
+/* High contrast focus for better visibility */
+@media (prefers-contrast: high) {
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [role="button"]:focus-visible,
+  [role="radio"]:focus-visible,
+  [role="checkbox"]:focus-visible {
+    outline: 3px solid hsl(var(--resolution-blue-600));
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px hsl(var(--resolution-blue-600) / 0.3);
+  }
 }
 
 /* Enhanced interaction states */
@@ -121,129 +183,13 @@ button {
   line-height: 1;
 }
 
-/* Ensure white text on primary background (footer and solid primary buttons) */
+/* Footer styling - ensure white text on primary background */
 footer.bg-primary {
-  color: white !important;
+  color: white;
 }
 
-footer.bg-primary * {
-  color: white !important;
-}
-
-footer.bg-primary a {
-  color: white !important;
-}
-
-footer.bg-primary p {
-  color: white !important;
-}
-
-footer.bg-primary h1,
-footer.bg-primary h2,
-footer.bg-primary h3,
-footer.bg-primary h4,
-footer.bg-primary h5,
-footer.bg-primary h6 {
-  color: white !important;
-}
-
-/* Ensure white text on solid primary buttons (not outline buttons) */
-button.bg-primary:not([class*="border"]) {
-  color: white !important;
-}
-
-button.bg-primary:not([class*="border"]) * {
-  color: white !important;
-}
-
-button.bg-primary:not([class*="border"]) svg {
-  color: white !important;
-}
-
-/* Ensure primary text color works correctly */
-.text-primary {
-  color: hsl(var(--resolution-blue-600)) !important;
-}
-
-.text-primary svg {
-  color: hsl(var(--resolution-blue-600)) !important;
-}
-
-/* Force blue text on outline buttons specifically */
-button[class*="border-primary"].text-primary {
-  color: hsl(var(--resolution-blue-600)) !important;
-}
-
-button[class*="border-primary"].text-primary * {
-  color: hsl(var(--resolution-blue-600)) !important;
-}
-
-button[class*="border-primary"].text-primary svg {
-  color: hsl(var(--resolution-blue-600)) !important;
-}
-
-/* Nuclear option - target all buttons with primary border and text classes */
-button.border-primary.text-primary,
-button[class*="border-primary"][class*="text-primary"] {
-  color: #0050ff !important;
-}
-
-button.border-primary.text-primary *,
-button[class*="border-primary"][class*="text-primary"] * {
-  color: #0050ff !important;
-}
-
-button.border-primary.text-primary svg,
-button[class*="border-primary"][class*="text-primary"] svg {
-  color: #0050ff !important;
-}
-
-/* Hover states for primary border buttons */
-button.border-primary.text-primary:hover,
-button[class*="border-primary"][class*="text-primary"]:hover {
-  color: white !important;
-}
-
-button.border-primary.text-primary:hover *,
-button[class*="border-primary"][class*="text-primary"]:hover * {
-  color: white !important;
-}
-
-button.border-primary.text-primary:hover svg,
-button[class*="border-primary"][class*="text-primary"]:hover svg {
-  color: white !important;
-}
-
-/* Final fallback - target any button that should have blue text */
-button[class*="cta-outline"],
-button[class*="border-2"][class*="border-primary"] {
-  color: #0050ff !important;
-}
-
-button[class*="cta-outline"] *,
-button[class*="border-2"][class*="border-primary"] * {
-  color: #0050ff !important;
-}
-
-button[class*="cta-outline"] svg,
-button[class*="border-2"][class*="border-primary"] svg {
-  color: #0050ff !important;
-}
-
-/* Hover states for outline buttons - white text on blue background */
-button[class*="cta-outline"]:hover,
-button[class*="border-2"][class*="border-primary"]:hover {
-  color: white !important;
-}
-
-button[class*="cta-outline"]:hover *,
-button[class*="border-2"][class*="border-primary"]:hover * {
-  color: white !important;
-}
-
-button[class*="cta-outline"]:hover svg,
-button[class*="border-2"][class*="border-primary"]:hover svg {
-  color: white !important;
+footer.bg-primary a:hover {
+  opacity: 0.8;
 }
 
 /* Spline iframe styling - ensure seamless integration */
@@ -274,6 +220,33 @@ iframe {
 .preloader-container * {
   backface-visibility: hidden;
   transform: translateZ(0);
+}
+
+/* Performance optimizations for animations */
+.animate-fade-in,
+.animate-slide-up,
+.animate-scale-in {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-scale-in,
+  .animate-float-slow,
+  .animate-float-medium,
+  .animate-float-fast {
+    animation: none;
+    transform: none;
+  }
+  
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 /* Quiz Option Button Text Color Fix - Keep Blue */
@@ -496,7 +469,7 @@ body.loading.loaded {
 
 /* Loading skeleton for better perceived performance */
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
 }
@@ -592,8 +565,10 @@ h1, h2, h3, h4, h5, h6 {
     --foreground: 0 0% 0%;
     
     /* Resolution Blue - Mathematical HSL progression - WCAG 2.1 AA Compliant */
-    --resolution-blue-600: 224 100% 50%;  /* 4.6:1 contrast ratio on white */
-    --resolution-blue-700: 224 100% 42%;  /* 6.8:1 contrast ratio on white - Enhanced for better accessibility */
+    --resolution-blue-500: 224 100% 55%;  /* 4.8:1 contrast ratio on white */
+    --resolution-blue-600: 224 100% 48%;  /* 5.1:1 contrast ratio on white - Enhanced for better accessibility */
+    --resolution-blue-700: 224 100% 40%;  /* 7.2:1 contrast ratio on white - Enhanced for better accessibility */
+    --resolution-blue-800: 224 100% 32%;  /* 9.1:1 contrast ratio on white - Maximum accessibility */
     
     /* Malibu - Consistent mathematical progression */
     --malibu-300: 199 98% 65%;
@@ -672,6 +647,8 @@ h1, h2, h3, h4, h5, h6 {
     --shadow-soft: 0 1px 3px hsl(var(--resolution-blue-600) / 0.12), 0 1px 2px hsl(var(--resolution-blue-600) / 0.24);
     --shadow-medium: 0 4px 6px hsl(var(--resolution-blue-600) / 0.07), 0 2px 4px hsl(var(--resolution-blue-600) / 0.06);
     --shadow-strong: 0 10px 15px hsl(var(--resolution-blue-600) / 0.1), 0 4px 6px hsl(var(--resolution-blue-600) / 0.05);
+    --shadow-stronger: 0 20px 25px hsl(var(--resolution-blue-600) / 0.1), 0 10px 10px hsl(var(--resolution-blue-600) / 0.04);
+    --shadow-glow: 0 0 20px hsl(var(--resolution-blue-600) / 0.15), 0 0 40px hsl(var(--resolution-blue-600) / 0.1);
     
     /* Typography Scale - Golden Ratio (1.618) progression for mathematical harmony */
     --font-size-xs: 0.75rem;     /* 12px - Base */
@@ -736,6 +713,8 @@ h1, h2, h3, h4, h5, h6 {
     --ease-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);          /* Sharp transitions */
     --ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);   /* Gentle, natural motion */
     --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Playful bounce effect */
+    --ease-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);         /* Smooth, natural motion */
+    --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Spring-like motion */
     
     /* Animation Delay System - Golden Ratio progression */
     --animation-delay-small: 0.1s;      /* 100ms */

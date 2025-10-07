@@ -20,6 +20,7 @@ import { openCalendlyBooking } from "@/lib/calendly";
 import { useFocusTrap } from "@/hooks/use-focus-trap";
 import { blurActiveElement } from "@/lib/console-utils";
 import { useEffect } from "react";
+import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, ICON_SIZES, BORDER_RADIUS, SHADOWS, TRANSITIONS, CARD_PADDING, GAP } from "@/constants/design-system";
 
 /**
  * Props interface for GrowthAuditModal component
@@ -98,51 +99,51 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
         ref={trapRef}
-        className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-6"
+        className="max-w-[calc(100vw-2rem)] sm:max-w-lg md:max-w-xl lg:max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 pt-12 sm:pt-6"
         role="dialog"
         aria-modal="true"
       >
         <DialogHeader>
-          <DialogTitle className="flex items-center text-[var(--font-size-xl)] sm:text-[var(--font-size-2xl)] md:text-[var(--font-size-3xl)] font-heading font-bold text-foreground mb-2">
-            <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-3 sm:mr-4 text-[var(--icon-blue)]" />
+          <DialogTitle className={`flex items-center ${HEADING_SIZES.h5} text-foreground ${MARGIN_BOTTOM.xs}`}>
+            <Calendar className={`${ICON_SIZES.medium} mr-2 sm:mr-3 text-[var(--icon-blue)]`} />
             Book Your Growth Audit
           </DialogTitle>
-          <DialogDescription className="text-[var(--font-size-base)] text-muted-foreground mb-4">
+          <DialogDescription className={`${TEXT_SIZES.small} text-muted-foreground ${MARGIN_BOTTOM.small}`}>
             Schedule a free 30-minute consultation to assess your AI maturity and discover growth opportunities tailored to your business.
           </DialogDescription>
         </DialogHeader>
 
         <div className="py-4 sm:py-6">
-          <div className="bg-gradient-card p-4 sm:p-6 md:p-8 rounded-xl mb-6 sm:mb-8 shadow-soft hover:shadow-medium transition-all">
-            <div className="flex items-start md:items-center mb-6 gap-4">
-              <div className="p-3 rounded-lg group-hover:scale-110 transition-transform flex items-center justify-center" style={{ backgroundColor: 'var(--icon-green-bg)' }}>
-                <TrendingUp className="w-6 h-6 text-[var(--icon-green)] flex-shrink-0 mx-auto my-auto" />
+          <div className={`bg-gradient-card ${CARD_PADDING.large} ${BORDER_RADIUS.xl} ${MARGIN_BOTTOM.large} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default}`}>
+            <div className={`flex items-start md:items-center ${MARGIN_BOTTOM.medium} ${GAP.small}`}>
+              <div className={`${CARD_PADDING.small} ${BORDER_RADIUS.lg} group-hover:scale-110 transition-transform ${TRANSITIONS.default} flex items-center justify-center`} style={{ backgroundColor: 'var(--icon-green-bg)' }}>
+                <TrendingUp className={`${ICON_SIZES.medium} text-[var(--icon-green)] flex-shrink-0 mx-auto my-auto`} />
               </div>
               <div>
-                <h3 className="text-[var(--font-size-xl)] font-semibold text-foreground mb-1" style={{ lineHeight: 'var(--line-height-tight)' }}>
+                <h3 className={`${HEADING_SIZES.h4} text-foreground ${MARGIN_BOTTOM.xs}`}>
                   Free AI Growth Consultation
                 </h3>
-                <p className="text-muted-foreground/80">
+                <p className={`${TEXT_SIZES.small} text-muted-foreground/80`}>
                   Get personalized insights to accelerate your AI adoption and growth
                 </p>
               </div>
             </div>
             
-            <div className="grid sm:grid-cols-2 gap-5 text-sm">
+            <div className={`grid sm:grid-cols-2 ${GAP.medium} ${TEXT_SIZES.small}`}>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
                 AI maturity assessment
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
                 Growth strategy roadmap
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
                 Implementation recommendations
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-resolution-blue-600 rounded-full mr-3" />
+                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
                 ROI optimization plan
               </div>
             </div>
@@ -150,39 +151,39 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
 
           <div className="text-center space-y-6">
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-foreground">
+              <h4 className={`${HEADING_SIZES.h5} text-foreground`}>
                 Ready to accelerate your AI growth?
               </h4>
-              <p className="text-muted-foreground">
+              <p className={`${TEXT_SIZES.base} text-muted-foreground`}>
                 Book a free consultation to discuss your AI strategy and get personalized recommendations.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+            <div className={`flex flex-col sm:flex-row ${GAP.small} pt-6`}>
               <Button 
                 type="button"
                 onClick={handleBookConsultation}
                 variant="cta" 
                 size="xl" 
-                className="flex-1 py-4 px-6"
+                className="flex-1"
               >
-                <Calendar className="w-5 h-5 mr-2" />
+                <Calendar className={`${ICON_SIZES.default} mr-2`} />
                 Book Free Consultation
-                <ExternalLink className="w-4 h-4 ml-2" />
+                <ExternalLink className={`${ICON_SIZES.xs} ml-2`} />
               </Button>
               <Button 
                 type="button" 
                 variant="cta-outline" 
                 size="xl" 
                 onClick={onClose} 
-                className="flex-1 sm:flex-none py-4 px-6"
+                className="flex-1 sm:flex-none"
               >
                 Maybe Later
               </Button>
             </div>
           </div>
 
-          <p className="text-xs text-muted-foreground text-center mt-6">
+          <p className={`${TEXT_SIZES.xs} text-muted-foreground text-center mt-6`}>
             By booking, you agree to receive follow-up communications. 
             We respect your privacy and won't spam you.
           </p>

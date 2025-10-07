@@ -78,11 +78,11 @@ const Industries = () => {
   return (
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
-          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
+          <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
             Industries we{" "}
             <span className="text-primary">accelerate</span>
           </h2>
-          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             Deep domain expertise across high-growth sectors in emerging markets.
           </p>
         </div>
@@ -107,15 +107,15 @@ const Industries = () => {
                   />
                 </div>
                 
-                <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.small} leading-tight group-hover:text-primary transition-colors`}>
+                <h3 className={`${HEADING_SIZES.h4} text-foreground ${MARGIN_BOTTOM.small} group-hover:text-primary transition-colors`}>
                   {industry.name}
                 </h3>
                 
-                <p className="text-muted-foreground leading-relaxed">
+                <p className={`${TEXT_SIZES.base} text-muted-foreground`}>
                   {industry.description}
                 </p>
 
-                <div className="mt-6 flex items-center justify-center text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className={`mt-6 flex items-center justify-center ${TEXT_SIZES.small} text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity`}>
                   Learn more →
                 </div>
               </AnimatedCard>
@@ -125,13 +125,13 @@ const Industries = () => {
 
         {/* Call to Action */}
         <div className={`mt-16 text-center ${CARD_PADDING.large} bg-gradient-hero ${BORDER_RADIUS.xl}`}>
-          <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
+          <h3 className={`${HEADING_SIZES.h4} text-foreground ${MARGIN_BOTTOM.default}`}>
             Don't see your industry?
           </h3>
-          <p className="text-muted-foreground mb-6">
+          <p className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.medium}`}>
             We adapt our expertise to any high-growth market opportunity.
           </p>
-          <button className="text-primary font-bold hover:underline">
+          <button className={`${TEXT_SIZES.base} text-primary font-bold hover:underline`}>
             Discuss your market →
           </button>
         </div>

@@ -257,7 +257,10 @@ export function generateSecureRandomString(length: number = 32): string {
     const array = new Uint8Array(length);
     window.crypto.getRandomValues(array);
     for (let i = 0; i < length; i++) {
-      result += chars[array[i] % chars.length];
+      const value = array[i];
+      if (value !== undefined) {
+        result += chars[value % chars.length];
+      }
     }
   } else {
     // Fallback to Math.random (less secure but functional)
@@ -310,11 +313,60 @@ export function sanitizeUrl(url: string): string {
  */
 export class RateLimiter {
   private requests: Map<string, number[]> = new Map();
+  private storageKey: string;
   
   constructor(
     private maxRequests: number = 10,
-    private windowMs: number = 60000 // 1 minute
-  ) {}
+    private windowMs: number = 60000, // 1 minute
+    storageKey: string = 'rate_limiter'
+  ) {
+    this.storageKey = storageKey;
+    this.loadFromStorage();
+  }
+  
+  /**
+   * Load rate limit data from localStorage
+   */
+  private loadFromStorage(): void {
+    try {
+      const stored = localStorage.getItem(this.storageKey);
+      if (stored) {
+        const data = JSON.parse(stored) as Record<string, number[]>;
+        const now = Date.now();
+        
+        // Only load valid (non-expired) requests
+        Object.entries(data).forEach(([key, timestamps]) => {
+          const validTimestamps = timestamps.filter(time => now - time < this.windowMs);
+          if (validTimestamps.length > 0) {
+            this.requests.set(key, validTimestamps);
+          }
+        });
+      }
+    } catch (error) {
+      // Silently fail - localStorage might be disabled or full
+      if (import.meta.env.DEV) {
+        console.warn('Failed to load rate limiter from storage:', error);
+      }
+    }
+  }
+  
+  /**
+   * Save rate limit data to localStorage
+   */
+  private saveToStorage(): void {
+    try {
+      const data: Record<string, number[]> = {};
+      this.requests.forEach((timestamps, key) => {
+        data[key] = timestamps;
+      });
+      localStorage.setItem(this.storageKey, JSON.stringify(data));
+    } catch (error) {
+      // Silently fail - localStorage might be disabled or full
+      if (import.meta.env.DEV) {
+        console.warn('Failed to save rate limiter to storage:', error);
+      }
+    }
+  }
   
   /**
    * Check if request is allowed
@@ -335,6 +387,7 @@ export class RateLimiter {
     // Add current request
     validRequests.push(now);
     this.requests.set(identifier, validRequests);
+    this.saveToStorage();
     
     return true;
   }
@@ -351,14 +404,26 @@ export class RateLimiter {
     
     return Math.max(0, this.maxRequests - validRequests.length);
   }
+  
+  /**
+   * Clear all rate limit data
+   */
+  clear(): void {
+    this.requests.clear();
+    try {
+      localStorage.removeItem(this.storageKey);
+    } catch {
+      // Silently fail
+    }
+  }
 }
 
 /**
  * Create a rate limiter instance for API calls
  */
-export const apiRateLimiter = new RateLimiter(5, 60000); // 5 requests per minute
+export const apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit'); // 5 requests per minute
 
 /**
  * Create a rate limiter instance for form submissions
  */
-export const formRateLimiter = new RateLimiter(3, 300000); // 3 submissions per 5 minutes
+export const formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit'); // 3 submissions per 5 minutes

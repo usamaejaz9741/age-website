@@ -64,6 +64,7 @@ interface EmailStepProps {
  */
 const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoading }: EmailStepProps) => {
   const [emailError, setEmailError] = useState<string>('');
+  const [consentError, setConsentError] = useState<string>('');
 
   /**
    * Validate email input using security utilities
@@ -98,6 +99,17 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
    * Handle form submission with validation and rate limiting
    */
   const handleSubmit = useCallback(() => {
+    // Prevent submission if there's already an error
+    if (emailError) {
+      return;
+    }
+
+    // Validate email is not empty
+    if (!email || email.trim().length === 0) {
+      setEmailError('Email is required');
+      return;
+    }
+
     // Check rate limiting
     const userIdentifier = email || 'anonymous';
     if (!formRateLimiter.isAllowed(userIdentifier)) {
@@ -105,10 +117,23 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
       return;
     }
 
-    if (validateEmailInput(email) && hasConsent) {
-      onSubmit();
+    // Validate email format
+    if (!validateEmailInput(email)) {
+      return;
     }
-  }, [email, hasConsent, onSubmit, validateEmailInput]);
+
+    // Check consent
+    if (!hasConsent) {
+      setConsentError('You must agree to receive the audit report');
+      return;
+    }
+
+    // Clear consent error
+    setConsentError('');
+
+    // All validations passed - submit
+    onSubmit();
+  }, [email, emailError, hasConsent, onSubmit, validateEmailInput]);
 
   return (
     <div className="max-w-xl mx-auto text-center animate-fade-in">
@@ -151,16 +176,33 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
           )}
         </div>
         
-        <div className="flex items-start gap-2">
-          <Checkbox
-            id="consent"
-            checked={hasConsent}
-            onCheckedChange={(checked) => setHasConsent(checked as boolean)}
-            className="mt-1"
-          />
-          <Label htmlFor="consent" className="text-sm text-muted-foreground cursor-pointer">
-            I agree to receive my AI Growth Audit and occasional updates about AI automation. You can unsubscribe at any time.
-          </Label>
+        <div className="flex items-start gap-2 flex-col">
+          <div className="flex items-start gap-2">
+            <Checkbox
+              id="consent"
+              checked={hasConsent}
+              onCheckedChange={(checked) => {
+                setHasConsent(checked as boolean);
+                setConsentError(''); // Clear error when user checks the box
+              }}
+              className="mt-1"
+              aria-describedby={consentError ? "consent-error" : undefined}
+              aria-invalid={consentError ? "true" : "false"}
+            />
+            <Label htmlFor="consent" className="text-sm text-muted-foreground cursor-pointer">
+              I agree to receive my AI Growth Audit and occasional updates about AI automation. You can unsubscribe at any time.
+            </Label>
+          </div>
+          {consentError && (
+            <div className="w-full">
+              <ErrorMessage
+                id="consent-error"
+                message={consentError}
+                variant="box"
+                severity="error"
+              />
+            </div>
+          )}
         </div>
         
         <Button

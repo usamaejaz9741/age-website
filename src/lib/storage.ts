@@ -112,20 +112,44 @@ const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
       }
     }
 
+    // Remove submissions older than 90 days to save space
+    const ninetyDaysAgo = Date.now() - (90 * 24 * 60 * 60 * 1000);
+    submissions = submissions.filter(sub => 
+      new Date(sub.timestamp).getTime() > ninetyDaysAgo
+    );
+
+    // Limit to 100 most recent submissions
+    if (submissions.length >= 100) {
+      submissions = submissions.slice(-99); // Keep 99, add 1 new = 100 total
+    }
+
     // Add new submission to the array
     submissions.push(data);
 
-    // Update localStorage with error handling
+    // Update localStorage with enhanced error handling
     try {
+      const jsonString = JSON.stringify(submissions);
+      // Check if data is too large (localStorage limit is typically 5-10MB)
+      if (jsonString.length > 4 * 1024 * 1024) { // 4MB threshold
+        // Keep only the most recent 50 submissions
+        submissions = submissions.slice(-50);
+      }
       localStorage.setItem('age_user_submissions', JSON.stringify(submissions));
     } catch (storageError) {
       if (import.meta.env.DEV) {
         console.error('Error setting localStorage:', storageError);
       }
-      // Quota exceeded - try to clear old data and retry
-      if (submissions.length > 1) {
-        // Keep only the current submission
-        localStorage.setItem('age_user_submissions', JSON.stringify([data]));
+      // Quota exceeded - progressively reduce data
+      try {
+        // Try with last 10 submissions
+        localStorage.setItem('age_user_submissions', JSON.stringify(submissions.slice(-10)));
+      } catch {
+        // Last resort: keep only current submission
+        try {
+          localStorage.setItem('age_user_submissions', JSON.stringify([data]));
+        } catch {
+          // localStorage is completely unavailable - fail silently
+        }
       }
     }
 

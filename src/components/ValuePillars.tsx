@@ -71,11 +71,11 @@ const ValuePillars = () => {
   return (
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
-          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
+          <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
             Built different, built to{" "}
             <span className="text-primary">win</span>
           </h2>
-          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             We don't just build software—we engineer complete revenue systems 
             designed for the realities of emerging markets.
           </p>
@@ -100,10 +100,10 @@ const ValuePillars = () => {
                     style={{ color: pillar.iconColor }}
                   />
                 </div>
-                <h3 className={`${HEADING_SIZES.h5} font-bold text-foreground ${MARGIN_BOTTOM.small} leading-tight`}>
+                <h3 className={`${HEADING_SIZES.h5} text-foreground ${MARGIN_BOTTOM.small}`}>
                   {pillar.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className={`${TEXT_SIZES.base} text-muted-foreground`}>
                   {pillar.description}
                 </p>
               </AnimatedCard>

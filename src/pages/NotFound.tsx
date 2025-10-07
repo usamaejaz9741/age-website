@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
 import PageTemplate from "@/components/PageTemplate";
 import SectionTemplate from "@/components/SectionTemplate";
+import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, GAP, BUTTON_STYLES } from "@/constants/design-system";
 
 /**
  * 404 Not Found Page Component
@@ -96,8 +97,8 @@ const NotFound = () => {
       });
     }
     
-    // TODO: Integrate with error tracking service (e.g., Sentry)
-    // Example: Sentry.captureException(new Error(`404: ${location.pathname}`));
+    // Error tracking integration can be added here when needed
+    // Example: errorTrackingService.captureException(new Error(`404: ${location.pathname}`));
   }, [location.pathname]);
 
   /**
@@ -157,23 +158,23 @@ const NotFound = () => {
       >
         <div className="text-center">
           {/* Error code display with brand styling */}
-          <div className="mb-8">
-            <h1 className="text-8xl font-bold text-primary mb-4">404</h1>
-            <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+          <div className={MARGIN_BOTTOM.large}>
+            <h1 className={`text-8xl font-bold text-primary ${MARGIN_BOTTOM.small}`}>404</h1>
+            <h2 className={`${HEADING_SIZES.h3} text-foreground ${MARGIN_BOTTOM.small}`}>
               Page Not Found
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className={`${TEXT_SIZES.base} text-muted-foreground`}>
               The page you're looking for doesn't exist or has been moved. 
               Let's get you back on track.
             </p>
           </div>
           
           {/* Navigation buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className={`flex flex-col sm:flex-row ${GAP.small} justify-center`}>
             <Button 
               onClick={handleGoHome}
               variant="cta"
-              className="group"
+              className={`group ${BUTTON_STYLES.responsive}`}
             >
               <Home className="w-4 h-4 mr-2" />
               Go Home
@@ -182,7 +183,7 @@ const NotFound = () => {
             <Button 
               onClick={handleGoBack}
               variant="cta-outline"
-              className="group"
+              className={`group ${BUTTON_STYLES.responsive}`}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Go Back
@@ -190,7 +191,7 @@ const NotFound = () => {
           </div>
           
           {/* Additional help text */}
-          <p className="text-sm text-muted-foreground mt-8">
+          <p className={`${TEXT_SIZES.small} text-muted-foreground mt-8`}>
             If you believe this is an error, please contact our support team.
           </p>
         </div>

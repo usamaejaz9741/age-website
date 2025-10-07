@@ -77,7 +77,9 @@ const Index = () => {
 
     // Cleanup: Remove event listeners when component unmounts
     return () => {
-      auditButtons.forEach(button => {
+      // Re-query buttons to ensure we have the current references
+      const currentButtons = document.querySelectorAll('[data-growth-audit]');
+      currentButtons.forEach(button => {
         button.removeEventListener('click', handleGrowthAuditClick);
       });
     };

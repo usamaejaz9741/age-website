@@ -47,8 +47,8 @@ const ContentTeaser = () => {
   const [emailError, setEmailError] = useState("");
 
   const handleEmailChange = useCallback((value: string) => {
-    // Sanitize email input
-    const sanitized = sanitizeEmail(value);
+    // Sanitize email input and limit length
+    const sanitized = sanitizeEmail(value).substring(0, 254);
     setEmail(sanitized);
     setEmailError(""); // Clear error when user starts typing
   }, []);
@@ -63,7 +63,8 @@ const ContentTeaser = () => {
     }
     
     // Handle email subscription
-    // TODO: Implement actual subscription logic
+    // Note: Subscription logic should be implemented based on requirements
+    // This could integrate with email marketing services like Mailchimp, ConvertKit, etc.
     
     // Clear form after successful submission
     setEmail("");
@@ -100,11 +101,11 @@ const ContentTeaser = () => {
   return (
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
-          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
+          <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
             Stay ahead with{" "}
             <span className="text-primary">actionable insights</span>
           </h2>
-          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             Get exclusive access to growth strategies, market intelligence, 
             and revenue optimization tactics that work in emerging markets.
           </p>
@@ -134,15 +135,15 @@ const ContentTeaser = () => {
                   {insight.type}
                 </div>
                 
-                <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors`}>
+                <h3 className={`${HEADING_SIZES.h4} text-foreground ${MARGIN_BOTTOM.small} group-hover:text-primary transition-colors`}>
                   {insight.title}
                 </h3>
                 
-                <p className={`${TEXT_SIZES.base} text-muted-foreground leading-relaxed`}>
+                <p className={`${TEXT_SIZES.base} text-muted-foreground`}>
                   {insight.description}
                 </p>
 
-                <div className={`mt-4 flex items-center justify-center ${TEXT_SIZES.base} text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity`}>
+                <div className={`mt-4 flex items-center justify-center ${TEXT_SIZES.base} text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity ${TRANSITIONS.default}`}>
                   Access now →
                 </div>
               </AnimatedCard>
@@ -153,10 +154,10 @@ const ContentTeaser = () => {
         {/* Email Capture */}
         <div className={`max-w-2xl mx-auto ${CARD_PADDING.large} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.medium}`}>
           <div className={`text-center ${MARGIN_BOTTOM.default}`}>
-            <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground ${MARGIN_BOTTOM.small} leading-tight`}>
+            <h3 className={`${HEADING_SIZES.h4} text-foreground ${MARGIN_BOTTOM.small}`}>
               Get started today
             </h3>
-            <p className="text-muted-foreground">
+            <p className={`${TEXT_SIZES.base} text-muted-foreground`}>
               Join 500+ growth leaders getting weekly insights that drive results.
             </p>
           </div>
@@ -197,7 +198,7 @@ const ContentTeaser = () => {
             </Button>
           </form>
 
-          <p className="text-sm text-muted-foreground text-center mt-4">
+          <p className={`${TEXT_SIZES.small} text-muted-foreground text-center mt-4`}>
             No spam. Unsubscribe anytime. Read our{" "}
             <button 
               type="button"

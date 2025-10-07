@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PageTemplate from "@/components/PageTemplate";
 import SectionTemplate from "@/components/SectionTemplate";
 import { AnimatedCard } from "@/components/ui/animated-card";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Target, Zap } from "lucide-react";
 // import { isValidScore, isValidBand, isValidDimensionScores } from "@/lib/type-guards"; // Unused imports removed
 import { SCORE_THRESHOLDS, getMaturityBand } from "@/constants/scores";
+import { getDimensionForQuestion } from "@/constants/quiz-questions";
 
 // Interfaces for quiz functionality
 export interface QuizAnswers {
@@ -51,20 +52,9 @@ const AIGrowthScore = () => {
     setUtmParams(utm);
   }, []);
 
-  const startQuiz = () => {
+  const startQuiz = useCallback(() => {
     setCurrentStep('quiz');
-  };
-
-  const handleQuizComplete = (answers: QuizAnswers) => {
-    setQuizAnswers(answers);
-    
-    // Calculate results
-    const results = calculateResults(answers);
-    setQuizResults(results);
-    
-    // Move to email step
-    setCurrentStep('email');
-  };
+  }, []);
 
   /**
    * Calculates comprehensive AI maturity assessment results from quiz answers
@@ -98,7 +88,7 @@ const AIGrowthScore = () => {
    * // Returns: { score: 67, band: 'Experimenter', breakdown: { strategy: 6, implementation: 7, data: 6, culture: 6 } }
    * ```
    */
-  const calculateResults = (answers: QuizAnswers): QuizResults => {
+  const calculateResults = useCallback((answers: QuizAnswers): QuizResults => {
     // Initialize dimension score accumulators with type safety
     // Each dimension represents a critical aspect of AI maturity
     const scores = {
@@ -121,40 +111,29 @@ const AIGrowthScore = () => {
      * - Data (q7-q9): Data quality, governance, performance measurement
      * - Culture (q10-q12): AI literacy, change management, ethics and governance
      */
-    const questionDimensionMap: { [key: string]: keyof typeof scores } = {
-      'q1': 'strategy',        // AI strategy definition and planning maturity
-      'q2': 'strategy',        // Executive leadership and support for AI initiatives
-      'q3': 'strategy',        // Business alignment and strategic integration
-      'q4': 'implementation',  // Implementation maturity and project execution
-      'q5': 'implementation',  // Technical capabilities and infrastructure readiness
-      'q6': 'implementation',  // Project methodology and development processes
-      'q7': 'data',           // Data quality and availability for AI applications
-      'q8': 'data',           // Data governance and management frameworks
-      'q9': 'data',           // AI performance measurement and analytics
-      'q10': 'culture',       // AI literacy and workforce capabilities
-      'q11': 'culture',       // Change management and organizational readiness
-      'q12': 'culture'        // AI ethics, governance, and responsible AI practices
-    };
-
     /**
      * Dimension score calculation with comprehensive validation
      * 
      * This loop processes each quiz answer and accumulates scores within
-     * the appropriate dimension. It includes multiple layers of validation:
+     * the appropriate dimension. Uses centralized question-dimension mapping
+     * from constants/quiz-questions.ts to ensure consistency.
+     * 
+     * Validation layers:
      * 1. Dimension mapping validation (ensures question maps to valid dimension)
      * 2. Type safety validation (ensures score is a number)
      * 3. Range validation (ensures score is within 0-3 scale)
      * 4. NaN protection (prevents invalid numeric operations)
      * 
      * @validation
+     * - getDimensionForQuestion() retrieves dimension from centralized config
      * - Object.prototype.hasOwnProperty.call() prevents prototype pollution
      * - typeof score === 'number' ensures type safety
      * - !isNaN(score) prevents NaN values from corrupting calculations
      * - score >= 0 && score <= 3 ensures valid response scale
      */
     Object.entries(answers).forEach(([questionId, score]) => {
-      // Retrieve dimension mapping for current question
-      const dimension = questionDimensionMap[questionId];
+      // Retrieve dimension mapping for current question from centralized config
+      const dimension = getDimensionForQuestion(questionId);
       
       // Validate dimension exists and is a valid property of scores object
       if (dimension && Object.prototype.hasOwnProperty.call(scores, dimension)) {
@@ -238,9 +217,20 @@ const AIGrowthScore = () => {
       band,
       breakdown: validatedBreakdown
     };
-  };
+  }, []); // No dependencies - pure calculation function
 
-  const handleEmailSubmit = async () => {
+  const handleQuizComplete = useCallback((answers: QuizAnswers) => {
+    setQuizAnswers(answers);
+    
+    // Calculate results
+    const results = calculateResults(answers);
+    setQuizResults(results);
+    
+    // Move to email step
+    setCurrentStep('email');
+  }, [calculateResults]);
+
+  const handleEmailSubmit = useCallback(async () => {
     if (!userEmail || !hasConsent || !quizResults) return;
 
     setIsGeneratingAudit(true);
@@ -277,7 +267,7 @@ const AIGrowthScore = () => {
     } finally {
       setIsGeneratingAudit(false);
     }
-  };
+  }, [userEmail, hasConsent, quizResults, quizAnswers]);
 
   return (
     <PageTemplate 

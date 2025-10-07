@@ -70,10 +70,10 @@ const HowWeWork = () => {
   return (
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
-          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
+          <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
             <span className="text-primary">90 days</span> to revenue
           </h2>
-          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             Our proven methodology delivers measurable results in 3 months, 
             not 3 years.
           </p>
@@ -106,21 +106,21 @@ const HowWeWork = () => {
                   </div>
                   
                   <div className={MARGIN_BOTTOM.small}>
-                    <div className={`${HEADING_SIZES.h4} font-bold text-foreground leading-tight`}>
+                    <div className={`${HEADING_SIZES.h4} text-foreground`}>
                       {step.title}
                     </div>
-                    <div className="text-primary font-bold text-base sm:text-lg">
+                    <div className={`${TEXT_SIZES.base} text-primary font-bold`}>
                       {step.subtitle}
                     </div>
                   </div>
                   
-                  <p className="text-muted-foreground mb-8 leading-relaxed">
+                  <p className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.large}`}>
                     {step.description}
                   </p>
 
-                  <ul className="space-y-2">
+                  <ul className={GAP.xs}>
                     {step.features.map((feature) => (
-                      <li key={feature} className="flex items-center text-base text-muted-foreground">
+                      <li key={feature} className={`flex items-center ${TEXT_SIZES.base} text-muted-foreground`}>
                         <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
                         {feature}
                       </li>
@@ -134,18 +134,18 @@ const HowWeWork = () => {
 
         {/* Timeline Visualization */}
         <div className={`relative ${CARD_PADDING.large} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft}`}>
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className={`grid grid-cols-3 ${GAP.small} text-center`}>
             <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-small)" }}>
-              <div className="text-3xl font-bold text-primary mb-2">30</div>
-              <div className="text-base text-muted-foreground">Days to MVP</div>
+              <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>30</div>
+              <div className={`${TEXT_SIZES.base} text-muted-foreground`}>Days to MVP</div>
             </div>
             <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-medium)" }}>
-              <div className="text-3xl font-bold text-primary mb-2">60</div>
-              <div className="text-base text-muted-foreground">Days to optimization</div>
+              <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>60</div>
+              <div className={`${TEXT_SIZES.base} text-muted-foreground`}>Days to optimization</div>
             </div>
             <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-large)" }}>
-              <div className="text-3xl font-bold text-primary mb-2">90</div>
-              <div className="text-base text-muted-foreground">Days to scale</div>
+              <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>90</div>
+              <div className={`${TEXT_SIZES.base} text-muted-foreground`}>Days to scale</div>
             </div>
           </div>
         </div>

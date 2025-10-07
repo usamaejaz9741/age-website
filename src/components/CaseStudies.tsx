@@ -26,7 +26,9 @@ import {
   BORDER_RADIUS,
   SHADOWS,
   GRID_COLS,
-  TRANSITIONS
+  TRANSITIONS,
+  GAP,
+  ICON_SIZES
 } from "@/constants/design-system";
 
 /**
@@ -63,11 +65,11 @@ const CaseStudies = () => {
   return (
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
-          <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
+          <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
             Results that{" "}
             <span className="text-primary">speak numbers</span>
           </h2>
-          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
+          <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             Real companies, real growth, real revenue impact.
           </p>
         </div>
@@ -84,10 +86,10 @@ const CaseStudies = () => {
               {/* Header */}
               <div className={`flex items-center justify-between ${MARGIN_BOTTOM.default}`}>
                 <div className="text-left">
-                  <h3 className={`${HEADING_SIZES.h4} font-bold text-foreground mb-1`}>
+                  <h3 className={`${HEADING_SIZES.h4} text-foreground ${MARGIN_BOTTOM.xs}`}>
                     {caseStudy.company}
                   </h3>
-                  <p className="text-muted-foreground" aria-label={`Industry: ${caseStudy.industry}`}>{caseStudy.industry}</p>
+                  <p className={`${TEXT_SIZES.base} text-muted-foreground`} aria-label={`Industry: ${caseStudy.industry}`}>{caseStudy.industry}</p>
                 </div>
                 <div className="text-right">
                   <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
@@ -105,30 +107,30 @@ const CaseStudies = () => {
               </div>
 
               {/* Challenge */}
-              <div className="mb-6">
-                <h4 className="font-semibold text-foreground mb-2">Challenge:</h4>
-                <p className="text-muted-foreground">{caseStudy.challenge}</p>
+              <div className={MARGIN_BOTTOM.medium}>
+                <h4 className={`${HEADING_SIZES.h6} text-foreground ${MARGIN_BOTTOM.xs}`}>Challenge:</h4>
+                <p className={`${TEXT_SIZES.base} text-muted-foreground`}>{caseStudy.challenge}</p>
               </div>
 
               {/* Results Grid */}
-              <div className="grid grid-cols-3 gap-4 p-6 bg-muted/30 rounded-xl">
+              <div className={`grid grid-cols-3 ${GAP.small} ${CARD_PADDING.medium} bg-muted/30 ${BORDER_RADIUS.xl}`}>
                 <div className="text-center">
-                  <div className="text-base text-muted-foreground mb-1">Revenue</div>
-                  <div className="text-xs text-destructive mb-1">{caseStudy.results.before.revenue}</div>
-                  <TrendingUp className="w-4 h-4 mx-auto mb-1 text-[var(--icon-green)] flex-shrink-0" />
-                  <div className="text-base font-semibold text-[var(--icon-green)]">{caseStudy.results.after.revenue}</div>
+                  <div className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.xs}`}>Revenue</div>
+                  <div className={`${TEXT_SIZES.xs} text-destructive ${MARGIN_BOTTOM.xs}`}>{caseStudy.results.before.revenue}</div>
+                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} text-[var(--icon-green)] flex-shrink-0`} />
+                  <div className={`${TEXT_SIZES.base} font-semibold text-[var(--icon-green)]`}>{caseStudy.results.after.revenue}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-base text-muted-foreground mb-1">Conversion</div>
-                  <div className="text-xs text-destructive mb-1">{caseStudy.results.before.conversion}</div>
-                  <TrendingUp className="w-4 h-4 mx-auto mb-1 text-[var(--icon-blue)] flex-shrink-0" />
-                  <div className="text-base font-semibold text-[var(--icon-blue)]">{caseStudy.results.after.conversion}</div>
+                  <div className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.xs}`}>Conversion</div>
+                  <div className={`${TEXT_SIZES.xs} text-destructive ${MARGIN_BOTTOM.xs}`}>{caseStudy.results.before.conversion}</div>
+                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} text-[var(--icon-blue)] flex-shrink-0`} />
+                  <div className={`${TEXT_SIZES.base} font-semibold text-[var(--icon-blue)]`}>{caseStudy.results.after.conversion}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-base text-muted-foreground mb-1">CAC</div>
-                  <div className="text-xs text-destructive mb-1">{caseStudy.results.before.cac}</div>
-                  <TrendingUp className="w-4 h-4 mx-auto mb-1 rotate-180 text-[var(--icon-red)] flex-shrink-0" />
-                  <div className="text-base font-semibold text-[var(--icon-red)]">{caseStudy.results.after.cac}</div>
+                  <div className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.xs}`}>CAC</div>
+                  <div className={`${TEXT_SIZES.xs} text-destructive ${MARGIN_BOTTOM.xs}`}>{caseStudy.results.before.cac}</div>
+                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} rotate-180 text-[var(--icon-red)] flex-shrink-0`} />
+                  <div className={`${TEXT_SIZES.base} font-semibold text-[var(--icon-red)]`}>{caseStudy.results.after.cac}</div>
                 </div>
               </div>
             </AnimatedCard>

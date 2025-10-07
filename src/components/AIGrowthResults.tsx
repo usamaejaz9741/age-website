@@ -51,6 +51,7 @@ import {
   Mail,
   ExternalLink
 } from "lucide-react";
+import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, ICON_SIZES, BORDER_RADIUS, SHADOWS, GAP, BACKGROUNDS, CARD_PADDING } from "@/constants/design-system";
 
 /**
  * Props interface for the AIGrowthResults component
@@ -267,21 +268,21 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
     <div className="min-h-screen bg-background pt-20">
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
+        <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
+          <h1 className={`${HEADING_SIZES.h1} text-foreground ${MARGIN_BOTTOM.medium}`}>
             Your AI Growth Score
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className={`${TEXT_SIZES.large} text-muted-foreground`}>
             Personalized insights for {userEmail}
           </p>
         </div>
 
         {/* Score Overview */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card className="shadow-medium">
+        <div className={`grid md:grid-cols-2 ${GAP.large} ${MARGIN_BOTTOM.large}`}>
+          <Card className={SHADOWS.medium}>
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl mb-4">Overall Score</CardTitle>
-              <div className="text-6xl font-bold text-primary mb-2">
+              <CardTitle className={`${HEADING_SIZES.h3} ${MARGIN_BOTTOM.small}`}>Overall Score</CardTitle>
+              <div className={`text-6xl font-bold text-primary ${MARGIN_BOTTOM.xs}`}>
                 {results.score}%
               </div>
               <div className={`inline-flex px-4 py-2 rounded-full border ${getBandColor(results.band)}`}>
@@ -289,15 +290,15 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-center">
+              <p className={`${TEXT_SIZES.base} text-muted-foreground text-center`}>
                 {getBandDescription(results.band)}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="shadow-medium">
+          <Card className={SHADOWS.medium}>
             <CardHeader>
-              <CardTitle className="text-2xl mb-4">Dimension Breakdown</CardTitle>
+              <CardTitle className={`${HEADING_SIZES.h3} ${MARGIN_BOTTOM.small}`}>Dimension Breakdown</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {Object.entries(results.breakdown).map(([key, score]) => {
@@ -318,12 +319,12 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <Icon 
-                          className="w-5 h-5 mr-2" 
+                          className={`${ICON_SIZES.default} mr-2`} 
                           style={{ color: dimensionColors[key as keyof typeof dimensionColors] }}
                         />
-                        <span className="font-medium">{label}</span>
+                        <span className={`${TEXT_SIZES.base} font-medium`}>{label}</span>
                       </div>
-                      <span className="font-semibold">{scoreValue}%</span>
+                      <span className={`${TEXT_SIZES.base} font-semibold`}>{scoreValue}%</span>
                     </div>
                     <Progress value={scoreValue} className="h-2" />
                   </div>
@@ -334,10 +335,10 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         </div>
 
         {/* AI-Generated Recommendations */}
-        <Card className="shadow-medium mb-12">
+        <Card className={`${SHADOWS.medium} ${MARGIN_BOTTOM.large}`}>
           <CardHeader>
-            <CardTitle className="text-2xl flex items-center">
-              <Target className="w-6 h-6 mr-2 text-[var(--icon-blue)]" />
+            <CardTitle className={`${HEADING_SIZES.h3} flex items-center`}>
+              <Target className={`${ICON_SIZES.medium} mr-2 text-[var(--icon-blue)]`} />
               AI-Powered Recommendations
             </CardTitle>
           </CardHeader>
@@ -350,13 +351,13 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
                 className="py-12"
               />
             ) : (
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className={`grid md:grid-cols-3 ${GAP.medium}`}>
                 {recommendations.map((recommendation, index) => (
-                  <div key={index} className="bg-muted/10 p-6 rounded-xl">
-                    <div className="text-2xl font-bold text-primary mb-2">
+                  <div key={index} className={`bg-muted/10 ${CARD_PADDING.medium} ${BORDER_RADIUS.xl}`}>
+                    <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>
                       {index + 1}
                     </div>
-                    <p className="text-foreground font-medium">
+                    <p className={`${TEXT_SIZES.base} text-foreground font-medium`}>
                       {recommendation}
                     </p>
                   </div>
@@ -367,16 +368,16 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         </Card>
 
         {/* Next Steps */}
-        <div className="bg-gradient-hero rounded-xl p-8 text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className={`${BACKGROUNDS.heroGradient} ${BORDER_RADIUS.xl} p-8 text-center`}>
+          <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.small}`}>
             Ready to Accelerate Your AI Journey?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className={`${TEXT_SIZES.large} text-muted-foreground ${MARGIN_BOTTOM.large} max-w-3xl mx-auto`}>
             Get a personalized 30-minute strategy session with our AI growth specialists. 
             We'll dive deeper into your results and create a tailored roadmap for your organization.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className={`flex flex-col sm:flex-row ${GAP.small} justify-center items-center`}>
                 <Button
                   type="button"
                   variant="cta"
@@ -386,7 +387,7 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
                 >
                 <Calendar className="mr-2" />
                 Book Free Consultation
-                <ExternalLink className="ml-2 w-4 h-4" />
+                <ExternalLink className={`${ICON_SIZES.xs} ml-2`} />
               </Button>
             
             <Button 
@@ -404,29 +405,29 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         </div>
 
         {/* What's Included */}
-        <div className="mt-12 bg-gradient-card p-8 rounded-xl shadow-soft">
-          <h3 className="text-2xl font-bold text-center mb-8">
+        <div className={`mt-12 bg-gradient-card ${CARD_PADDING.large} ${BORDER_RADIUS.xl} ${SHADOWS.soft}`}>
+          <h3 className={`${HEADING_SIZES.h3} text-center ${MARGIN_BOTTOM.large}`}>
             What's Included in Your Strategy Session
           </h3>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className={`grid md:grid-cols-3 ${GAP.medium}`}>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" />
-              <h4 className="font-semibold mb-2">Deep Dive Analysis</h4>
-              <p className="text-muted-foreground text-sm">
+              <CheckCircle2 className={`${ICON_SIZES.large} mx-auto my-auto ${MARGIN_BOTTOM.small} text-[var(--icon-green)] flex-shrink-0`} />
+              <h4 className={`${HEADING_SIZES.h5} ${MARGIN_BOTTOM.xs}`}>Deep Dive Analysis</h4>
+              <p className={`${TEXT_SIZES.small} text-muted-foreground`}>
                 Detailed review of your assessment results and current AI maturity
               </p>
             </div>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" />
-              <h4 className="font-semibold mb-2">Custom Roadmap</h4>
-              <p className="text-muted-foreground text-sm">
+              <CheckCircle2 className={`${ICON_SIZES.large} mx-auto my-auto ${MARGIN_BOTTOM.small} text-[var(--icon-green)] flex-shrink-0`} />
+              <h4 className={`${HEADING_SIZES.h5} ${MARGIN_BOTTOM.xs}`}>Custom Roadmap</h4>
+              <p className={`${TEXT_SIZES.small} text-muted-foreground`}>
                 90-day action plan with prioritized initiatives and success metrics
               </p>
             </div>
             <div className="text-center">
-              <CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" />
-              <h4 className="font-semibold mb-2">Resource Recommendations</h4>
-              <p className="text-muted-foreground text-sm">
+              <CheckCircle2 className={`${ICON_SIZES.large} mx-auto my-auto ${MARGIN_BOTTOM.small} text-[var(--icon-green)] flex-shrink-0`} />
+              <h4 className={`${HEADING_SIZES.h5} ${MARGIN_BOTTOM.xs}`}>Resource Recommendations</h4>
+              <p className={`${TEXT_SIZES.small} text-muted-foreground`}>
                 Specific tools, partners, and capabilities needed for your next phase
               </p>
             </div>

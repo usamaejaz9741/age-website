@@ -253,7 +253,7 @@ export const DEFAULT_META_TAGS = [
   { name: 'geo.placename', content: DEFAULT_SEO_CONFIG.city },
   { name: 'format-detection', content: 'telephone=no' },
   { name: 'msapplication-tap-highlight', content: 'no' },
-  { name: 'theme-color', content: '#0050ff' },
+  { name: 'theme-color', content: 'hsl(224, 100%, 48%)' },
   { name: 'apple-mobile-web-app-capable', content: 'yes' },
   { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
   { name: 'apple-mobile-web-app-title', content: DEFAULT_SEO_CONFIG.siteName }

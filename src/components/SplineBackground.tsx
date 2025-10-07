@@ -38,74 +38,16 @@ const SplineBackground = memo(() => {
     const iframe = iframeRef.current;
     if (iframe) {
       const handleError = () => {
-        console.error('❌ Failed to load Spline iframe');
+        if (import.meta.env.DEV) {
+          console.error('❌ Failed to load Spline iframe');
+        }
         setHasError(true);
       };
 
       iframe.addEventListener('error', handleError);
-      
-      // Suppress console warnings from iframe content
-      const suppressIframeConsole = () => {
-        try {
-          // Try to access iframe content and suppress console
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-          if (iframeDoc && iframe.contentWindow) {
-            // Override console methods in iframe
-            const originalConsole = (iframe.contentWindow as Window & { console: Console }).console;
-            if (originalConsole) {
-              originalConsole.warn = () => {};
-              originalConsole.error = () => {};
-              originalConsole.log = () => {};
-              originalConsole.info = () => {};
-              originalConsole.debug = () => {};
-              originalConsole.trace = () => {};
-              originalConsole.table = () => {};
-              originalConsole.group = () => {};
-              originalConsole.groupEnd = () => {};
-              originalConsole.groupCollapsed = () => {};
-              originalConsole.time = () => {};
-              originalConsole.timeEnd = () => {};
-              originalConsole.count = () => {};
-              originalConsole.clear = () => {};
-            }
-            
-            // Override window error handlers in iframe
-            if (iframe.contentWindow) {
-              iframe.contentWindow.onerror = () => true;
-              iframe.contentWindow.onunhandledrejection = () => true;
-            }
-            
-            // Suppress WebGL context events in iframe
-            const canvas = iframeDoc.querySelector('canvas');
-            if (canvas) {
-              canvas.addEventListener('webglcontextlost', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-              });
-              
-              canvas.addEventListener('webglcontextrestored', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-              });
-            }
-          }
-        } catch {
-          // Cross-origin restrictions - this is expected
-          // The iframe will suppress its own console output
-        }
-      };
-
-      // Try to suppress console after iframe loads
-      iframe.addEventListener('load', suppressIframeConsole);
-      
-      // Also try immediately in case iframe is already loaded
-      suppressIframeConsole();
 
       return () => {
         iframe.removeEventListener('error', handleError);
-        iframe.removeEventListener('load', suppressIframeConsole);
       };
     }
     

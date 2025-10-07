@@ -57,21 +57,13 @@ try {
   
   // Render secure error page without exposing internal details
   root.render(
-    <div style={{ padding: '20px', color: '#dc2626', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Application Error</h1>
-      <p>We're experiencing technical difficulties. Please try refreshing the page.</p>
-      <p>If the problem persists, please contact our support team.</p>
+    <div className="p-5 text-destructive font-sans">
+      <h1 className="text-2xl mb-4">Application Error</h1>
+      <p className="mb-2">We're experiencing technical difficulties. Please try refreshing the page.</p>
+      <p className="mb-4">If the problem persists, please contact our support team.</p>
       <button 
         onClick={() => window.location.reload()} 
-        style={{ 
-          padding: '8px 16px', 
-          backgroundColor: '#dc2626', 
-          color: 'white', 
-          border: 'none', 
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginTop: '16px'
-        }}
+        className="px-4 py-2 bg-destructive text-destructive-foreground border-none rounded cursor-pointer mt-4 hover:bg-destructive/90 transition-colors"
       >
         Refresh Page
       </button>

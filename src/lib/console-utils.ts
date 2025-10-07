@@ -44,65 +44,39 @@ export const suppressConsoleWarnings = () => {
   // Add user-friendly console message about expected warnings
   if (import.meta.env.DEV) {
     setTimeout(() => {
-      originalLog('%c🎨 Spline 3D Background Active', 'color: #4F46E5; font-weight: bold; font-size: 14px;');
-      originalLog('%cℹ️ Some WebGL and iframe warnings are expected and can be safely ignored.', 'color: #6B7280; font-size: 12px;');
-      originalLog('%cThese warnings come from the 3D animation system and do not affect functionality.', 'color: #6B7280; font-size: 12px;');
+      originalLog('%c🎨 Spline 3D Background Active', 'color: hsl(var(--resolution-blue-600)); font-weight: bold; font-size: 14px;');
+      originalLog('%cℹ️ Some WebGL and iframe warnings are expected and can be safely ignored.', 'color: hsl(var(--muted-foreground)); font-size: 12px;');
+      originalLog('%cThese warnings come from the 3D animation system and do not affect functionality.', 'color: hsl(var(--muted-foreground)); font-size: 12px;');
     }, 1000);
   }
   
   // Helper function to check if message should be suppressed
+  // Only suppress known, harmless warnings - be conservative to avoid hiding real issues
   const shouldSuppress = (message: unknown): boolean => {
     if (typeof message === 'string') {
       const messageStr = message.toLowerCase();
       return (
-        // React warnings
+        // React development warnings that are informational only
         messageStr.includes('react router future flag warning') ||
         messageStr.includes('download the react devtools') ||
         messageStr.includes('reactjs.org/link/react-devtools') ||
-        messageStr.includes('react devtools') ||
-        messageStr.includes('fetchpriority') ||
-        messageStr.includes('allowtransparency') ||
         messageStr.includes('react does not recognize the `allowtransparency` prop') ||
         
-        // Browser intervention warnings
+        // Browser intervention warnings that are informational
         messageStr.includes('[intervention] images loaded lazily') ||
         messageStr.includes('load events are deferred') ||
-        messageStr.includes('go.microsoft.com/fwlink') ||
         
-        // WebGL warnings - comprehensive coverage
+        // WebGL framebuffer warnings from Spline 3D background
         messageStr.includes('gl_invalid_framebuffer_operation') ||
-        messageStr.includes('framebuffer is incomplete') ||
-        messageStr.includes('attachment has zero size') ||
-        messageStr.includes('glclear') ||
-        messageStr.includes('glclearbufferfv') ||
-        messageStr.includes('gldrawelements') ||
-        messageStr.includes('webgl') ||
-        messageStr.includes('webgl-0x') ||
-        messageStr.includes('gl_invalid_framebuffer_operation: glclear') ||
-        messageStr.includes('gl_invalid_framebuffer_operation: glclearbufferfv') ||
-        messageStr.includes('gl_invalid_framebuffer_operation: gldrawelements') ||
+        (messageStr.includes('framebuffer') && messageStr.includes('incomplete')) ||
+        (messageStr.includes('framebuffer') && messageStr.includes('attachment has zero size')) ||
+        (messageStr.includes('webgl') && messageStr.includes('glclear')) ||
+        (messageStr.includes('webgl') && messageStr.includes('gldrawelements')) ||
+        (messageStr.includes('webgl') && messageStr.includes('glclearbuffer')) ||
         
-        // iframe sandbox warnings
-        messageStr.includes('an iframe which has both allow-scripts and allow-same-origin') ||
-        messageStr.includes('iframe') && messageStr.includes('sandbox') ||
-        messageStr.includes('spline-background.html') ||
-        
-        // Additional WebGL context warnings
-        messageStr.includes('webgl context') ||
-        messageStr.includes('webgl rendering context') ||
-        messageStr.includes('webgl2 rendering context') ||
-        
-        // GPU/Driver related warnings
-        messageStr.includes('gpu') ||
-        messageStr.includes('driver') ||
-        messageStr.includes('hardware acceleration') ||
-        
-        // Canvas/3D related warnings
-        messageStr.includes('canvas') && messageStr.includes('3d') ||
-        messageStr.includes('spline') ||
-        messageStr.includes('three.js') ||
-        messageStr.includes('webgl context lost') ||
-        messageStr.includes('webgl context restored')
+        // iframe sandbox warnings from Spline
+        (messageStr.includes('iframe') && messageStr.includes('sandbox') && messageStr.includes('escape')) ||
+        (messageStr.includes('iframe') && messageStr.includes('allow-scripts') && messageStr.includes('allow-same-origin'))
       );
     }
     return false;
@@ -162,37 +136,14 @@ export const suppressConsoleWarnings = () => {
     }
   };
   
-  // Additional suppression for browser-native console methods
+  // Ensure console methods are properly overridden on window object
   if (typeof window !== 'undefined') {
-    // Override console methods on the window object as well
     (window as Window & { console: typeof console }).console = {
       ...console,
       warn: console.warn,
       log: console.log,
       error: console.error
     };
-    
-    // Suppress WebGL context lost/restored events
-    const suppressWebGLEvents = () => {
-      const canvas = document.querySelector('canvas');
-      if (canvas) {
-        canvas.addEventListener('webglcontextlost', (e) => {
-          e.preventDefault();
-          return false;
-        });
-        
-        canvas.addEventListener('webglcontextrestored', (e) => {
-          e.preventDefault();
-          return false;
-        });
-      }
-    };
-    
-    // Try to suppress immediately and on DOM ready
-    suppressWebGLEvents();
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', suppressWebGLEvents);
-    }
   }
 };
 
@@ -228,8 +179,9 @@ export const logError = (context: string, error: unknown, additionalInfo?: Recor
     }
     console.groupEnd();
   } else {
-    // Production: Minimal error logging for security
-    console.error(`Error in ${context}:`, error instanceof Error ? error.message : 'Unknown error');
+    // Production: No console logging for security and performance
+    // In production, errors should be sent to monitoring services
+    // Example: errorReportingService.captureException(error, { context, additionalInfo });
   }
 };
 
@@ -254,6 +206,7 @@ export const devLog = (message: string, data?: unknown) => {
   if (import.meta.env.DEV) {
     console.log(`🔧 ${message}`, data || '');
   }
+  // Production: No logging for performance and security
 };
 
 /**
@@ -279,6 +232,7 @@ export const perfLog = (label: string, startTime: number) => {
     const duration = performance.now() - startTime;
     console.log(`⏱️ ${label}: ${duration.toFixed(2)}ms`);
   }
+  // Production: No logging for performance and security
 };
 
 /**

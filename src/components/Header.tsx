@@ -155,7 +155,7 @@ const Header = () => {
                 decoding="sync"
                 width="120"
                 height="40"
-                fetchpriority="high"
+                fetchPriority="high"
               />
             </button>
           </div>
@@ -190,7 +190,7 @@ const Header = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-neutral-75 hover:text-resolution-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md p-1"
+              className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] text-neutral-75 hover:text-resolution-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md"
               aria-label="Toggle mobile menu"
               aria-expanded={isMenuOpen}
             >

@@ -17,14 +17,14 @@
  * @since 1.0.0
  */
 
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import { cn } from '@/lib/utils';
 
 /**
  * Props for the AnimatedCard component
  */
-interface AnimatedCardProps {
+interface AnimatedCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Content to display inside the animated card */
   children: ReactNode;
   /** Additional CSS classes to apply */
@@ -61,7 +61,8 @@ export function AnimatedCard({
   className,
   delay = 0,
   direction = 'up',
-  duration: _duration = 600
+  duration: _duration = 600,
+  ...rest
 }: AnimatedCardProps) {
   // Set up intersection observer to detect when element enters viewport
   const { ref, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
@@ -109,6 +110,7 @@ export function AnimatedCard({
       style={{
         transitionDelay: `${delay}ms`              // Apply custom delay for staggered animations
       }}
+      {...rest}                                    // Spread remaining HTML attributes
     >
       {children}
     </div>

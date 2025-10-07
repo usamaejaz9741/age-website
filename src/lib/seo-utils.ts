@@ -435,7 +435,7 @@ export function generatePerformanceMeta(pageData: {
     // Performance
     { name: 'format-detection', content: 'telephone=no' },
     { name: 'msapplication-tap-highlight', content: 'no' },
-    { name: 'theme-color', content: '#0050ff' }
+    { name: 'theme-color', content: 'hsl(224, 100%, 48%)' }
   ];
 }
 

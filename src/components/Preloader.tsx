@@ -59,6 +59,7 @@ const Preloader = ({
   const progressInterval = useRef<NodeJS.Timeout>();
   const completionTimeout = useRef<NodeJS.Timeout>();
   const forceCompleteTimeout = useRef<NodeJS.Timeout>();
+  const fadeTimeouts = useRef<NodeJS.Timeout[]>([]); // Track fade animation timeouts
   const isCompleting = useRef(false); // Prevent multiple completion calls
 
   // Progress simulation
@@ -130,14 +131,16 @@ const Preloader = ({
     
     // Use requestAnimationFrame for smoother transitions
     requestAnimationFrame(() => {
-      setTimeout(() => {
+      const timeout1 = setTimeout(() => {
         setIsAnimating(true);
         
-        setTimeout(() => {
+        const timeout2 = setTimeout(() => {
           setIsVisible(false);
           onComplete?.();
         }, 200); // Reduced fade duration for better performance
+        fadeTimeouts.current.push(timeout2);
       }, 100); // Reduced delay
+      fadeTimeouts.current.push(timeout1);
     });
   }, [onComplete]);
 
@@ -167,27 +170,34 @@ const Preloader = ({
     // Initial check
     checkCompletion();
 
-    // Enhanced cleanup function to prevent memory leaks
-    return () => {
-      // Clear all intervals and timeouts
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
-        progressInterval.current = undefined;
-      }
-      if (completionTimeout.current) {
-        clearTimeout(completionTimeout.current);
-        completionTimeout.current = undefined;
-      }
-      if (forceCompleteTimeout.current) {
-        clearTimeout(forceCompleteTimeout.current);
-        forceCompleteTimeout.current = undefined;
-      }
-      
-      // Reset state to prevent stale closures
-      setIsVisible(false);
-      setIsAnimating(false);
-      setProgress(0);
-    };
+  // Enhanced cleanup function to prevent memory leaks
+  return () => {
+    // Clear all intervals and timeouts
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
+      progressInterval.current = undefined;
+    }
+    if (completionTimeout.current) {
+      clearTimeout(completionTimeout.current);
+      completionTimeout.current = undefined;
+    }
+    if (forceCompleteTimeout.current) {
+      clearTimeout(forceCompleteTimeout.current);
+      forceCompleteTimeout.current = undefined;
+    }
+    // Clear all fade animation timeouts
+    fadeTimeouts.current.forEach(timeout => clearTimeout(timeout));
+    fadeTimeouts.current = [];
+    
+    // Reset refs to prevent stale closures
+    isCompleting.current = false;
+    startTime.current = 0;
+    
+    // Reset state to prevent stale closures
+    setIsVisible(false);
+    setIsAnimating(false);
+    setProgress(0);
+  };
   }, [minDuration, maxDuration, showProgress, updateProgress, checkResourcesLoaded, completePreloader]);
 
   if (!isVisible) return null;

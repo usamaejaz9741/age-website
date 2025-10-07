@@ -30,141 +30,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { QuizAnswers } from "@/pages/ai-growth-score";
+import { quizQuestions } from "@/constants/quiz-questions";
 
-/**
- * Interface for quiz question structure
- */
-interface QuizQuestion {
-  id: string;
-  question: string;
-  options: {
-    text: string;
-    score: number;
-  }[];
-}
-
-const quizQuestions: QuizQuestion[] = [
-  {
-    id: 'q1',
-    question: 'How clearly defined is your organization\'s AI strategy?',
-    options: [
-      { text: 'No formal AI strategy exists', score: 0 },
-      { text: 'AI initiatives are ad-hoc with some planning', score: 1 },
-      { text: 'We have a documented AI strategy with clear objectives', score: 2 },
-      { text: 'AI strategy is integrated into overall business strategy with metrics', score: 3 }
-    ]
-  },
-  {
-    id: 'q2',
-    question: 'What level of executive support exists for AI initiatives?',
-    options: [
-      { text: 'Limited or no executive engagement', score: 0 },
-      { text: 'Some interest but no dedicated resources', score: 1 },
-      { text: 'Strong support with allocated budget', score: 2 },
-      { text: 'AI is a CEO/board-level priority with dedicated leadership', score: 3 }
-    ]
-  },
-  {
-    id: 'q3',
-    question: 'How well do your AI initiatives align with business outcomes?',
-    options: [
-      { text: 'AI projects are mainly experimental with unclear ROI', score: 0 },
-      { text: 'Some alignment but limited measurement', score: 1 },
-      { text: 'Most AI projects target specific business metrics', score: 2 },
-      { text: 'All AI initiatives directly tie to revenue/cost reduction goals', score: 3 }
-    ]
-  },
-  {
-    id: 'q4',
-    question: 'What is your current AI implementation maturity?',
-    options: [
-      { text: 'No AI tools or systems in production', score: 0 },
-      { text: 'Testing AI tools or running small pilots', score: 1 },
-      { text: 'Several AI solutions deployed in specific functions', score: 2 },
-      { text: 'AI integrated across multiple business processes', score: 3 }
-    ]
-  },
-  {
-    id: 'q5',
-    question: 'How would you rate your team\'s AI/ML technical capabilities?',
-    options: [
-      { text: 'Limited technical AI expertise internally', score: 0 },
-      { text: 'Some technical skills but rely heavily on vendors', score: 1 },
-      { text: 'Solid internal capabilities with external support', score: 2 },
-      { text: 'Strong in-house AI/ML team with proven delivery', score: 3 }
-    ]
-  },
-  {
-    id: 'q6',
-    question: 'How robust is your AI project delivery methodology?',
-    options: [
-      { text: 'No standardized approach to AI projects', score: 0 },
-      { text: 'Basic project management with some AI considerations', score: 1 },
-      { text: 'Established AI project methodology with templates', score: 2 },
-      { text: 'Mature AI-first delivery framework with continuous improvement', score: 3 }
-    ]
-  },
-  {
-    id: 'q7',
-    question: 'What is the quality and accessibility of your data?',
-    options: [
-      { text: 'Data is fragmented, poor quality, or hard to access', score: 0 },
-      { text: 'Some clean data available but requires significant work', score: 1 },
-      { text: 'Most data is clean and accessible with some gaps', score: 2 },
-      { text: 'High-quality, well-governed data readily available for AI', score: 3 }
-    ]
-  },
-  {
-    id: 'q8',
-    question: 'How mature is your data governance and privacy framework?',
-    options: [
-      { text: 'Limited data governance with privacy concerns', score: 0 },
-      { text: 'Basic data policies but inconsistent enforcement', score: 1 },
-      { text: 'Strong data governance with clear privacy protocols', score: 2 },
-      { text: 'Advanced data governance enabling secure AI innovation', score: 3 }
-    ]
-  },
-  {
-    id: 'q9',
-    question: 'How effectively do you measure and monitor AI performance?',
-    options: [
-      { text: 'No systematic measurement of AI outcomes', score: 0 },
-      { text: 'Basic tracking of technical metrics only', score: 1 },
-      { text: 'Regular monitoring of business and technical metrics', score: 2 },
-      { text: 'Real-time dashboards with automated alerts and optimization', score: 3 }
-    ]
-  },
-  {
-    id: 'q10',
-    question: 'What is your organization\'s AI literacy level?',
-    options: [
-      { text: 'Limited understanding of AI across the organization', score: 0 },
-      { text: 'Some awareness but significant knowledge gaps', score: 1 },
-      { text: 'Good AI literacy in key roles with ongoing training', score: 2 },
-      { text: 'High AI fluency across all levels with continuous learning', score: 3 }
-    ]
-  },
-  {
-    id: 'q11',
-    question: 'How readily does your culture embrace AI-driven change?',
-    options: [
-      { text: 'Significant resistance to AI adoption', score: 0 },
-      { text: 'Mixed reception with some skepticism', score: 1 },
-      { text: 'Generally positive attitude with change management support', score: 2 },
-      { text: 'Enthusiastic adoption with AI-first mindset', score: 3 }
-    ]
-  },
-  {
-    id: 'q12',
-    question: 'How well do you manage AI ethics and responsible AI practices?',
-    options: [
-      { text: 'No formal consideration of AI ethics or bias', score: 0 },
-      { text: 'Awareness of issues but no systematic approach', score: 1 },
-      { text: 'Clear ethical guidelines with regular reviews', score: 2 },
-      { text: 'Comprehensive responsible AI framework with ongoing monitoring', score: 3 }
-    ]
-  }
-];
+// Quiz questions are now imported from @/constants/quiz-questions
+// This ensures consistency between question content and dimension scoring
 
 /**
  * Props interface for AIGrowthQuiz component
@@ -203,6 +72,12 @@ const AIGrowthQuiz = memo(({ onComplete }: AIGrowthQuizProps) => {
    * @param score - Selected option score (0-3)
    */
   const handleOptionSelect = useCallback((score: number) => {
+    // Validate score is within valid range
+    if (typeof score !== 'number' || score < 0 || score > 3 || !Number.isInteger(score)) {
+      console.error('Invalid quiz score:', score);
+      return;
+    }
+    
     setSelectedOption(score);
     setAnswers((prev: QuizAnswers) => ({
       ...prev,
@@ -279,13 +154,13 @@ const AIGrowthQuiz = memo(({ onComplete }: AIGrowthQuizProps) => {
               <button
                 key={index}
                 onClick={() => handleOptionSelect(option.score)}
-                className={`w-full p-3 sm:p-4 text-left rounded-xl border-2 transition-all duration-300 ease-out hover:shadow-soft touch-manipulation focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] quiz-option-button ${
+                className={`w-full p-4 sm:p-5 text-left rounded-xl border-2 transition-all duration-300 ease-out hover:shadow-soft touch-manipulation focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] min-h-[60px] flex items-center quiz-option-button ${
                   selectedOption === option.score
-                    ? 'border-primary bg-primary/5 shadow-soft quiz-option-selected'
+                    ? 'border-primary bg-primary/5 shadow-soft quiz-option-selected ring-2 ring-primary/20'
                     : 'border-input bg-background hover:border-primary/50 hover:bg-primary/2 quiz-option-unselected'
                 }`}
                 style={{
-                  color: 'hsl(224, 100%, 50%) !important'
+                  color: 'hsl(var(--resolution-blue-600)) !important'
                 }}
                 aria-pressed={selectedOption === option.score}
                 aria-describedby={`option-${index}-description`}

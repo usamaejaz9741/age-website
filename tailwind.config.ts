@@ -154,6 +154,8 @@ export default {
         'soft': 'var(--shadow-soft)',       // Subtle shadow for cards
         'medium': 'var(--shadow-medium)',   // Medium shadow for modals
         'strong': 'var(--shadow-strong)',   // Strong shadow for emphasis
+        'stronger': 'var(--shadow-stronger)', // Stronger shadow for modals
+        'glow': 'var(--shadow-glow)',       // Glow effect for special elements
       },
       
       // Custom font size scale - Golden Ratio progression for mathematical harmony

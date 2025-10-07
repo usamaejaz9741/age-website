@@ -371,7 +371,7 @@ const PageTemplate = ({
         {/* Additional SEO Meta Tags */}
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="theme-color" content="#0050ff" />
+        <meta name="theme-color" content="hsl(224, 100%, 48%)" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Alvi Global Enterprises" />

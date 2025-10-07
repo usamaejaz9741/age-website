@@ -30,6 +30,7 @@ import { useState, memo } from "react";
 import GrowthAuditModal from "./GrowthAuditModal";
 import SplineBackground from "./SplineBackground";
 import { blurActiveElement } from "@/lib/console-utils";
+import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, BUTTON_STYLES, BACKGROUNDS, GAP } from "@/constants/design-system";
 
 /**
  * Hero section component with main value proposition and CTAs
@@ -52,30 +53,28 @@ const Hero = memo(() => {
       <SplineBackground />
 
       {/* Gradient Overlay - Seamless blend with proof bar */}
-      <div 
-        className="fixed inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#fbfbfc] to-transparent"
-      />
+      <div className={`fixed inset-0 z-20 pointer-events-none ${BACKGROUNDS.gradientOverlay}`} />
 
       {/* Content */}
       <div className="relative z-30 max-w-7xl mx-auto px-6 py-20 text-center pointer-events-none">
         <div className="animate-fade-in">
-          <h1 id="hero-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}>
+          <h1 id="hero-heading" className={`${HEADING_SIZES.h1} text-foreground ${MARGIN_BOTTOM.medium}`}>
             Engineer revenue,{" "}
-            <span className="text-primary font-bold">not just software</span>
+            <span className="text-primary font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">not just software</span>
           </h1>
           
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 sm:mb-12" style={{ lineHeight: 'var(--line-height-relaxed)' }}>
+          <p className={`${TEXT_SIZES.large} text-muted-foreground max-w-5xl mx-auto ${MARGIN_BOTTOM.medium}`}>
             AI automation + product engineering + go-to-market strategy under one roof. 
             We build performance-driven business ecosystems that generate revenue from day one 
             in emerging markets.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up pointer-events-auto">
+          <div className={`flex flex-col sm:flex-row ${GAP.medium} justify-center items-center animate-slide-up pointer-events-auto`}>
             <Button 
               variant="cta" 
               size="xl"
-              className="group w-full sm:min-w-[var(--button-min-width)] sm:w-auto"
+              className={`group ${BUTTON_STYLES.responsive} ${BUTTON_STYLES.minWidth}`}
               onClick={() => {
                 blurActiveElement();
                 setShowGrowthAudit(true);
@@ -90,7 +89,7 @@ const Hero = memo(() => {
             <Button 
               variant="cta-outline" 
               size="xl"
-              className="group w-full sm:min-w-[var(--button-min-width)] sm:w-auto"
+              className={`group ${BUTTON_STYLES.responsive} ${BUTTON_STYLES.minWidth}`}
               onClick={() => document.getElementById('case-studies')?.scrollIntoView({ behavior: 'smooth' })}
               aria-label="Scroll to view our case studies and success stories"
             >
@@ -108,7 +107,7 @@ const Hero = memo(() => {
       />
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-[var(--space-2xl)] left-1/2 transform -translate-x-1/2 animate-pulse-soft z-20">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-pulse-soft z-20">
         <div className="w-6 h-10 border-2 border-muted-foreground rounded-full flex justify-center">
           <div className="w-1 h-3 bg-muted-foreground rounded-full mt-2 animate-bounce" />
         </div>

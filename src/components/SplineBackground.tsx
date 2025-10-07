@@ -57,15 +57,11 @@ const SplineBackground = memo(() => {
   // Fallback to animated gradient blobs if iframe fails to load
   if (hasError) {
     return (
-      <div className="fixed inset-0 z-10 pointer-events-none">
-        {/* Animated Floating Gradient Blobs - Fallback */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-resolution-blue-600/10 to-malibu-300/8 sm:from-resolution-blue-600/30 sm:to-malibu-300/25 rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute top-32 right-16 w-96 h-96 bg-gradient-to-bl from-malibu-300/12 to-resolution-blue-600/7 sm:from-malibu-300/35 sm:to-resolution-blue-600/20 rounded-full blur-3xl animate-float-medium" />
-        <div className="absolute top-1/2 left-8 w-80 h-80 bg-gradient-to-tr from-resolution-blue-600/8 to-malibu-300/10 sm:from-resolution-blue-600/25 sm:to-malibu-300/30 rounded-full blur-3xl animate-float-fast" />
-        <div className="absolute top-1/3 right-8 w-64 h-64 bg-gradient-to-tl from-malibu-300/10 to-resolution-blue-600/8 sm:from-malibu-300/30 sm:to-resolution-blue-600/25 rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute bottom-20 left-20 w-88 h-88 bg-gradient-to-tr from-resolution-blue-600/7 to-malibu-300/12 sm:from-resolution-blue-600/20 sm:to-malibu-300/35 rounded-full blur-3xl animate-float-medium" />
-        <div className="absolute bottom-32 right-12 w-72 h-72 bg-gradient-to-bl from-malibu-300/8 to-resolution-blue-600/10 sm:from-malibu-300/25 sm:to-resolution-blue-600/30 rounded-full blur-3xl animate-float-fast" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-resolution-blue-600/5 to-malibu-300/7 sm:from-resolution-blue-600/15 sm:to-malibu-300/20 rounded-full blur-3xl animate-float-slow" />
+      <div className="fixed inset-0 z-10 pointer-events-none" style={{ willChange: 'auto' }}>
+        {/* Animated Floating Gradient Blobs - Fallback (optimized for performance) */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-resolution-blue-600/10 to-malibu-300/8 sm:from-resolution-blue-600/30 sm:to-malibu-300/25 rounded-full blur-2xl animate-float-slow" style={{ willChange: 'transform' }} />
+        <div className="absolute top-32 right-16 w-96 h-96 bg-gradient-to-bl from-malibu-300/12 to-resolution-blue-600/7 sm:from-malibu-300/35 sm:to-resolution-blue-600/20 rounded-full blur-2xl animate-float-medium" style={{ willChange: 'transform' }} />
+        <div className="absolute bottom-20 left-20 w-88 h-88 bg-gradient-to-tr from-resolution-blue-600/7 to-malibu-300/12 sm:from-resolution-blue-600/20 sm:to-malibu-300/35 rounded-full blur-2xl animate-float-fast" style={{ willChange: 'transform' }} />
       </div>
     );
   }
@@ -91,7 +87,11 @@ const SplineBackground = memo(() => {
             right: 0,
             bottom: 0,
             background: 'transparent',
-            isolation: 'isolate', // Create new stacking context to prevent WebGL context issues
+            isolation: 'isolate',
+            willChange: 'auto',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            pointerEvents: 'auto',
           }}
           sandbox="allow-scripts allow-pointer-lock allow-forms allow-popups allow-same-origin"
           role="img"
@@ -100,8 +100,7 @@ const SplineBackground = memo(() => {
           scrolling="no"
           frameBorder="0"
           allowTransparency={true}
-          loading="lazy"
-          // Add WebGL optimization attributes
+          loading="eager"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         />
     </div>

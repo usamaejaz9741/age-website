@@ -248,28 +248,36 @@ const SectionTemplate = memo(({
     return () => observer.disconnect();
   }, [useIntersectionObserver, scrollSpyOffset]);
 
-  // Scroll spy functionality
+  // Scroll spy functionality with throttling for performance
   useEffect(() => {
     if (!scrollSpy || !id) return;
 
+    let ticking = false;
+
     const handleScroll = () => {
-      if (sectionRef.current && isInView) {
-        // Update active navigation item
-        const navItems = document.querySelectorAll(`a[href="#${id}"]`);
-        navItems.forEach(item => {
-          item.classList.add('active');
-          item.setAttribute('aria-current', 'true');
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (sectionRef.current && isInView) {
+            // Update active navigation item
+            const navItems = document.querySelectorAll(`a[href="#${id}"]`);
+            navItems.forEach(item => {
+              item.classList.add('active');
+              item.setAttribute('aria-current', 'true');
+            });
+          } else {
+            const navItems = document.querySelectorAll(`a[href="#${id}"]`);
+            navItems.forEach(item => {
+              item.classList.remove('active');
+              item.removeAttribute('aria-current');
+            });
+          }
+          ticking = false;
         });
-      } else {
-        const navItems = document.querySelectorAll(`a[href="#${id}"]`);
-        navItems.forEach(item => {
-          item.classList.remove('active');
-          item.removeAttribute('aria-current');
-        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrollSpy, id, isInView]);
 

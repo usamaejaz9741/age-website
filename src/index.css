@@ -231,6 +231,80 @@ iframe {
   transform: translateZ(0);
 }
 
+/* Scroll performance optimizations */
+* {
+  /* Enable hardware acceleration for smoother scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+html {
+  /* Optimize scroll performance */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Optimize main content area for scroll performance */
+main,
+section,
+article {
+  /* Create new stacking context for better compositing */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Improve rendering performance for off-screen content */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Optimize fixed elements during scroll */
+.fixed {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce blur rendering cost on gradients */
+.blur-2xl, .blur-3xl {
+  will-change: transform;
+  /* Reduce blur quality slightly for better performance */
+  filter: blur(64px);
+}
+
+.blur-2xl {
+  filter: blur(40px);
+}
+
+/* Optimize animations to use GPU - simplified for better performance */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-10px, -15px, 0);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(15px, -20px, 0);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-12px, -25px, 0);
+  }
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,

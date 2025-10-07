@@ -2,24 +2,62 @@
  * @fileoverview AI Growth Quiz Questions and Configuration
  * 
  * Centralized quiz question definitions with dimension mappings to ensure consistency
- * across the application. This prevents misalignment between question content and
- * dimension scoring.
+ * across the application. This serves as the single source of truth for quiz content,
+ * preventing misalignment between question content and dimension scoring.
  * 
+ * The quiz assesses AI maturity across four critical dimensions:
+ * - **Strategy**: Strategic alignment and executive support (questions 1-3)
+ * - **Implementation**: Technical capabilities and delivery maturity (questions 4-6)
+ * - **Data**: Data management, quality, and governance (questions 7-9)
+ * - **Culture**: Organizational readiness and ethical frameworks (questions 10-12)
+ * 
+ * @module constants/quiz-questions
  * @author Alvi Global Enterprises
  * @version 1.0.0
+ * 
+ * @features
+ * - 📊 12 comprehensive questions across 4 AI maturity dimensions
+ * - ⚖️ Balanced assessment with 3 questions per dimension
+ * - 🎯 4-point scoring scale (0-3) for granular evaluation
+ * - ✅ Built-in validation functions to ensure quiz integrity
+ * - 🔍 Dimension-based query functions for analysis
+ * - 📐 Mathematical scoring framework (max 36 points, normalized to 100)
  */
 
+/**
+ * Type definition for AI maturity dimensions
+ * 
+ * These four dimensions represent the key areas of AI maturity that organizations
+ * must develop to successfully adopt and scale AI initiatives.
+ */
 export type QuizDimension = 'strategy' | 'implementation' | 'data' | 'culture';
 
 /**
  * Interface for quiz question structure with dimension mapping
+ * 
+ * Each question includes:
+ * - Unique identifier for tracking
+ * - Dimension association for scoring
+ * - Question text for display
+ * - Four options scored 0-3 (worst to best)
+ * 
+ * @interface QuizQuestion
  */
 export interface QuizQuestion {
+  /** Unique question identifier (q1-q12) */
   id: string;
+  
+  /** AI maturity dimension this question assesses */
   dimension: QuizDimension;
+  
+  /** Question text displayed to user */
   question: string;
+  
+  /** Four answer options with progressive scoring (0=worst, 3=best) */
   options: {
+    /** Option text displayed to user */
     text: string;
+    /** Score value (0-3) indicating maturity level */
     score: number;
   }[];
 }
@@ -27,17 +65,30 @@ export interface QuizQuestion {
 /**
  * Comprehensive AI Growth Quiz Questions
  * 
- * Organized by dimension to ensure balanced assessment:
- * - Strategy (q1-q3): 3 questions about AI strategy and alignment
- * - Implementation (q4-q6): 3 questions about execution and capabilities
- * - Data (q7-q9): 3 questions about data management and analytics
- * - Culture (q10-q12): 3 questions about organizational readiness
+ * **Assessment Structure:**
+ * - Total: 12 questions
+ * - Per Dimension: 3 questions each
+ * - Scoring: 0-3 points per question
+ * - Maximum Score: 36 points (normalized to 100%)
  * 
- * Each question has 4 options scored 0-3, allowing granular assessment.
+ * **Dimension Breakdown:**
+ * - **Strategy** (q1-q3): Strategic planning, executive support, business alignment
+ * - **Implementation** (q4-q6): Technical capabilities, delivery methodology, AI deployment
+ * - **Data** (q7-q9): Data quality, governance, analytics and measurement
+ * - **Culture** (q10-q12): AI literacy, change readiness, ethical frameworks
+ * 
+ * **Scoring Guide:**
+ * - 0 points: No maturity / Not started
+ * - 1 point: Initial stages / Ad-hoc approach
+ * - 2 points: Developing capabilities / Documented processes
+ * - 3 points: Advanced maturity / Best practices
+ * 
+ * @constant
  */
 export const quizQuestions: QuizQuestion[] = [
   // ============================================================================
   // STRATEGY DIMENSION (q1-q3)
+  // Assesses strategic planning, executive support, and business alignment
   // ============================================================================
   {
     id: 'q1',
@@ -75,6 +126,7 @@ export const quizQuestions: QuizQuestion[] = [
 
   // ============================================================================
   // IMPLEMENTATION DIMENSION (q4-q6)
+  // Assesses technical capabilities, delivery maturity, and AI deployment
   // ============================================================================
   {
     id: 'q4',
@@ -112,6 +164,7 @@ export const quizQuestions: QuizQuestion[] = [
 
   // ============================================================================
   // DATA DIMENSION (q7-q9)
+  // Assesses data quality, governance, analytics, and measurement capabilities
   // ============================================================================
   {
     id: 'q7',
@@ -149,6 +202,7 @@ export const quizQuestions: QuizQuestion[] = [
 
   // ============================================================================
   // CULTURE DIMENSION (q10-q12)
+  // Assesses organizational readiness, AI literacy, and ethical frameworks
   // ============================================================================
   {
     id: 'q10',
@@ -188,7 +242,21 @@ export const quizQuestions: QuizQuestion[] = [
 /**
  * Validates quiz question structure and dimension balance
  * 
- * @returns validation result with any issues found
+ * Performs comprehensive validation to ensure quiz integrity:
+ * - Verifies total question count (should be 12)
+ * - Checks dimension balance (3 questions per dimension)
+ * - Validates each question has exactly 4 options
+ * - Confirms option scores follow 0-3 progression
+ * 
+ * @returns Validation result with any issues found
+ * 
+ * @example
+ * ```typescript
+ * const validation = validateQuizStructure();
+ * if (!validation.valid) {
+ *   console.error('Quiz validation failed:', validation.errors);
+ * }
+ * ```
  */
 export function validateQuizStructure(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
@@ -214,7 +282,7 @@ export function validateQuizStructure(): { valid: boolean; errors: string[] } {
       errors.push(`Question ${q.id} should have 4 options, found ${q.options.length}`);
     }
     
-    // Validate option scores are 0-3
+    // Validate option scores are 0-3 in order
     q.options.forEach((opt, idx) => {
       if (opt.score !== idx) {
         errors.push(`Question ${q.id} option ${idx} has incorrect score ${opt.score}, expected ${idx}`);
@@ -236,19 +304,38 @@ export function validateQuizStructure(): { valid: boolean; errors: string[] } {
 }
 
 /**
- * Get questions by dimension
+ * Get all questions for a specific dimension
+ * 
+ * Useful for dimension-specific analysis and reporting
+ * 
+ * @param dimension - The dimension to filter by
+ * @returns Array of questions for that dimension
+ * 
+ * @example
+ * ```typescript
+ * const strategyQuestions = getQuestionsByDimension('strategy');
+ * console.log(`Strategy dimension has ${strategyQuestions.length} questions`);
+ * ```
  */
 export function getQuestionsByDimension(dimension: QuizDimension): QuizQuestion[] {
   return quizQuestions.filter(q => q.dimension === dimension);
 }
 
 /**
- * Get dimension for a question ID
+ * Get the dimension for a specific question ID
+ * 
+ * Used for scoring and analysis to map answers back to dimensions
+ * 
+ * @param questionId - The question ID to look up (e.g., 'q1', 'q2')
+ * @returns The dimension for that question, or null if not found
+ * 
+ * @example
+ * ```typescript
+ * const dimension = getDimensionForQuestion('q1');
+ * // Returns: 'strategy'
+ * ```
  */
 export function getDimensionForQuestion(questionId: string): QuizDimension | null {
   const question = quizQuestions.find(q => q.id === questionId);
   return question ? question.dimension : null;
 }
-
-
-

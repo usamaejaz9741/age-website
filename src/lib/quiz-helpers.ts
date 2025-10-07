@@ -3,36 +3,14 @@ import { getDimensionForQuestion, getQuestionsByDimension, type QuizDimension } 
 import type { QuizAnswers, QuizResults } from "@/types/quiz";
 
 /**
- * Calculates comprehensive AI maturity assessment results from quiz answers
+ * Calculates the results of the AI maturity quiz based on user answers.
  *
- * This function implements a sophisticated scoring algorithm that:
- * 1. Maps individual questions to specific AI maturity dimensions
- * 2. Aggregates scores within each dimension using weighted calculations
- * 3. Computes overall percentage score with mathematical precision
- * 4. Determines maturity band classification using validated thresholds
- * 5. Ensures type safety and data validation throughout the process
+ * This function processes the raw answers, calculates the total score, determines the
+ * maturity band, and breaks down the scores by dimension. It ensures that the
+ * final scores are normalized to a percentage and are within a valid range.
  *
- * @param answers - Object containing question IDs mapped to user responses (0-3 scale)
- * @returns QuizResults object with calculated scores, band, and dimension breakdown
- *
- * @algorithm
- * 1. Initialize dimension score accumulators (strategy, implementation, data, culture)
- * 2. Map each question to its corresponding AI maturity dimension
- * 3. Iterate through answers, validating and accumulating dimension scores
- * 4. Calculate total possible score (questions × max points per question)
- * 5. Compute percentage score with proper rounding
- * 6. Apply bounds checking to ensure valid percentage range (0-100)
- * 7. Determine maturity band using validated classification thresholds
- *
- * @complexity O(n) where n is the number of quiz questions
- * @security Validates all inputs to prevent injection and ensure data integrity
- *
- * @example
- * ```typescript
- * const answers = { q1: 2, q2: 3, q3: 1, q4: 2, q5: 3, q6: 2, q7: 1, q8: 3, q9: 2, q10: 1, q11: 2, q12: 3 };
- * const results = calculateResults(answers);
- * // Returns: { score: 67, band: 'Experimenter', breakdown: { strategy: 6, implementation: 7, data: 6, culture: 6 } }
- * ```
+ * @param {QuizAnswers} answers - An object where keys are question IDs and values are the user's selected scores (0-3).
+ * @returns {QuizResults} An object containing the overall score, maturity band, and a breakdown of scores for each dimension.
  */
 export const calculateResults = (answers: QuizAnswers): QuizResults => {
   // Initialize dimension score accumulators with type safety
@@ -142,7 +120,11 @@ export const calculateResults = (answers: QuizAnswers): QuizResults => {
    */
   const band = getMaturityBand(validPercentage) as 'Explorer' | 'Experimenter' | 'Accelerator';
 
-  // Convert dimension scores to percentages dynamically
+  /**
+   * Calculates the percentage score for a specific dimension.
+   * @param {QuizDimension} dimension - The dimension to calculate the score for.
+   * @returns {number} The calculated percentage score for the dimension.
+   */
   const calculateDimensionPercentage = (dimension: QuizDimension): number => {
     const questionsInDimension = getQuestionsByDimension(dimension);
     const maxDimensionScore = questionsInDimension.length * 3;

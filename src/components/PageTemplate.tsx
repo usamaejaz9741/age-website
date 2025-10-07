@@ -25,102 +25,74 @@ import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
 
 /**
- * Enhanced props interface for the PageTemplate component
+ * Defines the props for the PageTemplate component.
  */
 interface PageTemplateProps {
-  /** Main content to be rendered in the page */
+  /** The main content to be rendered within the page layout. */
   children: ReactNode;
-  /** Page title for SEO and accessibility */
+  /** The title of the page, used for the document title and SEO meta tags. */
   pageTitle?: string;
-  /** Page description for SEO */
+  /** A brief description of the page's content for SEO purposes. */
   pageDescription?: string;
-  /** Page keywords for SEO */
+  /** A comma-separated string of keywords for SEO. */
   pageKeywords?: string;
-  /** Canonical URL for SEO */
+  /** The canonical URL for the page to prevent duplicate content issues. */
   canonicalUrl?: string;
-  /** Open Graph image URL */
+  /** The URL of the image to be used for Open Graph and Twitter cards. */
   ogImage?: string;
-  /** Twitter card type */
+  /** The type of Twitter card to be displayed. Defaults to 'summary_large_image'. */
   twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
-  /** Additional CSS classes for the main content area */
+  /** Additional CSS classes to be applied to the main content container. */
   className?: string;
-  /** Whether to show the header (default: true) */
+  /** If `true`, the header component will be displayed. Defaults to `true`. */
   showHeader?: boolean;
-  /** Whether to show the footer (default: true) */
+  /** If `true`, the footer component will be displayed. Defaults to `true`. */
   showFooter?: boolean;
-  /** Custom background variant */
+  /** The background style variant for the page. Defaults to 'default'. */
   background?: 'default' | 'gradient' | 'muted' | 'transparent';
-  /** Whether to show breadcrumb navigation */
+  /** If `true`, breadcrumb navigation will be displayed. Defaults to `false`. */
   showBreadcrumbs?: boolean;
-  /** Breadcrumb items */
+  /** An array of breadcrumb items to be displayed if `showBreadcrumbs` is `true`. */
   breadcrumbs?: Array<{
     label: string;
     href?: string;
     current?: boolean;
   }>;
-  /** Loading state */
+  /** If `true`, a loading indicator will be displayed instead of the page content. */
   isLoading?: boolean;
-  /** Error state */
+  /** If `true`, an error message will be displayed instead of the page content. */
   hasError?: boolean;
-  /** Error message */
+  /** The error message to display when `hasError` is `true`. */
   errorMessage?: string;
-  /** Custom error component */
+  /** A custom React component to be displayed as the error message. */
   errorComponent?: ReactNode;
-  /** Whether to add structured data */
+  /** A JSON-LD object for structured data to be included in the page for SEO. */
   structuredData?: Record<string, unknown>;
-  /** Custom meta tags */
+  /** An array of custom meta tags to be added to the page's head. */
   customMeta?: Array<{
     name?: string;
     property?: string;
     content: string;
   }>;
-  /** Page type for structured data */
+  /** The type of the page, used for generating structured data. Defaults to 'WebPage'. */
   pageType?: 'WebPage' | 'Article' | 'Product' | 'Organization' | 'Service';
-  /** Author information */
+  /** The author of the page content. */
   author?: string;
-  /** Publication date */
+  /** The initial publication date of the content (in ISO 8601 format). */
   publishedDate?: string;
-  /** Last modified date */
+  /** The date the content was last modified (in ISO 8601 format). */
   modifiedDate?: string;
 }
 
 /**
- * Enhanced page template component providing comprehensive structure for all pages
- * 
- * This component ensures that all pages follow the same structural patterns:
- * - Fixed header navigation with enhanced accessibility
- * - Main content area with proper semantic markup
- * - Footer with consistent styling
- * - Enhanced accessibility features including skip navigation
- * - SEO-friendly structure with meta tags and structured data
- * - Loading and error states
- * - Breadcrumb navigation support
- * - Performance optimizations
- * 
- * @param children - Main content to be rendered
- * @param pageTitle - Page title for SEO and accessibility
- * @param pageDescription - Page description for SEO
- * @param pageKeywords - Page keywords for SEO
- * @param canonicalUrl - Canonical URL for SEO
- * @param ogImage - Open Graph image URL
- * @param twitterCard - Twitter card type
- * @param className - Additional CSS classes
- * @param showHeader - Whether to show the header
- * @param showFooter - Whether to show the footer
- * @param background - Custom background variant
- * @param showBreadcrumbs - Whether to show breadcrumb navigation
- * @param breadcrumbs - Breadcrumb items
- * @param isLoading - Loading state
- * @param hasError - Error state
- * @param errorMessage - Error message
- * @param errorComponent - Custom error component
- * @param structuredData - Structured data for SEO
- * @param customMeta - Custom meta tags
- * @param pageType - Page type for structured data
- * @param author - Author information
- * @param publishedDate - Publication date
- * @param modifiedDate - Last modified date
- * @returns JSX element with enhanced page structure
+ * Provides a consistent layout and structure for all pages across the application.
+ *
+ * This component wraps page content with a standard header, footer, and main content area.
+ * It handles SEO meta tags, structured data, loading and error states, and other common
+ * page-level concerns, ensuring a uniform user experience and development pattern.
+ *
+ * @param {PageTemplateProps} props - The properties for the component.
+ * @returns {JSX.Element} A fully structured page with the provided children and configurations.
  */
 const PageTemplate = ({ 
   children, 

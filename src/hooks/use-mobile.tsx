@@ -12,25 +12,25 @@ import * as React from "react";
 const MOBILE_BREAKPOINT = 768;
 
 /**
- * Hook to detect if the current viewport is mobile-sized
- * 
- * Features:
- * - Uses matchMedia API for efficient media query listening
- * - Automatically updates when viewport size changes
- * - Returns boolean indicating mobile state
- * - Handles SSR with undefined initial state
- * 
- * @returns boolean - true if viewport is mobile-sized, false otherwise
- * 
+ * A custom React hook that determines if the current viewport width is below a mobile breakpoint.
+ *
+ * This hook uses the `matchMedia` API to efficiently listen for changes in the viewport size
+ * and provides a boolean state that indicates whether the screen is currently considered "mobile".
+ * It is server-side rendering (SSR) friendly.
+ *
+ * @returns {boolean} `true` if the viewport width is less than the mobile breakpoint (768px), otherwise `false`.
+ *
  * @example
  * ```tsx
- * const isMobile = useIsMobile();
- * 
- * return (
- *   <div className={isMobile ? 'mobile-layout' : 'desktop-layout'}>
- *     Content
- *   </div>
- * );
+ * function ResponsiveComponent() {
+ *   const isMobile = useIsMobile();
+ *
+ *   return (
+ *     <div>
+ *       {isMobile ? <MobileLayout /> : <DesktopLayout />}
+ *     </div>
+ *   );
+ * }
  * ```
  */
 export function useIsMobile() {

@@ -22,50 +22,43 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Configuration options for the animated counter
- * 
- * @interface UseAnimatedCounterOptions
+ * Defines the configuration options for the `useAnimatedCounter` hook.
  */
 interface UseAnimatedCounterOptions {
-  /** 
-   * Animation duration in milliseconds
+  /**
+   * The total duration of the animation in milliseconds.
    * @default 2000
    */
   duration?: number;
-  
-  /** 
-   * Delay before starting animation in milliseconds
-   * Useful for staggered animations
+  /**
+   * A delay in milliseconds before the animation starts after being triggered.
+   * Useful for creating staggered animation effects.
    * @default 0
    */
   delay?: number;
 }
 
 /**
- * Custom hook for animated number counters with scroll trigger
- * 
- * This hook provides smooth, animated counting from 0 to a target value,
- * triggered when the element enters the viewport. Uses requestAnimationFrame
- * for optimal performance and an easing function for natural motion.
- * 
- * **Animation Details:**
- * - Easing: Ease-out-quart for smooth deceleration
- * - Trigger: Intersection Observer (10% threshold, -50px root margin)
- * - Update Frequency: Every animation frame (~60fps)
- * - Memory: Auto-cleanup of animation frames on unmount
- * 
- * @param endValue - The final number to count to
- * @param options - Configuration options for duration and delay
- * @returns Object containing ref, count value, and animation state
- * 
+ * A custom React hook that animates a number from 0 to a specified end value when the target element scrolls into view.
+ *
+ * This hook utilizes the Intersection Observer API to detect when the element is visible,
+ * and `requestAnimationFrame` to create a smooth, performant counting animation with an ease-out effect.
+ *
+ * @param {number} endValue - The final number the counter should animate to.
+ * @param {UseAnimatedCounterOptions} [options={}] - Optional configuration for the animation.
+ * @returns {{ref: React.RefObject<HTMLElement>, count: number, isAnimating: boolean}} An object containing:
+ * - `ref`: A React ref to be attached to the DOM element that should trigger the animation.
+ * - `count`: The current value of the animated counter.
+ * - `isAnimating`: A boolean indicating if the animation has been triggered.
+ *
  * @example
- * ```typescript
+ * ```tsx
  * function MetricCard() {
- *   const { ref, count, isAnimating } = useAnimatedCounter(180, { 
+ *   const { ref, count } = useAnimatedCounter(180, {
  *     duration: 2500,
- *     delay: 300 
+ *     delay: 300
  *   });
- * 
+ *
  *   return (
  *     <div ref={ref}>
  *       <h3>{count}%</h3>
@@ -73,15 +66,6 @@ interface UseAnimatedCounterOptions {
  *     </div>
  *   );
  * }
- * ```
- * 
- * @example
- * ```typescript
- * // With custom duration and staggered delay
- * const { ref, count } = useAnimatedCounter(3500, {
- *   duration: 3000, // 3 seconds
- *   delay: 500      // Start after 500ms
- * });
  * ```
  */
 export function useAnimatedCounter(

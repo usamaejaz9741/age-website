@@ -18,10 +18,12 @@
  */
 
 /**
- * Configuration for Calendly integration
- * 
- * Central configuration object containing all Calendly-related constants
- * and default parameters for booking consultations.
+ * A frozen object containing central configuration for the Calendly integration.
+ * This includes the base URL for the booking page and default UTM parameters for tracking.
+ *
+ * @const {object} CALENDLY_CONFIG
+ * @property {string} BASE_URL - The specific URL for the AI Growth Consultation booking page.
+ * @property {object} DEFAULT_UTM - Default UTM parameters for tracking the source of bookings.
  */
 export const CALENDLY_CONFIG = {
   /** 
@@ -86,35 +88,15 @@ export interface CalendlyUTM {
 }
 
 /**
- * Opens Calendly in a new tab for booking consultation
- * 
- * This function handles the complete flow of opening a Calendly booking page,
- * including pre-filling user data, adding UTM parameters for tracking,
- * and sending analytics events to Google Analytics.
- * 
- * @param prefill - Optional pre-fill data for the booking form
- * @param utm - Optional UTM parameters for campaign tracking
- * @param eventLabel - Optional event label for Google Analytics tracking
- * 
- * @returns void
- * 
- * @example
- * ```typescript
- * // Basic usage
- * openCalendlyBooking();
- * 
- * // With pre-fill data
- * openCalendlyBooking(
- *   { email: 'user@example.com', name: 'John Doe' },
- *   { utmCampaign: 'hero-cta', utmContent: 'Book Consultation Button' },
- *   'Hero CTA Click'
- * );
- * ```
- * 
- * @security
- * - Opens in new tab with `noopener,noreferrer` for security
- * - Validates window opening to prevent popup blockers
- * - Gracefully handles errors with console warnings
+ * Opens the Calendly booking page in a new tab with pre-filled data and tracking parameters.
+ *
+ * This function constructs the Calendly URL with any provided pre-fill data and UTM parameters,
+ * sends a tracking event to Google Analytics, and then opens the URL in a new, secure browser tab.
+ *
+ * @param {CalendlyPrefill} [prefill] - Optional. An object containing user data (name, email) to pre-fill in the Calendly form.
+ * @param {CalendlyUTM} [utm] - Optional. An object containing UTM parameters for marketing campaign tracking.
+ * @param {string} [eventLabel] - Optional. A label for the Google Analytics event to specify the source of the click.
+ * @returns {void} This function does not return a value.
  */
 export function openCalendlyBooking(
   prefill?: CalendlyPrefill,
@@ -167,23 +149,14 @@ export function openCalendlyBooking(
 
 
 /**
- * Generates Calendly URL with parameters (without opening)
- * 
- * Useful for creating shareable booking links or embedding in emails
- * and other marketing materials.
- * 
- * @param prefill - Optional pre-fill data for the form
- * @param utm - Optional UTM parameters for tracking
- * @returns Complete Calendly URL with all parameters encoded
- * 
- * @example
- * ```typescript
- * const bookingUrl = generateCalendlyUrl(
- *   { email: 'user@example.com' },
- *   { utmCampaign: 'email-newsletter', utmMedium: 'email' }
- * );
- * // Returns: https://calendly.com/age-meetings/ai-growth-consultation?email=user@example.com&utm_campaign=email-newsletter...
- * ```
+ * Generates a Calendly booking URL with the specified pre-fill and UTM parameters.
+ *
+ * This utility function is useful for creating shareable booking links for use in emails,
+ * social media, or other marketing materials without immediately opening the URL.
+ *
+ * @param {CalendlyPrefill} [prefill] - Optional. An object containing user data to be included as URL parameters.
+ * @param {CalendlyUTM} [utm] - Optional. An object containing UTM parameters for tracking.
+ * @returns {string} The complete, shareable Calendly URL with all parameters encoded.
  */
 export function generateCalendlyUrl(
   prefill?: CalendlyPrefill,

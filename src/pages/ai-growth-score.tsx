@@ -13,6 +13,16 @@ import { ArrowRight, TrendingUp, Target, Zap } from "lucide-react";
 import { calculateResults } from "@/lib/quiz-helpers";
 import type { QuizAnswers, QuizResults } from "@/types/quiz";
 
+/**
+ * Renders the AI Growth Score assessment page, which is a multi-step process.
+ *
+ * This component functions as a state machine, controlling the flow of the assessment
+ * through four stages: 'hero', 'quiz', 'email', and 'results'. It manages the user's
+ * answers, calculates the results, handles email submission, and orchestrates the
+ * generation of a personalized AI audit.
+ *
+ * @returns {JSX.Element} The current step of the AI Growth Score assessment.
+ */
 const AIGrowthScore = () => {
   const [currentStep, setCurrentStep] = useState<'hero' | 'quiz' | 'email' | 'results'>('hero');
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
@@ -23,7 +33,13 @@ const AIGrowthScore = () => {
   const [auditContent, setAuditContent] = useState<string>('');
   const [utmParams, setUtmParams] = useState<Record<string, string>>({});
 
-  // Extract UTM parameters from URL
+  /**
+   * An effect hook that runs once on component mount to extract UTM parameters
+   * from the URL's query string. These parameters are stored in state for
+   * marketing attribution and analytics.
+   *
+   * @effect
+   */
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const utm: Record<string, string> = {};
@@ -36,10 +52,23 @@ const AIGrowthScore = () => {
     setUtmParams(utm);
   }, []);
 
+  /**
+   * A callback function that transitions the user from the 'hero' step to the 'quiz' step.
+   *
+   * @callback
+   */
   const startQuiz = useCallback(() => {
     setCurrentStep('quiz');
   }, []);
 
+  /**
+   * A callback function that is invoked when the user completes the quiz.
+   * It takes the user's answers, calculates the results using `calculateResults`,
+   * updates the component's state, and transitions to the 'email' step.
+   *
+   * @param {QuizAnswers} answers - An object containing the user's answers to the quiz questions.
+   * @callback
+   */
   const handleQuizComplete = useCallback((answers: QuizAnswers) => {
     setQuizAnswers(answers);
     
@@ -51,6 +80,17 @@ const AIGrowthScore = () => {
     setCurrentStep('email');
   }, [calculateResults]);
 
+  /**
+   * An asynchronous callback function that handles the email submission step.
+   *
+   * This function is triggered after the user provides their email and consent. It sets a
+   * loading state, generates a personalized AI audit using the Gemini API, and upon
+   * completion, transitions to the 'results' step. It includes error handling
+   * and a fallback mechanism if the AI audit generation fails.
+   *
+   * @async
+   * @callback
+   */
   const handleEmailSubmit = useCallback(async () => {
     if (!userEmail || !hasConsent || !quizResults) return;
 

@@ -29,24 +29,33 @@
 
 import React, { useEffect, useRef, useCallback } from 'react';
 
+/**
+ * Defines the configuration options for the `useFocusTrap` hook.
+ */
 interface UseFocusTrapOptions {
-  /** Whether the focus trap is active */
-  isActive?: boolean;
-  /** Whether to restore focus to the previously focused element */
+  /**
+   * If `true`, focus will be restored to the element that was focused before the trap was activated.
+   * @default true
+   */
   restoreFocus?: boolean;
-  /** Custom selector for focusable elements */
+  /**
+   * A CSS selector string used to identify focusable elements within the trap.
+   * @default 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+   */
   focusableSelector?: string;
 }
 
 /**
- * Focus trap hook for modal dialogs and other focus-contained components
- * 
- * Traps focus within a container element and provides keyboard navigation
- * support. Automatically handles Tab, Shift+Tab, and Escape key behaviors.
- * 
- * @param isActive - Whether the focus trap should be active
- * @param options - Additional configuration options
- * @returns Ref to attach to the container element (HTMLDivElement)
+ * A custom React hook that traps focus within a specified container element,
+ * essential for accessible modal dialogs, popovers, and other overlay components.
+ *
+ * When active, this hook prevents users from tabbing outside the container and
+ * handles keyboard navigation (Tab, Shift+Tab) to cycle through focusable elements.
+ * It also restores focus to the previously focused element when the trap is deactivated.
+ *
+ * @param {boolean} [isActive=true] - A boolean to activate or deactivate the focus trap.
+ * @param {UseFocusTrapOptions} [options={}] - Optional configuration for the focus trap.
+ * @returns {React.RefObject<HTMLDivElement>} A ref object to be attached to the container element that should trap focus.
  */
 export const useFocusTrap = (
   isActive: boolean = true,

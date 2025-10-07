@@ -8,7 +8,22 @@
 
 import { GeminiAPI } from './geminiAPI';
 
-// Type definitions for audit data
+/**
+ * Defines the data structure required for generating a quiz audit.
+ * This interface includes the user's email, their final score and band,
+ * a breakdown of scores by dimension, and their raw quiz answers.
+ *
+ * @interface QuizAuditData
+ * @property {string} email - The user's email address.
+ * @property {number} score - The overall AI maturity score (0-100).
+ * @property {string} band - The user's AI maturity band (e.g., 'Explorer', 'Experimenter').
+ * @property {object} dimensions - An object containing the scores for each dimension.
+ * @property {number} dimensions.strategy - The score for the AI Strategy dimension.
+ * @property {number} dimensions.implementation - The score for the Implementation dimension.
+ * @property {number} dimensions.data - The score for the Data Readiness dimension.
+ * @property {number} dimensions.culture - The score for the Culture & Change dimension.
+ * @property {{ [key: string]: number }} quizAnswers - The raw answers from the quiz, mapping question IDs to scores.
+ */
 export interface QuizAuditData {
   email: string;
   score: number;
@@ -23,19 +38,17 @@ export interface QuizAuditData {
 }
 
 /**
- * Generates a comprehensive AI Growth Audit report using Gemini AI
- * 
- * This function creates a detailed, personalized audit report that includes:
- * - Executive summary of current AI maturity
- * - Detailed analysis of strengths and gaps
- * - Actionable recommendations for improvement
- * - Implementation roadmap with timelines
- * - Expected ROI and business impact
- * 
- * @param data - Audit data containing user assessment results
- * @param signal - Optional AbortSignal for request cancellation
- * @returns Promise<string> - Markdown-formatted audit report
- * @throws Error if AI generation fails
+ * Generates a comprehensive AI Growth Audit report using the Gemini AI model.
+ *
+ * This function takes the user's assessment data, constructs a detailed prompt,
+ * and sends it to the Gemini API to generate a personalized audit report in Markdown format.
+ * It includes robust input validation and a fallback mechanism that provides a default
+ * report if the AI service fails.
+ *
+ * @param {QuizAuditData} data - An object containing the user's quiz results and metadata.
+ * @param {AbortSignal} [signal] - An optional AbortSignal to allow for the cancellation of the API request.
+ * @returns {Promise<string>} A promise that resolves to a Markdown-formatted string containing the full audit report.
+ * @throws {Error} Throws an error if the input data is invalid or if the AI generation process fails and no fallback is available.
  */
 export async function generateQuizAudit(data: QuizAuditData, signal?: AbortSignal): Promise<string> {
   try {

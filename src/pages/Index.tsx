@@ -41,13 +41,14 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 /**
- * Main landing page component
- * 
- * Manages the growth audit modal state and sets up global event listeners
- * for growth audit buttons throughout the page. Handles scroll restoration
- * and provides comprehensive page layout with all marketing sections.
- * 
- * @returns JSX.Element - Complete landing page with all sections
+ * Renders the main landing page of the website.
+ *
+ * This component assembles all the primary marketing sections into a cohesive page,
+ * including the hero section, social proof, services, case studies, and more.
+ * It also manages the state for the growth audit modal and handles scroll-to-section
+ * navigation logic when a user is redirected from another page.
+ *
+ * @returns {JSX.Element} The fully composed landing page.
  */
 const Index = () => {
   /** State for controlling the growth audit modal visibility */
@@ -56,11 +57,9 @@ const Index = () => {
   const location = useLocation();
 
   /**
-   * Set up global event listeners for growth audit buttons
-   * 
-   * This allows any button with the data-growth-audit attribute to trigger
-   * the growth audit modal, providing a consistent user experience across
-   * all page sections.
+   * Sets up global event listeners for any element with a `data-growth-audit` attribute.
+   * Clicking such an element will open the growth audit modal. This provides a declarative
+   * way to trigger the modal from anywhere in the component tree.
    */
   useEffect(() => {
     const handleGrowthAuditClick = () => {
@@ -86,7 +85,9 @@ const Index = () => {
   }, []);
 
   /**
-   * Handle scroll to section when navigating from other pages
+   * Handles scrolling to a specific section on the page when navigated from another page.
+   * It checks for a `scrollTo` property in the location state and smoothly scrolls the
+   * corresponding element into view.
    */
   useEffect(() => {
     if (!location.state?.scrollTo) {

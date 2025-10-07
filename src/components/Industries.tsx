@@ -32,9 +32,13 @@ import {
 import { ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
- * Industries component displaying industry expertise areas
- * 
- * @returns JSX element with animated industry cards
+ * Renders a section showcasing the industries the company specializes in.
+ *
+ * This component displays a grid of industries, each represented by an animated card
+ * containing an icon, the industry name, and a brief description. It is designed to
+ * visually communicate the company's domain expertise in various high-growth sectors.
+ *
+ * @returns {JSX.Element} The industries section, composed of a grid of animated cards.
  */
 const Industries = () => {
   const industries = [

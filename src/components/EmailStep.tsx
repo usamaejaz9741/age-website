@@ -57,19 +57,29 @@ interface EmailStepProps {
 }
 
 /**
- * Email capture step component for the AI Growth Score assessment
- * 
- * @param props - Component props for email capture and form handling
- * @returns JSX element for email capture form
+ * Renders a form for capturing the user's email and consent.
+ *
+ * This component is a step in the AI Growth Score assessment. It includes client-side validation for the email format,
+ * a required consent checkbox, and displays a loading state during submission. It also utilizes a rate limiter
+ * to prevent form abuse.
+ *
+ * @param {EmailStepProps} props - The properties for the component.
+ * @param {string} props.email - The current email value from the parent state.
+ * @param {(email: string) => void} props.setEmail - Function to update the email value in the parent state.
+ * @param {boolean} props.hasConsent - The current consent status from the parent state.
+ * @param {(hasConsent: boolean) => void} props.setHasConsent - Function to update the consent status in the parent state.
+ * @param {() => void} props.onSubmit - Callback function to trigger when the form is submitted successfully.
+ * @param {boolean} [props.isLoading=false] - Optional flag to show a loading state on the submit button.
+ * @returns {JSX.Element} The email and consent form.
  */
 const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, isLoading }: EmailStepProps) => {
   const [emailError, setEmailError] = useState<string>('');
   const [consentError, setConsentError] = useState<string>('');
 
   /**
-   * Validate email input using security utilities
-   * @param inputEmail - Email string to validate
-   * @returns boolean - Whether email is valid
+   * Validates an email string using a regular expression and sets an error state if invalid.
+   * @param {string} inputEmail - The email string to validate.
+   * @returns {boolean} `true` if the email is valid, `false` otherwise.
    */
   const validateEmailInput = useCallback((inputEmail: string): boolean => {
     if (!validateEmail(inputEmail)) {
@@ -82,8 +92,8 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
   }, []);
 
   /**
-   * Handle email input change with validation
-   * @param value - New email value
+   * Handles changes to the email input field. It sanitizes the input and updates the component's state.
+   * @param {string} value - The new value from the email input field.
    */
   const handleEmailChange = useCallback((value: string) => {
     // Sanitize input using security utilities
@@ -96,7 +106,8 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
   }, [setEmail]);
 
   /**
-   * Handle form submission with validation and rate limiting
+   * Handles the form submission. It performs validation on the email and consent fields,
+   * checks against a rate limiter, and calls the `onSubmit` prop if all checks pass.
    */
   const handleSubmit = useCallback(() => {
     // Prevent submission if there's already an error

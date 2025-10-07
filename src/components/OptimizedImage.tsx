@@ -32,35 +32,38 @@ import { cn } from '@/lib/utils';
 import { getOptimizedImageAttrs, handleImageError } from '@/lib/image-utils';
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  /** Image source URL */
+  /** The source URL for the image. */
   src: string;
-  /** Alt text for accessibility */
+  /** The alternative text for the image, crucial for accessibility. */
   alt: string;
-  /** Image type for optimization strategy */
+  /** Defines the image type to apply an appropriate loading strategy.
+   * 'hero' and 'logo' are loaded eagerly, while others are lazy-loaded. */
   type?: 'hero' | 'logo' | 'thumbnail' | 'background' | 'icon';
-  /** Fallback image source */
+  /** The URL of a fallback image to display if the primary `src` fails to load. */
   fallbackSrc?: string;
-  /** Custom loading strategy */
+  /** An object to manually override the default loading strategy determined by the `type` prop. */
   loadingStrategy?: {
     loading: 'eager' | 'lazy';
     decoding: 'sync' | 'async';
     fetchpriority: 'high' | 'low' | 'auto';
   };
-  /** Show loading skeleton */
+  /** If `true`, a skeleton loader will be displayed while the image is loading. */
   showSkeleton?: boolean;
-  /** Skeleton className */
+  /** Custom CSS classes to apply to the skeleton loader element. */
   skeletonClassName?: string;
 }
 
 /**
- * OptimizedImage Component
- * 
- * Provides optimized image loading with automatic strategies, error handling,
- * and accessibility features. Automatically applies the best loading strategy
- * based on the image type and position.
- * 
- * @param props - Component props
- * @returns JSX element with optimized image
+ * A performance-optimized image component that handles loading strategies, fallbacks, and loading states.
+ *
+ * This component wraps the standard `img` element to provide enhanced functionality:
+ * - It automatically determines the best loading attributes (`loading`, `decoding`, `fetchpriority`) based on the image `type`.
+ * - It displays a skeleton loader while the image is loading.
+ * - It gracefully handles image loading errors by displaying a fallback image.
+ *
+ * @param {OptimizedImageProps} props - The properties for the component.
+ * @param {React.Ref<HTMLImageElement>} ref - A ref to be forwarded to the underlying `img` element.
+ * @returns {JSX.Element} An optimized image element with loading and error handling.
  */
 const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
   ({

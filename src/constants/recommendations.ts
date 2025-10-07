@@ -1,8 +1,10 @@
 /**
  * @fileoverview Default Recommendations - Fallback Recommendations by Score Band
  * 
- * Provides context-aware fallback recommendations when AI generation fails.
- * Recommendations are tailored to each maturity band.
+ * Provides context-aware fallback recommendations for the AI Growth Score assessment.
+ * These recommendations are used when the primary AI generation service fails,
+ * ensuring that users always receive relevant and actionable advice based on their
+ * calculated maturity band.
  * 
  * @author Alvi Global Enterprises
  * @version 1.0.0
@@ -11,7 +13,10 @@
 import { SCORE_THRESHOLDS } from './scores';
 
 /**
- * Fallback recommendations for Explorer band (< 40%)
+ * A frozen array of fallback recommendations for users in the "Explorer" maturity band (score < 40%).
+ * These recommendations focus on foundational activities like strategy development and data governance.
+ *
+ * @const {readonly string[]} EXPLORER_RECOMMENDATIONS
  */
 export const EXPLORER_RECOMMENDATIONS = [
   'Develop a comprehensive AI strategy aligned with business goals',
@@ -20,7 +25,10 @@ export const EXPLORER_RECOMMENDATIONS = [
 ] as const;
 
 /**
- * Fallback recommendations for Experimenter band (40-70%)
+ * A frozen array of fallback recommendations for users in the "Experimenter" maturity band (score 40-69%).
+ * These recommendations focus on scaling existing initiatives and improving data capabilities.
+ *
+ * @const {readonly string[]} EXPERIMENTER_RECOMMENDATIONS
  */
 export const EXPERIMENTER_RECOMMENDATIONS = [
   'Scale AI initiatives across multiple business functions',
@@ -29,7 +37,10 @@ export const EXPERIMENTER_RECOMMENDATIONS = [
 ] as const;
 
 /**
- * Fallback recommendations for Accelerator band (>= 70%)
+ * A frozen array of fallback recommendations for users in the "Accelerator" maturity band (score >= 70%).
+ * These recommendations focus on optimization, exploring advanced technologies, and industry leadership.
+ *
+ * @const {readonly string[]} ACCELERATOR_RECOMMENDATIONS
  */
 export const ACCELERATOR_RECOMMENDATIONS = [
   'Optimize AI operations for maximum business impact',
@@ -38,10 +49,12 @@ export const ACCELERATOR_RECOMMENDATIONS = [
 ] as const;
 
 /**
- * Get fallback recommendations based on score
- * 
- * @param score - Assessment score (0-100)
- * @returns Array of recommendation strings
+ * Retrieves a set of fallback recommendations based on a given score.
+ * The function maps the score to the corresponding maturity band (Explorer, Experimenter, or Accelerator)
+ * and returns the appropriate set of predefined recommendations.
+ *
+ * @param {number} score - The user's assessment score, typically between 0 and 100.
+ * @returns {readonly string[]} An array of recommendation strings tailored to the user's score band.
  */
 export function getFallbackRecommendations(score: number): readonly string[] {
   if (score < SCORE_THRESHOLDS.EXPERIMENTER_MIN) {

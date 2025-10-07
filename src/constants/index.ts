@@ -1,8 +1,21 @@
 /**
  * @fileoverview Constants Index - Centralized Exports
- * 
- * Barrel export file for all constants to simplify imports throughout the application.
- * 
+ *
+ * This file serves as a central "barrel" for exporting all constants used throughout the application.
+ * By re-exporting from other constant files, it allows for cleaner and more streamlined imports
+ * in other parts of the codebase. Instead of importing from multiple specific files, components
+ * can import all necessary constants from this single entry point.
+ *
+ * @example
+ * ```ts
+ * // Instead of:
+ * // import { SCORE_THRESHOLDS } from './scores';
+ * // import { ANIMATION_DURATIONS } from './animations';
+ *
+ * // You can do:
+ * import { SCORE_THRESHOLDS, ANIMATION_DURATIONS } from '@/constants';
+ * ```
+ *
  * @author Alvi Global Enterprises
  * @version 1.0.0
  */

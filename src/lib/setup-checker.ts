@@ -13,7 +13,10 @@ export interface SetupStatus {
 }
 
 /**
- * Check if the application is properly configured
+ * Checks the application's configuration by verifying that all required environment variables are set and valid.
+ * It identifies missing variables, provides warnings for potentially incorrect keys, and offers recommendations for resolution.
+ *
+ * @returns {SetupStatus} An object containing the configuration status, including a list of missing variables, warnings, and recommendations.
  */
 export function checkSetupStatus(): SetupStatus {
   const missingVariables: string[] = [];
@@ -70,7 +73,9 @@ export function checkSetupStatus(): SetupStatus {
 }
 
 /**
- * Log setup status to console (development only)
+ * Logs the application's setup status to the console.
+ * This function is intended for development environments only and will not produce output in production.
+ * It provides clear feedback to developers about configuration issues.
  */
 export function logSetupStatus(): void {
   if (!import.meta.env.DEV) return;
@@ -103,7 +108,9 @@ export function logSetupStatus(): void {
 }
 
 /**
- * Check if database is properly set up
+ * Checks if the database is properly configured by ensuring that the Supabase URL and anonymous key are present and appear to be valid.
+ *
+ * @returns {boolean} `true` if the database is configured, `false` otherwise.
  */
 export function isDatabaseConfigured(): boolean {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -115,7 +122,9 @@ export function isDatabaseConfigured(): boolean {
 }
 
 /**
- * Check if AI features are properly set up
+ * Checks if AI features are properly configured by ensuring that the Gemini API key is present and appears to be valid.
+ *
+ * @returns {boolean} `true` if AI features are configured, `false` otherwise.
  */
 export function isAIConfigured(): boolean {
   const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;

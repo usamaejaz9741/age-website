@@ -1,16 +1,25 @@
 /**
  * @fileoverview Design System Constants - UI Consistency Standards
  * 
- * Centralized design system values for consistent UI across the application.
- * These constants ensure visual harmony and make design updates easier.
+ * This file centralizes design system values to ensure a consistent and harmonious
+ * user interface across the entire application. By using these constants, we can
+ * maintain visual consistency and make global design updates more efficient.
  * 
  * @author Alvi Global Enterprises
  * @version 1.0.0
  */
 
 /**
- * Heading text sizes for consistent typography
- * Following mobile-first responsive approach with proper font-weight
+ * Defines a set of responsive heading text sizes for consistent typography.
+ * These classes follow a mobile-first approach and include appropriate font weights.
+ *
+ * @const {object} HEADING_SIZES
+ * @property {string} h1 - For main page titles and hero headings.
+ * @property {string} h2 - For primary section headings.
+ * @property {string} h3 - For subsection headings.
+ * @property {string} h4 - For card or component-level headings.
+ * @property {string} h5 - For smaller headings.
+ * @property {string} h6 - For the smallest, micro-level headings.
  */
 export const HEADING_SIZES = {
   /** Page title / Hero heading */
@@ -28,7 +37,15 @@ export const HEADING_SIZES = {
 } as const;
 
 /**
- * Body text sizes for consistent paragraph typography with line-height
+ * Defines a set of responsive body text sizes for consistent paragraph typography.
+ * Includes appropriate line heights for readability.
+ *
+ * @const {object} TEXT_SIZES
+ * @property {string} large - For prominent body text, like in a hero section.
+ * @property {string} medium - For descriptive text in sections.
+ * @property {string} base - The default body text size.
+ * @property {string} small - For less important text like metadata or labels.
+ * @property {string} xs - For extra small text, such as captions.
  */
 export const TEXT_SIZES = {
   /** Large body text (hero description) */
@@ -44,7 +61,15 @@ export const TEXT_SIZES = {
 } as const;
 
 /**
- * Margin bottom values for consistent spacing
+ * Defines a set of standard margin-bottom values for consistent vertical spacing.
+ *
+ * @const {object} MARGIN_BOTTOM
+ * @property {string} section - Spacing between large page sections.
+ * @property {string} large - A large spacing unit.
+ * @property {string} medium - A medium spacing unit.
+ * @property {string} default - The default spacing unit.
+ * @property {string} small - A small spacing unit.
+ * @property {string} xs - An extra-small spacing unit.
  */
 export const MARGIN_BOTTOM = {
   /** Section spacing */
@@ -62,7 +87,13 @@ export const MARGIN_BOTTOM = {
 } as const;
 
 /**
- * Padding values for card components
+ * Defines a set of standard padding values, typically for card-like components.
+ *
+ * @const {object} CARD_PADDING
+ * @property {string} responsive - A responsive padding value that adapts to screen size.
+ * @property {string} large - A large, fixed padding value.
+ * @property {string} medium - A medium, fixed padding value.
+ * @property {string} small - A small, fixed padding value.
  */
 export const CARD_PADDING = {
   /** Responsive card padding */
@@ -76,7 +107,13 @@ export const CARD_PADDING = {
 } as const;
 
 /**
- * Icon container sizes for consistent icon presentation
+ * Defines standard sizes for icon container elements to ensure consistent icon presentation.
+ *
+ * @const {object} ICON_CONTAINER
+ * @property {string} large - A large container, e.g., 80x80px.
+ * @property {string} medium - A medium container, e.g., 64x64px.
+ * @property {string} small - A small container, e.g., 48x48px.
+ * @property {string} xs - An extra-small container, e.g., 32x32px.
  */
 export const ICON_CONTAINER = {
   /** Large icon container (80px) */
@@ -90,7 +127,14 @@ export const ICON_CONTAINER = {
 } as const;
 
 /**
- * Icon sizes for SVG elements
+ * Defines standard sizes for SVG icon elements.
+ *
+ * @const {object} ICON_SIZES
+ * @property {string} large - A large icon size, e.g., 40x40px.
+ * @property {string} medium - A medium icon size, e.g., 32x32px.
+ * @property {string} default - The default icon size, e.g., 24x24px.
+ * @property {string} small - A small icon size, e.g., 20x20px.
+ * @property {string} xs - An extra-small icon size, e.g., 16x16px.
  */
 export const ICON_SIZES = {
   /** Large icon (40px) */
@@ -106,7 +150,14 @@ export const ICON_SIZES = {
 } as const;
 
 /**
- * Border radius values for consistent rounding
+ * Defines a set of standard border-radius values for consistent element rounding.
+ *
+ * @const {object} BORDER_RADIUS
+ * @property {string} xl - An extra-large radius.
+ * @property {string} lg - A large radius.
+ * @property {string} md - A medium radius.
+ * @property {string} sm - A small radius.
+ * @property {string} full - A full radius, for creating circles or pills.
  */
 export const BORDER_RADIUS = {
   /** Extra large radius */
@@ -122,7 +173,13 @@ export const BORDER_RADIUS = {
 } as const;
 
 /**
- * Shadow classes for consistent elevation
+ * Defines a set of standard shadow classes for consistent element elevation and depth.
+ *
+ * @const {object} SHADOWS
+ * @property {string} strong - A strong shadow for prominent elements like modals.
+ * @property {string} medium - A medium shadow for elements like cards on hover.
+ * @property {string} soft - A soft, subtle shadow for default card states.
+ * @property {string} none - No shadow.
  */
 export const SHADOWS = {
   /** Strong shadow for modals, dropdowns */
@@ -136,7 +193,14 @@ export const SHADOWS = {
 } as const;
 
 /**
- * Gap values for consistent spacing in grids/flex
+ * Defines standard gap values for consistent spacing in flexbox and grid layouts.
+ *
+ * @const {object} GAP
+ * @property {string} large - A large gap.
+ * @property {string} medium - A medium gap.
+ * @property {string} default - The default gap.
+ * @property {string} small - A small gap.
+ * @property {string} xs - An extra-small gap.
  */
 export const GAP = {
   /** Large gap */
@@ -152,7 +216,13 @@ export const GAP = {
 } as const;
 
 /**
- * Grid column configurations
+ * Defines standard responsive grid column configurations.
+ *
+ * @const {object} GRID_COLS
+ * @property {string} four - A grid with up to four columns on large screens.
+ * @property {string} three - A grid with up to three columns on large screens.
+ * @property {string} two - A grid with up to two columns on medium screens.
+ * @property {string} twoLarge - A grid with up to two columns on large screens.
  */
 export const GRID_COLS = {
   /** Four columns on large screens */
@@ -166,7 +236,13 @@ export const GRID_COLS = {
 } as const;
 
 /**
- * Transition durations for consistent animations
+ * Defines standard transition durations for consistent animation timing.
+ *
+ * @const {object} TRANSITIONS
+ * @property {string} slow - A slow transition duration.
+ * @property {string} default - The default transition duration.
+ * @property {string} fast - A fast transition duration.
+ * @property {string} instant - A very fast, almost instant transition duration.
  */
 export const TRANSITIONS = {
   /** Slow transition */
@@ -180,7 +256,13 @@ export const TRANSITIONS = {
 } as const;
 
 /**
- * Common hover effects
+ * Defines a set of common hover effect classes.
+ *
+ * @const {object} HOVER_EFFECTS
+ * @property {string} lift - Lifts the element up on hover.
+ * @property {string} liftSmall - Lifts the element up slightly on hover.
+ * @property {string} scale - Scales the element up on hover.
+ * @property {string} scaleDown - Scales the element down when active (pressed).
  */
 export const HOVER_EFFECTS = {
   /** Lift up on hover */
@@ -194,7 +276,12 @@ export const HOVER_EFFECTS = {
 } as const;
 
 /**
- * Button-specific design tokens
+ * Defines a set of design tokens specifically for button components.
+ *
+ * @const {object} BUTTON_STYLES
+ * @property {string} minWidth - A minimum width for buttons to ensure consistency.
+ * @property {string} responsive - Makes buttons full-width on mobile and auto-width on larger screens.
+ * @property {string} gap - The gap between a button's icon and its text.
  */
 export const BUTTON_STYLES = {
   /** Minimum width for consistency */
@@ -206,7 +293,12 @@ export const BUTTON_STYLES = {
 } as const;
 
 /**
- * Background colors for consistent surfaces
+ * Defines a set of standard background color and gradient classes.
+ *
+ * @const {object} BACKGROUNDS
+ * @property {string} gradientOverlay - A gradient that fades from the background color to transparent.
+ * @property {string} cardGradient - The standard gradient for card backgrounds.
+ * @property {string} heroGradient - The standard gradient for hero section backgrounds.
  */
 export const BACKGROUNDS = {
   /** Primary gradient overlay */

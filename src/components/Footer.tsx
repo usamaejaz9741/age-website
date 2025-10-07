@@ -20,28 +20,28 @@ import { MapPin, Mail, Phone, Linkedin, Twitter, Globe } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 /**
- * Footer component with comprehensive site information
- * 
- * Displays company information, navigation links, contact details,
- * and social media links in a responsive grid layout.
- * 
- * Features:
- * - Multi-column responsive layout
- * - Company branding and description
- * - Organized navigation links
- * - Contact information with icons
- * - Social media links
- * - Global footprint information
- * - Copyright notice
+ * Renders the footer section of the website.
+ *
+ * This component displays essential information in a multi-column layout, including:
+ * - Company branding and a brief description.
+ * - Navigation links to key sections like Services, Company, and Resources.
+ * - Contact details (email, phone) and global office locations.
+ * - Social media links.
+ * - Copyright and legal information (Privacy Policy, Terms of Service).
+ * It also handles smooth scrolling to sections if the user is on the homepage, or navigates to the homepage first if on another page.
+ *
+ * @returns {JSX.Element} The footer component.
  */
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   /**
-   * Handle navigation to page sections
-   * 
-   * @param id - Section ID to navigate to
+   * Handles navigation to different sections of the website.
+   * If the user is on the homepage, it smoothly scrolls to the specified section.
+   * If on another page, it first navigates to the homepage and then scrolls to the section.
+   *
+   * @param {string} id - The ID of the HTML element to scroll to.
    */
   const handleNavigation = (id: string) => {
     // If we're on the home page, scroll to section

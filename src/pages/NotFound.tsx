@@ -32,55 +32,27 @@ import SectionTemplate from "@/components/SectionTemplate";
 import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, GAP, BUTTON_STYLES } from "@/constants/design-system";
 
 /**
- * 404 Not Found Page Component
- * 
- * Renders a user-friendly error page when users navigate to non-existent routes.
- * Provides clear messaging, navigation options, and comprehensive error tracking.
- * 
- * @component
- * @returns {JSX.Element} The 404 error page with navigation options
- * 
- * @example
- * ```tsx
- * // Used automatically by React Router for invalid routes
- * <Route path="*" element={<NotFound />} />
- * ```
- * 
- * @accessibility
- * - Uses semantic HTML structure
- * - Provides clear heading hierarchy
- * - Includes descriptive button labels
- * - Supports keyboard navigation
- * 
- * @seo
- * - Sets noindex, nofollow meta tags
- * - Includes structured data
- * - Provides canonical URL
- * - Optimized page title and description
- * 
- * @since 1.0.0
+ * Renders a user-friendly error page when a user navigates to a non-existent route.
+ *
+ * This component displays a standard 404 "Page Not Found" message with a consistent
+ * brand design. It provides clear navigation options for the user to go back to the
+ * homepage or to the previous page. It also includes SEO meta tags to prevent search
+ * engines from indexing the error page and logs the 404 event for analytics purposes.
+ *
+ * @returns {JSX.Element} The 404 Not Found page component.
  */
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   /**
-   * Logs 404 errors for monitoring and debugging purposes
-   * 
-   * Tracks invalid route access to help identify:
-   * - Broken internal links
-   * - User navigation patterns
-   * - Potential SEO issues
-   * - Missing pages that users expect
-   * 
+   * An effect hook that logs the 404 error when the component mounts.
+   * This is useful for analytics and debugging, as it helps track broken links
+   * or user attempts to access non-existent pages. It logs to the console
+   * in development and can be extended to send data to an analytics service.
+   *
    * @effect
-   * - Logs to console in development
-   * - Sends analytics event if Google Analytics is available
-   * - Can be extended to send to error tracking services
-   * 
-   * @dependencies location.pathname - Triggers when route changes
-   * 
-   * @since 1.0.0
+   * @listens location.pathname - This effect re-runs if the path changes while the component is mounted.
    */
   useEffect(() => {
     // Development logging for debugging
@@ -102,28 +74,14 @@ const NotFound = () => {
   }, [location.pathname]);
 
   /**
-   * Handles navigation to the home page
-   * 
-   * Navigates the user back to the main landing page using React Router's
-   * programmatic navigation. This provides a clear path forward when users
-   * encounter a 404 error.
-   * 
-   * @function
-   * @since 1.0.0
+   * A callback function that navigates the user to the home page ('/').
    */
   const handleGoHome = () => {
     navigate('/');
   };
 
   /**
-   * Handles navigation back to the previous page
-   * 
-   * Uses the browser's history to navigate back to the previous page.
-   * This provides users with a quick way to return to where they came from
-   * if they accidentally navigated to an invalid route.
-   * 
-   * @function
-   * @since 1.0.0
+   * A callback function that navigates the user to the previous page in their browser history.
    */
   const handleGoBack = () => {
     navigate(-1);

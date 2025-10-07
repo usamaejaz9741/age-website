@@ -19,9 +19,12 @@ import { getOptimizedImageAttrs, handleImageError } from "@/lib/image-utils";
 import { ANIMATION_DURATIONS, ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
- * Proof Bar component displaying key metrics and client logos
- * 
- * @returns JSX element with animated metrics and client logos
+ * Renders a social proof bar that displays key performance metrics and client logos.
+ *
+ * This component serves to build credibility by showcasing impressive metrics (e.g., lead velocity, revenue growth)
+ * with animated counters that activate on scroll. It also features a gallery of client logos to provide social proof.
+ *
+ * @returns {JSX.Element} A section containing animated key metrics and a list of client logos.
  */
 const ProofBar = () => {
   const metrics = [

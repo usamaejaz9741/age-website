@@ -57,15 +57,15 @@ interface State {
 }
 
 /**
- * Error Boundary class component for catching and handling React errors
- * 
- * This class component implements the React error boundary pattern to catch
- * JavaScript errors in child components and display a fallback UI.
+ * A React component that catches JavaScript errors in its child component tree,
+ * logs those errors, and displays a fallback UI instead of the component tree that crashed.
+ *
+ * @extends Component<Props, State>
  */
 class ErrorBoundary extends Component<Props, State> {
   /**
-   * Constructor for the ErrorBoundary component
-   * @param props - Component props
+   * Initializes the ErrorBoundary component.
+   * @param {Props} props - The props for the component.
    */
   constructor(props: Props) {
     super(props);
@@ -73,11 +73,11 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   /**
-   * Static method called when an error is thrown in a child component
-   * Updates the state to trigger the fallback UI rendering
-   * 
-   * @param error - The error that was thrown
-   * @returns New state object with error information
+   * A lifecycle method that is invoked after an error has been thrown by a descendant component.
+   * It receives the error that was thrown as a parameter and should return a value to update state.
+   *
+   * @param {Error} error - The error that was thrown.
+   * @returns {State} An object to update the state, indicating that an error has occurred.
    */
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI
@@ -85,11 +85,12 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   /**
-   * Lifecycle method called when an error is caught
-   * Handles error logging and additional error information processing
-   * 
-   * @param error - The error that was thrown
-   * @param errorInfo - Additional error information from React
+   * A lifecycle method that is invoked after an error has been thrown by a descendant component.
+   * It receives two parameters: the error that was thrown, and an object with a `componentStack` key
+   * containing information about which component threw the error.
+   *
+   * @param {Error} error - The error that was thrown.
+   * @param {ErrorInfo} errorInfo - An object with a `componentStack` property.
    */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Use standardized error handling
@@ -108,6 +109,9 @@ class ErrorBoundary extends Component<Props, State> {
     }
   }
 
+  /**
+   * Resets the error state, allowing the user to try rendering the child components again.
+   */
   handleRetry = () => {
     this.setState({ 
       hasError: false, 
@@ -117,6 +121,9 @@ class ErrorBoundary extends Component<Props, State> {
     });
   };
 
+  /**
+   * Navigates the user to the home page as a recovery option.
+   */
   handleGoHome = () => {
     // Use proper navigation instead of direct window.location manipulation
     if (typeof window !== 'undefined') {
@@ -124,6 +131,12 @@ class ErrorBoundary extends Component<Props, State> {
     }
   };
 
+  /**
+   * Renders the component. If an error has been caught, it displays a fallback UI.
+   * Otherwise, it renders the child components.
+   *
+   * @returns {ReactNode} The fallback UI or the child components.
+   */
   render() {
     if (this.state.hasError) {
       // Custom fallback UI

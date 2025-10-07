@@ -1,14 +1,28 @@
 /**
  * @fileoverview User-Facing Messages - Error and Success Messages
  * 
- * Centralized user-facing messages for consistency and easier i18n in the future.
+ * This file centralizes all user-facing strings for the application.
+ * Using a single source for messages ensures consistency in language and tone,
+ * and simplifies future internationalization (i18n) efforts.
  * 
  * @author Alvi Global Enterprises
  * @version 1.0.0
  */
 
 /**
- * Error messages for user feedback
+ * A frozen object containing standardized error messages for user feedback.
+ * These messages are used in UI components to inform users of errors in a
+ * clear and consistent manner.
+ *
+ * @const {object} ERROR_MESSAGES
+ * @property {string} GENERIC - A fallback error message for unexpected issues.
+ * @property {string} AI_UNAVAILABLE - Title for when the AI service is down.
+ * @property {string} AI_UNAVAILABLE_DESCRIPTION - A more detailed explanation for AI service unavailability.
+ * @property {string} INVALID_EMAIL - Error message for invalid email format.
+ * @property {string} RATE_LIMIT - Message shown when a user exceeds submission limits.
+ * @property {string} FORM_REQUIRED - Message for a required field that was left empty.
+ * @property {string} NETWORK_ERROR - Message for network-related issues.
+ * @property {string} SAVE_ERROR - Message for when data fails to save.
  */
 export const ERROR_MESSAGES = {
   /** Generic error message */
@@ -29,7 +43,13 @@ export const ERROR_MESSAGES = {
 } as const;
 
 /**
- * Success messages for user feedback
+ * A frozen object containing standardized success messages for user feedback.
+ * These messages confirm that a user's action has been completed successfully.
+ *
+ * @const {object} SUCCESS_MESSAGES
+ * @property {string} SAVE_SUCCESS - Confirmation that user data has been saved.
+ * @property {string} EMAIL_SENT - Confirmation that an email has been sent.
+ * @property {string} FORM_SUBMITTED - A generic confirmation for form submissions.
  */
 export const SUCCESS_MESSAGES = {
   /** Data saved successfully */
@@ -41,7 +61,14 @@ export const SUCCESS_MESSAGES = {
 } as const;
 
 /**
- * Loading messages for user feedback
+ * A frozen object containing standardized loading messages.
+ * These messages inform the user that a process is ongoing in the background.
+ *
+ * @const {object} LOADING_MESSAGES
+ * @property {string} LOADING - A generic loading message.
+ * @property {string} GENERATING_AUDIT - Message shown while the AI audit is being generated.
+ * @property {string} GENERATING_RECOMMENDATIONS - Message shown while personalized recommendations are being generated.
+ * @property {string} SAVING - Message shown while user data is being saved.
  */
 export const LOADING_MESSAGES = {
   /** Generic loading */
@@ -55,7 +82,13 @@ export const LOADING_MESSAGES = {
 } as const;
 
 /**
- * Informational messages
+ * A frozen object containing standardized informational messages.
+ * These messages provide neutral information to the user, such as in empty states or on info pages.
+ *
+ * @const {object} INFO_MESSAGES
+ * @property {string} NO_DATA - Message for when no data is available to display.
+ * @property {string} PAGE_NOT_FOUND - Title for the 404 page.
+ * @property {string} PAGE_NOT_FOUND_DESCRIPTION - Description for the 404 page.
  */
 export const INFO_MESSAGES = {
   /** No data available */

@@ -33,28 +33,23 @@ interface GrowthAuditModalProps {
 }
 
 /**
- * Growth Audit Modal component for consultation booking
- * 
- * This modal provides information about the AI Growth Audit service
- * and allows users to book a consultation through Calendly integration.
- * 
- * Features:
- * - Service description and benefits
- * - Calendly booking integration
- * - UTM tracking for marketing attribution
- * - Responsive design for all screen sizes
- * - Proper event handling to prevent double navigation
- * 
- * @param isOpen - Whether the modal is currently open
- * @param onClose - Function to close the modal
+ * A modal dialog for booking an AI growth audit consultation.
+ *
+ * This component uses a dialog to present users with an option to schedule a consultation via Calendly.
+ * It is designed to be accessible, with focus trapping, and includes marketing attribution through UTM parameters.
+ *
+ * @param {GrowthAuditModalProps} props - The properties for the component.
+ * @param {boolean} props.isOpen - Controls whether the modal is open or closed.
+ * @param {() => void} props.onClose - A callback function to be invoked when the modal should be closed.
+ * @returns {JSX.Element} The growth audit modal component.
  */
 const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
   // Set up focus trap for accessibility
   const trapRef = useFocusTrap(isOpen);
 
   /**
-   * Handle focus management when modal opens/closes
-   * Prevents aria-hidden accessibility warnings
+   * Manages focus when the modal opens or closes to prevent accessibility issues.
+   * When the modal opens, it blurs the currently active element to avoid `aria-hidden` warnings.
    */
   useEffect(() => {
     if (isOpen) {
@@ -64,12 +59,11 @@ const GrowthAuditModal = ({ isOpen, onClose }: GrowthAuditModalProps) => {
   }, [isOpen]);
 
   /**
-   * Handle Calendly booking button click
-   * 
-   * Opens Calendly in a new tab with UTM tracking parameters
-   * and closes the modal after initiating the booking process.
-   * 
-   * @param e - Optional mouse event to prevent default behavior
+   * Handles the click event for the "Book Consultation" button.
+   * It opens the Calendly booking page in a new tab with appropriate UTM parameters for tracking,
+   * and then closes the modal.
+   *
+   * @param {React.MouseEvent} [e] - An optional mouse event, which if provided, will have its default action and propagation stopped.
    */
   const handleBookConsultation = (e?: React.MouseEvent) => {
     if (e) {

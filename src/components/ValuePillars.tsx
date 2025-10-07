@@ -32,9 +32,13 @@ import {
 import { ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
- * Value Pillars component displaying core value propositions
- * 
- * @returns JSX element with animated value pillar cards
+ * Renders a section that highlights the company's core value pillars.
+ *
+ * This component displays four key value propositions in a responsive grid. Each pillar
+ * is presented in an animated card with a unique icon, title, and description, effectively
+ * communicating the company's foundational strengths and differentiators.
+ *
+ * @returns {JSX.Element} The value pillars section, composed of a grid of animated cards.
  */
 const ValuePillars = () => {
   const pillars = [

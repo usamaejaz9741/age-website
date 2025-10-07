@@ -1,22 +1,17 @@
 /**
  * @fileoverview Application Entry Point
  * 
- * Main entry point for the Alvi Global Enterprises Website application.
- * Initializes React, sets up global configurations, and mounts the application
- * to the DOM with comprehensive error handling and development tools.
+ * This file serves as the main entry point for the React application. It is responsible for:
+ * 1. Initializing the React root using `createRoot` for concurrent rendering.
+ * 2. Importing global CSS styles to ensure a consistent design system.
+ * 3. Suppressing irrelevant console warnings in production to maintain a clean console.
+ * 4. Validating and logging the application's environment setup in development mode.
+ * 5. Rendering the root `AppWithErrorBoundary` component to mount the application into the DOM.
+ * 6. Providing a top-level try-catch block to handle catastrophic rendering errors and display a safe fallback UI.
  * 
  * @module main
  * @author Alvi Global Enterprises
  * @version 1.0.0
- * 
- * @features
- * - ⚛️ React 18 with createRoot for optimal performance
- * - 🎨 Global CSS styles and design system
- * - 🔇 Console warning suppression for clean development
- * - 🔧 Setup status validation and logging
- * - 🛡️ Comprehensive error boundaries and fallback UI
- * - 🎭 FOUC prevention with loaded class management
- * - 📱 Mobile-optimized responsive design
  */
 
 import { createRoot } from "react-dom/client";
@@ -25,37 +20,39 @@ import { suppressConsoleWarnings } from "./lib/console-utils";
 import { logSetupStatus } from "./lib/setup-checker";
 import { AppWithErrorBoundary } from "./components/AppWithErrorBoundary";
 
-// Get the root DOM element and create React root
+// Get the root DOM element and create React root. This is the mount point for the entire application.
 const rootElement = document.getElementById("root");
 if (!rootElement) {
+  // A critical error if the root element is not found in the HTML.
   throw new Error("Root element not found. Make sure index.html has a div with id='root'");
 }
 
-// Suppress console warnings in production
+// Suppress known, non-critical console warnings in production to avoid cluttering the console.
 suppressConsoleWarnings();
 
-// Check setup status in development
+// In development mode, check if all required environment variables are set and log the status.
 if (import.meta.env.DEV) {
   logSetupStatus();
 }
 
-// Create React root and render the App component
+// Create a React root for the main application container.
 const root = createRoot(rootElement);
 
-// Add error boundary for development
+// Render the application within a try-catch block to handle potential initial rendering errors.
 try {
+  // The AppWithErrorBoundary component wraps the main App with an error boundary for robust error handling.
   root.render(<AppWithErrorBoundary />);
   
-  // FOUC Prevention: Add loaded class when app is ready
+  // FOUC Prevention: Add 'loaded' class to the body and html elements once the app is ready to be displayed.
   document.documentElement.classList.add('loaded');
   document.body.classList.add('loaded');
 } catch (error) {
-  // Log error securely without exposing sensitive information
+  // Log the error to the console in development for debugging purposes.
   if (import.meta.env.DEV) {
     console.error('Error rendering app:', error);
   }
   
-  // Render secure error page without exposing internal details
+  // Render a safe, user-friendly fallback UI in case of a catastrophic rendering error.
   root.render(
     <div className="p-5 text-destructive font-sans">
       <h1 className="text-2xl mb-4">Application Error</h1>
@@ -70,7 +67,7 @@ try {
     </div>
   );
   
-  // Still add loaded class even on error to prevent permanent hiding
+  // Ensure the page becomes visible even if there's an error to avoid a blank screen.
   document.documentElement.classList.add('loaded');
   document.body.classList.add('loaded');
 }

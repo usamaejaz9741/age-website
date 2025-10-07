@@ -17,14 +17,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { openCalendlyBooking } from "@/lib/calendly";
 
 /**
- * Header component with navigation and branding
- * 
- * Features:
- * - Responsive navigation with mobile menu
- * - Logo click navigation (home page scroll to top, other pages navigate home)
- * - Section navigation (scroll on home page, navigate + scroll on other pages)
- * - Calendly booking integration with UTM tracking
- * - Mobile-first responsive design
+ * Renders the main header for the website.
+ *
+ * This component provides a responsive navigation bar that includes the company logo,
+ * navigation links, and a call-to-action button for booking a consultation. It adapts
+ * its appearance and functionality for both desktop and mobile viewports, featuring a
+ * hamburger menu for smaller screens. The header's background becomes opaque as the user
+ * scrolls down the page.
+ *
+ * @returns {JSX.Element} The header component.
  */
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,9 +34,11 @@ const Header = () => {
   const location = useLocation();
 
   /**
-   * Handle navigation to page sections
-   * 
-   * @param id - Section ID to navigate to
+   * Handles navigation to a specific section on the page.
+   * If on the homepage, it scrolls smoothly to the section. Otherwise, it navigates
+   * to the homepage and then scrolls to the section.
+   *
+   * @param {string} id - The ID of the target element to navigate to.
    */
   const handleNavigation = (id: string) => {
     // If we're on the home page, scroll to section
@@ -52,8 +55,8 @@ const Header = () => {
   };
 
   /**
-   * Handle logo click navigation
-   * Scrolls to top on home page, navigates home on other pages
+   * Handles the click event on the company logo.
+   * If on the homepage, it scrolls to the top. Otherwise, it navigates to the homepage.
    */
   const handleLogoClick = () => {
     if (location.pathname === '/') {
@@ -67,9 +70,10 @@ const Header = () => {
   };
 
   /**
-   * Handle Calendly booking button click
-   * 
-   * @param e - Optional mouse event to prevent default behavior
+   * Handles the click event for the "Book Consultation" button.
+   * It opens the Calendly booking page in a new tab with appropriate UTM parameters for tracking.
+   *
+   * @param {React.MouseEvent} [e] - An optional mouse event, which if provided, will have its default action and propagation stopped.
    */
   const handleBookConsultation = (e?: React.MouseEvent) => {
     if (e) {

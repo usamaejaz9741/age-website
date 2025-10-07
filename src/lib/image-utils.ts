@@ -10,10 +10,11 @@
  */
 
 /**
- * Get optimized image loading attributes based on image type
- * 
- * @param type - The type of image (hero, logo, thumbnail, background, icon)
- * @returns Object with optimized loading attributes
+ * Returns an object with optimized loading attributes for an image based on its type.
+ * This helps prioritize the loading of critical images and defer non-critical ones.
+ *
+ * @param {string} type - The type of image. Accepted values are 'hero', 'logo', 'thumbnail', 'background', 'icon'.
+ * @returns {{loading: 'eager' | 'lazy', decoding: 'sync' | 'async', fetchpriority: 'high' | 'low'}} An object containing the `loading`, `decoding`, and `fetchpriority` attributes.
  */
 export const getOptimizedImageAttrs = (type: string) => {
   switch (type) {
@@ -56,10 +57,11 @@ export const getOptimizedImageAttrs = (type: string) => {
 };
 
 /**
- * Handle image error with fallback
- * 
- * @param event - The error event
- * @param fallbackSrc - Fallback image source
+ * Handles image loading errors by replacing the failed image source with a fallback source.
+ * It also logs a warning in development mode for debugging purposes.
+ *
+ * @param {React.SyntheticEvent<HTMLImageElement, Event>} event - The error event triggered by the image element.
+ * @param {string} [fallbackSrc] - The URL of the fallback image to be used if the original image fails to load.
  */
 export const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc?: string) => {
   const img = event.currentTarget;

@@ -239,9 +239,11 @@ export function containsSuspiciousPatterns(input: string): boolean {
 }
 
 /**
- * Generate secure random string
- * @param length - Length of random string
- * @returns Random string
+ * Generates a cryptographically secure random string of a specified length.
+ * It uses `window.crypto.getRandomValues` for strong randomness and falls back to `Math.random` if the Crypto API is not available.
+ *
+ * @param {number} [length=32] - The desired length of the random string.
+ * @returns {string} A secure random string.
  */
 export function generateSecureRandomString(length: number = 32): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -268,9 +270,10 @@ export function generateSecureRandomString(length: number = 32): string {
 }
 
 /**
- * Validate URL format
- * @param url - URL to validate
- * @returns boolean - Whether URL is valid
+ * Validates if a given string is a valid URL with an http or https protocol.
+ *
+ * @param {string} url - The URL string to validate.
+ * @returns {boolean} `true` if the URL is valid, `false` otherwise.
  */
 export function validateUrl(url: string): boolean {
   if (typeof url !== 'string') {
@@ -286,9 +289,11 @@ export function validateUrl(url: string): boolean {
 }
 
 /**
- * Sanitize URL
- * @param url - URL to sanitize
- * @returns Sanitized URL or empty string if invalid
+ * Sanitizes a URL by validating it and returning a clean version.
+ * If the URL is invalid, it returns an empty string.
+ *
+ * @param {string} url - The URL string to sanitize.
+ * @returns {string} The sanitized URL or an empty string if the URL is invalid.
  */
 export function sanitizeUrl(url: string): string {
   if (!validateUrl(url)) {
@@ -304,12 +309,19 @@ export function sanitizeUrl(url: string): string {
 }
 
 /**
- * Rate limiting helper
+ * A client-side rate limiter to prevent abuse of forms and APIs.
+ * It uses `localStorage` to persist request counts across page loads.
  */
 export class RateLimiter {
   private requests: Map<string, number[]> = new Map();
   private storageKey: string;
-  
+
+  /**
+   * Creates an instance of RateLimiter.
+   * @param {number} [maxRequests=10] - The maximum number of requests allowed within the time window.
+   * @param {number} [windowMs=60000] - The time window in milliseconds (e.g., 60000 for 1 minute).
+   * @param {string} [storageKey='rate_limiter'] - The key to use for storing rate limit data in localStorage.
+   */
   constructor(
     private maxRequests: number = 10,
     private windowMs: number = 60000, // 1 minute
@@ -318,9 +330,10 @@ export class RateLimiter {
     this.storageKey = storageKey;
     this.loadFromStorage();
   }
-  
+
   /**
-   * Load rate limit data from localStorage
+   * Loads rate limit data from localStorage to persist state across sessions.
+   * @private
    */
   private loadFromStorage(): void {
     try {
@@ -346,7 +359,8 @@ export class RateLimiter {
   }
   
   /**
-   * Save rate limit data to localStorage
+   * Saves the current rate limit data to localStorage.
+   * @private
    */
   private saveToStorage(): void {
     try {
@@ -364,9 +378,11 @@ export class RateLimiter {
   }
   
   /**
-   * Check if request is allowed
-   * @param identifier - Unique identifier (IP, user ID, etc.)
-   * @returns boolean - Whether request is allowed
+   * Checks if a request from a given identifier is allowed.
+   * If allowed, it records the request timestamp.
+   *
+   * @param {string} identifier - A unique identifier for the client (e.g., a user ID or a session ID).
+   * @returns {boolean} `true` if the request is allowed, `false` otherwise.
    */
   isAllowed(identifier: string): boolean {
     const now = Date.now();
@@ -388,9 +404,10 @@ export class RateLimiter {
   }
   
   /**
-   * Get remaining requests for identifier
-   * @param identifier - Unique identifier
-   * @returns number - Remaining requests
+   * Gets the number of remaining requests for a given identifier within the current time window.
+   *
+   * @param {string} identifier - The unique identifier for the client.
+   * @returns {number} The number of remaining requests.
    */
   getRemainingRequests(identifier: string): number {
     const now = Date.now();
@@ -401,7 +418,7 @@ export class RateLimiter {
   }
   
   /**
-   * Clear all rate limit data
+   * Clears all rate limit data from memory and localStorage.
    */
   clear(): void {
     this.requests.clear();
@@ -414,11 +431,13 @@ export class RateLimiter {
 }
 
 /**
- * Create a rate limiter instance for API calls
+ * A pre-configured rate limiter for API calls.
+ * Allows 5 requests per minute.
  */
 export const apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit'); // 5 requests per minute
 
 /**
- * Create a rate limiter instance for form submissions
+ * A pre-configured rate limiter for form submissions.
+ * Allows 3 submissions per 5 minutes to prevent spam.
  */
 export const formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit'); // 3 submissions per 5 minutes

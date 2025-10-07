@@ -38,16 +38,16 @@ export const SEO_CONFIG = {
 } as const;
 
 /**
- * Generates SEO-friendly page title
- * 
- * @param title - Page title
- * @param includeSiteName - Whether to include site name
- * @returns SEO-optimized page title
- * 
+ * Generates an SEO-friendly page title, optionally including the site name.
+ *
+ * @param {string} title - The base title for the page.
+ * @param {boolean} [includeSiteName=true] - Whether to append the site name to the title.
+ * @returns {string} The formatted page title.
+ *
  * @example
  * ```typescript
- * generatePageTitle('AI Assessment'); // Returns: "AI Assessment | Alvi Global Enterprises"
- * generatePageTitle('AI Assessment', false); // Returns: "AI Assessment"
+ * generatePageTitle('AI Assessment'); // "AI Assessment | Alvi Global Enterprises"
+ * generatePageTitle('AI Assessment', false); // "AI Assessment"
  * ```
  */
 export function generatePageTitle(title: string, includeSiteName: boolean = true): string {
@@ -60,16 +60,16 @@ export function generatePageTitle(title: string, includeSiteName: boolean = true
 }
 
 /**
- * Generates SEO-friendly meta description
- * 
- * @param description - Page description
- * @param maxLength - Maximum description length (default: 160)
- * @returns SEO-optimized meta description
- * 
+ * Generates an SEO-friendly meta description, truncated to a specified maximum length.
+ *
+ * @param {string} description - The full-length description.
+ * @param {number} [maxLength=160] - The maximum character length for the description.
+ * @returns {string} The truncated and optimized meta description.
+ *
  * @example
  * ```typescript
- * generateMetaDescription('Transform your business with AI automation...');
- * // Returns: "Transform your business with AI automation..."
+ * generateMetaDescription('A very long description that exceeds the limit...');
+ * // "A very long description that exceeds the limit..." (truncated)
  * ```
  */
 export function generateMetaDescription(description: string, maxLength: number = 160): string {
@@ -86,15 +86,15 @@ export function generateMetaDescription(description: string, maxLength: number =
 }
 
 /**
- * Generates canonical URL
- * 
- * @param path - Page path
- * @returns Canonical URL
- * 
+ * Generates a full canonical URL for a given path.
+ *
+ * @param {string} [path='/'] - The path segment of the URL.
+ * @returns {string} The absolute canonical URL.
+ *
  * @example
  * ```typescript
- * generateCanonicalUrl('/ai-growth-score'); // Returns: "https://alviglobal.com/ai-growth-score"
- * generateCanonicalUrl('/'); // Returns: "https://alviglobal.com"
+ * generateCanonicalUrl('/ai-growth-score'); // "https://alviglobal.com/ai-growth-score"
+ * generateCanonicalUrl('/'); // "https://alviglobal.com"
  * ```
  */
 export function generateCanonicalUrl(path: string = '/'): string {
@@ -103,15 +103,15 @@ export function generateCanonicalUrl(path: string = '/'): string {
 }
 
 /**
- * Generates Open Graph image URL
- * 
- * @param imagePath - Image path
- * @returns Open Graph image URL
- * 
+ * Generates a full URL for an Open Graph image from a given path.
+ *
+ * @param {string} imagePath - The path to the image.
+ * @returns {string} The absolute URL for the OG image.
+ *
  * @example
  * ```typescript
  * generateOgImageUrl('/og-image-ai-assessment.jpg');
- * // Returns: "https://alviglobal.com/og-image-ai-assessment.jpg"
+ * // "https://alviglobal.com/og-image-ai-assessment.jpg"
  * ```
  */
 export function generateOgImageUrl(imagePath: string): string {
@@ -122,16 +122,16 @@ export function generateOgImageUrl(imagePath: string): string {
 }
 
 /**
- * Generates comprehensive keywords string
- * 
- * @param keywords - Array of keywords
- * @param includeDefault - Whether to include default keywords
- * @returns SEO-optimized keywords string
- * 
+ * Generates a comma-separated string of keywords, with an option to include default site keywords.
+ *
+ * @param {string[]} keywords - An array of specific keywords for the page.
+ * @param {boolean} [includeDefault=true] - Whether to include the default site-wide keywords.
+ * @returns {string} A comma-separated string of keywords.
+ *
  * @example
  * ```typescript
  * generateKeywords(['AI automation', 'business growth'], true);
- * // Returns: "AI automation, business growth, AI consulting, business transformation, ..."
+ * // "AI automation, business growth, AI consulting,..."
  * ```
  */
 export function generateKeywords(keywords: string[], includeDefault: boolean = true): string {
@@ -161,15 +161,15 @@ export function generateKeywords(keywords: string[], includeDefault: boolean = t
 }
 
 /**
- * Generates organization structured data
- * 
- * @param additionalData - Additional structured data
- * @returns Organization structured data
- * 
+ * Generates JSON-LD structured data for the organization.
+ *
+ * @param {Record<string, unknown>} [additionalData={}] - Any additional properties to merge into the schema.
+ * @returns {Record<string, unknown>} The JSON-LD object for organization schema.
+ *
  * @example
  * ```typescript
  * generateOrganizationSchema({
- *   service: [{ "@type": "Service", "name": "AI Assessment" }]
+ *   "service": [{ "@type": "Service", "name": "AI Assessment" }]
  * });
  * ```
  */
@@ -201,11 +201,11 @@ export function generateOrganizationSchema(additionalData: Record<string, unknow
 }
 
 /**
- * Generates service structured data
- * 
- * @param serviceData - Service information
- * @returns Service structured data
- * 
+ * Generates JSON-LD structured data for a service.
+ *
+ * @param {{name: string, description: string, price?: string, priceCurrency?: string, areaServed?: string}} serviceData - Information about the service.
+ * @returns {Record<string, unknown>} The JSON-LD object for service schema.
+ *
  * @example
  * ```typescript
  * generateServiceSchema({
@@ -249,11 +249,11 @@ export function generateServiceSchema(serviceData: {
 }
 
 /**
- * Generates breadcrumb structured data
- * 
- * @param breadcrumbs - Breadcrumb items
- * @returns Breadcrumb structured data
- * 
+ * Generates JSON-LD structured data for breadcrumbs.
+ *
+ * @param {Array<{label: string, href?: string, current?: boolean}>} breadcrumbs - An array of breadcrumb items.
+ * @returns {Record<string, unknown>} The JSON-LD object for breadcrumb schema.
+ *
  * @example
  * ```typescript
  * generateBreadcrumbSchema([
@@ -281,11 +281,11 @@ export function generateBreadcrumbSchema(breadcrumbs: Array<{
 }
 
 /**
- * Generates FAQ structured data
- * 
- * @param faqs - FAQ items
- * @returns FAQ structured data
- * 
+ * Generates JSON-LD structured data for an FAQ page.
+ *
+ * @param {Array<{question: string, answer: string}>} faqs - An array of question-answer pairs.
+ * @returns {Record<string, unknown>} The JSON-LD object for FAQ schema.
+ *
  * @example
  * ```typescript
  * generateFAQSchema([
@@ -312,17 +312,16 @@ export function generateFAQSchema(faqs: Array<{
 }
 
 /**
- * Validates SEO meta tags
- * 
- * @param metaData - Meta tag data
- * @returns Validation results
- * 
+ * Validates common SEO meta tags like title, description, and keywords for best practices.
+ *
+ * @param {{title?: string, description?: string, keywords?: string}} metaData - The meta data to validate.
+ * @returns {{isValid: boolean, errors: string[], warnings: string[]}} An object containing validation results, including errors and warnings.
+ *
  * @example
  * ```typescript
  * validateSEOMeta({
- *   title: 'AI Assessment',
- *   description: 'Comprehensive AI readiness assessment...',
- *   keywords: 'AI, assessment, business'
+ *   title: 'A very long title that will trigger a warning',
+ *   description: 'Short desc'
  * });
  * ```
  */
@@ -369,14 +368,14 @@ export function validateSEOMeta(metaData: {
 }
 
 /**
- * Generates SEO-friendly URL slug
- * 
- * @param text - Text to convert to slug
- * @returns SEO-friendly URL slug
- * 
+ * Generates an SEO-friendly URL slug from a given string.
+ *
+ * @param {string} text - The string to convert into a slug.
+ * @returns {string} The generated slug.
+ *
  * @example
  * ```typescript
- * generateSlug('AI Growth Score Assessment'); // Returns: "ai-growth-score-assessment"
+ * generateSlug('AI Growth Score Assessment'); // "ai-growth-score-assessment"
  * ```
  */
 export function generateSlug(text: string): string {
@@ -389,11 +388,11 @@ export function generateSlug(text: string): string {
 }
 
 /**
- * Generates performance-optimized meta tags
- * 
- * @param pageData - Page data
- * @returns Performance-optimized meta tags
- * 
+ * Generates a set of performance-optimized meta tags, including preconnect, prefetch, and Open Graph tags.
+ *
+ * @param {{title: string, description: string, image?: string, url?: string}} pageData - Data about the page for generating the meta tags.
+ * @returns {Array<{ name?: string; property?: string; content: string }>} An array of meta tag objects.
+ *
  * @example
  * ```typescript
  * generatePerformanceMeta({
@@ -440,11 +439,11 @@ export function generatePerformanceMeta(pageData: {
 }
 
 /**
- * Generates WebPage structured data
- * 
- * @param pageData - Page information
- * @returns WebPage structured data
- * 
+ * Generates JSON-LD structured data for a generic web page.
+ *
+ * @param {{name: string, description: string, url: string, datePublished?: string, dateModified?: string, author?: string}} pageData - Information about the web page.
+ * @returns {Record<string, unknown>} The JSON-LD object for web page schema.
+ *
  * @example
  * ```typescript
  * generateWebPageSchema({

@@ -289,11 +289,11 @@ export const DEFAULT_TWITTER_PROPERTIES = {
 } as const;
 
 /**
- * Get SEO configuration for a specific page
- * 
- * @param pageKey - Page key from PAGE_SEO_CONFIG
- * @returns SEO configuration for the page
- * 
+ * Retrieves the SEO configuration for a specific page.
+ *
+ * @param {keyof typeof PAGE_SEO_CONFIG} pageKey - The key corresponding to the page in `PAGE_SEO_CONFIG`.
+ * @returns {typeof PAGE_SEO_CONFIG[keyof typeof PAGE_SEO_CONFIG]} The SEO configuration object for the specified page.
+ *
  * @example
  * ```typescript
  * const homeSeo = getPageSEOConfig('home');
@@ -305,11 +305,11 @@ export function getPageSEOConfig(pageKey: keyof typeof PAGE_SEO_CONFIG) {
 }
 
 /**
- * Get SEO configuration for a specific service
- * 
- * @param serviceKey - Service key from SERVICE_SEO_CONFIG
- * @returns SEO configuration for the service
- * 
+ * Retrieves the SEO configuration for a specific service page.
+ *
+ * @param {keyof typeof SERVICE_SEO_CONFIG} serviceKey - The key corresponding to the service in `SERVICE_SEO_CONFIG`.
+ * @returns {typeof SERVICE_SEO_CONFIG[keyof typeof SERVICE_SEO_CONFIG]} The SEO configuration object for the specified service page.
+ *
  * @example
  * ```typescript
  * const aiAutomationSeo = getServiceSEOConfig('aiAutomation');
@@ -320,12 +320,13 @@ export function getServiceSEOConfig(serviceKey: keyof typeof SERVICE_SEO_CONFIG)
 }
 
 /**
- * Generate comprehensive SEO props for PageTemplate
- * 
- * @param pageKey - Page key from PAGE_SEO_CONFIG
- * @param customProps - Custom props to override defaults
- * @returns Complete SEO props for PageTemplate
- * 
+ * Generates a comprehensive set of SEO properties for a page template.
+ * This function combines default settings with page-specific configurations and custom overrides.
+ *
+ * @param {keyof typeof PAGE_SEO_CONFIG} pageKey - The key for the page's SEO configuration.
+ * @param {Record<string, unknown>} [customProps={}] - An object containing custom properties to override the defaults, such as `customMeta`.
+ * @returns {{pageTitle: string, pageDescription: string, pageKeywords: string, canonicalUrl: string, ogImage: string, twitterCard: 'summary_large_image', pageType: 'WebPage' | 'Service', customMeta: readonly ({name: string, content: string} | {name: string, content: string})[], [key: string]: unknown}} An object with all the necessary SEO props for rendering in a page template.
+ *
  * @example
  * ```typescript
  * const seoProps = generateSEOProps('home', {

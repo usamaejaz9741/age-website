@@ -21,107 +21,75 @@ import { ReactNode, useRef, useEffect, useState, memo } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Enhanced props interface for the SectionTemplate component
+ * Defines the props for the SectionTemplate component.
  */
 interface SectionTemplateProps {
-  /** Content to be rendered within the section */
+  /** The content to be rendered inside the section. */
   children: ReactNode;
-  /** Optional section ID for navigation */
+  /** An optional ID to apply to the section element, useful for anchor links. */
   id?: string;
-  /** Section background variant */
+  /** The background style variant for the section. Defaults to 'default'. */
   variant?: 'default' | 'muted' | 'gradient' | 'transparent' | 'card' | 'hero' | 'accent';
-  /** Section padding size */
+  /** The vertical padding size for the section. Defaults to 'lg'. */
   padding?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'none';
-  /** Maximum width constraint */
+  /** The maximum width for the content within the section. Defaults to '7xl'. */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full';
-  /** Text alignment */
+  /** The text alignment for the content inside the section. Defaults to 'center'. */
   align?: 'left' | 'center' | 'right' | 'justify';
-  /** Additional CSS classes */
+  /** Additional CSS classes to apply to the section element. */
   className?: string;
-  /** Whether to add animation classes */
+  /** If `true`, the section will have an entrance animation. Defaults to `false`. */
   animate?: boolean;
-  /** Animation delay in seconds */
+  /** The delay in seconds for the entrance animation. Defaults to 0. */
   animationDelay?: number;
-  /** Animation type */
+  /** The type of entrance animation to apply. Defaults to 'fade-in'. */
   animationType?: 'fade-in' | 'slide-up' | 'scale-in' | 'slide-left' | 'slide-right';
-  /** Whether to use intersection observer for animations */
+  /** If `true`, the animation will be triggered when the section scrolls into view. Defaults to `true`. */
   useIntersectionObserver?: boolean;
-  /** Section title for accessibility */
+  /** A title for the section, used for accessibility (e.g., `aria-label`). */
   title?: string;
-  /** Section description for accessibility */
+  /** A description for the section, used for accessibility (e.g., `aria-describedby`). */
   description?: string;
-  /** Whether to show section divider */
+  /** If `true`, a divider will be displayed at the bottom of the section. */
   showDivider?: boolean;
-  /** Divider variant */
+  /** The style of the divider. Defaults to 'line'. */
   dividerVariant?: 'line' | 'dots' | 'gradient' | 'none';
-  /** Whether to add background pattern */
+  /** If `true`, a background pattern will be displayed. */
   backgroundPattern?: boolean;
-  /** Pattern type */
+  /** The type of background pattern to display. Defaults to 'dots'. */
   patternType?: 'dots' | 'grid' | 'waves' | 'circles';
-  /** Whether to add overlay */
+  /** If `true`, an overlay will be rendered on top of the background. */
   overlay?: boolean;
-  /** Overlay opacity */
+  /** The opacity of the overlay. Defaults to 0.1. */
   overlayOpacity?: number;
-  /** Whether to add container queries support */
+  /** If `true`, container query support will be enabled for the section. */
   containerQueries?: boolean;
-  /** Loading state */
+  /** If `true`, a skeleton loader will be displayed instead of the content. */
   isLoading?: boolean;
-  /** Skeleton component for loading state */
+  /** A custom component to use as the skeleton loader. */
   skeletonComponent?: ReactNode;
-  /** Whether to add focus trap */
+  /** If `true`, a focus trap will be enabled for the section. */
   focusTrap?: boolean;
-  /** Custom ARIA label */
+  /** A custom ARIA label for the section. */
   ariaLabel?: string;
-  /** Custom ARIA described by */
+  /** The ID of an element that describes the section. */
   ariaDescribedBy?: string;
-  /** Whether to add scroll spy */
+  /** If `true`, scroll spy functionality will be enabled for the section. */
   scrollSpy?: boolean;
-  /** Scroll spy offset */
+  /** The offset for the scroll spy trigger. */
   scrollSpyOffset?: number;
 }
 
 /**
- * Enhanced section template component providing comprehensive structure for content sections
- * 
- * This component ensures that all sections follow the same structural patterns:
- * - Consistent padding and spacing using design system values
- * - Responsive design with proper breakpoints and container queries
- * - Semantic HTML structure with enhanced accessibility
- * - Flexible content areas with max-width constraints
- * - Advanced animation support with intersection observer
- * - Background patterns and overlays for visual enhancement
- * - Section dividers and separators
- * - Loading states and skeleton support
- * - Performance optimizations and scroll spy
- * 
- * @param children - Content to be rendered within the section
- * @param id - Optional section ID for navigation
- * @param variant - Section background variant
- * @param padding - Section padding size
- * @param maxWidth - Maximum width constraint
- * @param align - Text alignment
- * @param className - Additional CSS classes
- * @param animate - Whether to add animation classes
- * @param animationDelay - Animation delay in seconds
- * @param animationType - Animation type
- * @param useIntersectionObserver - Whether to use intersection observer
- * @param title - Section title for accessibility
- * @param description - Section description for accessibility
- * @param showDivider - Whether to show section divider
- * @param dividerVariant - Divider variant
- * @param backgroundPattern - Whether to add background pattern
- * @param patternType - Pattern type
- * @param overlay - Whether to add overlay
- * @param overlayOpacity - Overlay opacity
- * @param containerQueries - Whether to add container queries support
- * @param isLoading - Loading state
- * @param skeletonComponent - Skeleton component for loading state
- * @param focusTrap - Whether to add focus trap
- * @param ariaLabel - Custom ARIA label
- * @param ariaDescribedBy - Custom ARIA described by
- * @param scrollSpy - Whether to add scroll spy
- * @param scrollSpyOffset - Scroll spy offset
- * @returns JSX element with enhanced section structure
+ * Provides a highly configurable and reusable template for creating content sections.
+ *
+ * This component standardizes the structure of sections across the website, offering
+ * consistent styling, spacing, and animations. It supports various features like
+ * responsive layouts, background variants, animations triggered by scroll, and
+ * accessibility enhancements.
+ *
+ * @param {SectionTemplateProps} props - The properties for the component.
+ * @returns {JSX.Element} A structured section element ready to be populated with content.
  */
 const SectionTemplate = memo(({
   children,

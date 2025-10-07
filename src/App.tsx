@@ -41,12 +41,13 @@ const AIGrowthScore = lazy(() => import("./pages/ai-growth-score"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 /**
- * React Query client configuration
- * 
- * Provides global settings for data fetching:
- * - 5-minute stale time for cached data
- * - 3 retry attempts for failed requests
- * - Automatic background refetching
+ * Creates and configures the React Query client.
+ *
+ * This instance of `QueryClient` is configured with default options for all queries,
+ * including a 5-minute stale time to reduce unnecessary refetching and a retry
+ * count of 3 for failed requests.
+ *
+ * @const {QueryClient} queryClient
  */
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,30 +59,29 @@ const queryClient = new QueryClient({
 });
 
 /**
- * Main App Component
- * 
- * The root component that orchestrates the entire application. It provides:
- * - Global state management and data fetching
- * - Client-side routing with React Router v6
- * - SEO optimization with React Helmet
- * - Toast notifications and tooltip system
- * - Preloader with intelligent loading detection
- * - FOUC prevention for smooth user experience
- * 
- * @returns {JSX.Element} The complete application structure
+ * The root component of the application.
+ *
+ * This component orchestrates the entire application by setting up global providers,
+ * client-side routing, and the initial loading experience. It integrates:
+ * - `React Router` for navigation.
+ * - `React Query` for data fetching and state management.
+ * - `React Helmet Async` for managing the document head and SEO.
+ * - A custom preloader to handle initial asset loading.
+ * - `Toaster` and `Sonner` for displaying toast notifications.
+ * - `TooltipProvider` for enabling tooltips throughout the app.
+ *
+ * @returns {JSX.Element} The fully composed application with all providers and routes.
  */
 const App = () => {
-  /** State to control preloader visibility */
+  /** State to control preloader visibility. */
   const [showPreloader, setShowPreloader] = useState(true);
 
   /**
-   * FOUC Prevention and Font Loading Setup
-   * 
-   * This effect handles:
-   * - Flash of Unstyled Content (FOUC) prevention
-   * - Font loading detection and management
-   * - DOM ready state handling
-   * - Cleanup of event listeners
+   * An effect hook to prevent Flash of Unstyled Content (FOUC) and manage font loading.
+   * It adds CSS classes to the document to signal when the DOM and fonts are ready,
+   * allowing for a smoother initial render.
+   *
+   * @effect
    */
   useEffect(() => {
     /**
@@ -133,8 +133,10 @@ const App = () => {
   }, []);
 
   /**
-   * Handles preloader completion
-   * Adds a small delay to ensure smooth transition
+   * A callback function that is invoked when the preloader has finished its animation.
+   * It sets the state to hide the preloader after a short delay to ensure a smooth transition.
+   *
+   * @callback handlePreloaderComplete
    */
   const handlePreloaderComplete = useCallback(() => {
     const timeoutId = setTimeout(() => {

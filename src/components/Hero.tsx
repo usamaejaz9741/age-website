@@ -63,38 +63,14 @@ import { blurActiveElement } from "@/lib/console-utils";
 import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, BUTTON_STYLES, BACKGROUNDS, GAP } from "@/constants/design-system";
 
 /**
- * Hero section component with full-screen layout and 3D background
- * 
- * This component implements a sophisticated z-index layering system to create
- * an immersive experience while maintaining usability and performance:
- * 
- * **Z-Index Architecture:**
- * ```
- * z-30: Content layer (text, buttons) - Always on top, interactive
- * z-20: Gradient overlay + scroll indicator - Visual enhancement, non-interactive
- * z-10: Spline 3D background - Interactive, responds to mouse movement
- * ```
- * 
- * **Pointer Events Strategy:**
- * The component uses a carefully designed pointer-events system:
- * 1. Container (z-30): `pointer-events-none` - Let events pass through empty space
- * 2. Content wrapper: Default - Inherits pointer-events-none
- * 3. Text elements: `pointer-events-none` - Allow Spline interaction under text
- * 4. CTA buttons: `pointer-events-auto` - Capture clicks for user actions
- * 
- * This allows the Spline background to receive mouse events everywhere except
- * where buttons need to be clicked, creating a magical interactive experience.
- * 
- * **State Management:**
- * @state {boolean} showGrowthAudit - Controls modal visibility for consultation booking
- * 
- * **Performance Considerations:**
- * - Wrapped in React.memo to prevent re-renders from parent state changes
- * - will-change hints optimize animation performance
- * - select-none on text prevents accidental text selection during interaction
- * - GPU-accelerated transforms for smooth animations
- * 
- * @returns {JSX.Element} Full-screen hero section with interactive background
+ * Renders the main hero section of the website, featuring an interactive 3D background.
+ *
+ * This component creates an immersive landing experience with a full-screen layout.
+ * It presents a clear value proposition and primary calls-to-action. The component
+ * manages a modal for booking consultations and is optimized for performance and accessibility.
+ * It uses a z-index layering system to manage the background, a gradient overlay, and the main content.
+ *
+ * @returns {JSX.Element} The hero section component, ready to be used in a page layout.
  */
 const Hero = memo(() => {
   // ============================================================================

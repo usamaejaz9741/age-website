@@ -30,6 +30,17 @@ import { memo, useEffect, useRef, useState } from 'react';
  * @version 1.0.0
  * @since 1.0.0
  */
+
+/**
+ * Renders an interactive 3D background using a Spline scene embedded in an iframe.
+ *
+ * This component is optimized for performance and includes a fallback mechanism. If the
+ * Spline iframe fails to load, it displays a set of animated gradient blobs instead.
+ * It is designed to be placed as a background layer in a layout, typically with a
+ * lower z-index.
+ *
+ * @returns {JSX.Element} The Spline 3D background component or a fallback UI.
+ */
 const SplineBackground = memo(() => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hasError, setHasError] = useState(false);

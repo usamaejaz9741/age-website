@@ -240,16 +240,16 @@ export const quizQuestions: QuizQuestion[] = [
 ];
 
 /**
- * Validates quiz question structure and dimension balance
- * 
- * Performs comprehensive validation to ensure quiz integrity:
- * - Verifies total question count (should be 12)
- * - Checks dimension balance (3 questions per dimension)
- * - Validates each question has exactly 4 options
- * - Confirms option scores follow 0-3 progression
- * 
- * @returns Validation result with any issues found
- * 
+ * Validates the structure and balance of the quiz questions.
+ *
+ * This utility function performs a series of checks to ensure the integrity of the quiz data, including:
+ * - Verifying that there are exactly 12 questions.
+ * - Ensuring each of the four dimensions has exactly 3 questions.
+ * - Confirming that each question has exactly 4 answer options.
+ * - Validating that the options are scored sequentially from 0 to 3.
+ *
+ * @returns {{valid: boolean, errors: string[]}} An object containing a `valid` boolean and an array of error strings. If `valid` is `true`, the `errors` array will be empty.
+ *
  * @example
  * ```typescript
  * const validation = validateQuizStructure();
@@ -304,13 +304,12 @@ export function validateQuizStructure(): { valid: boolean; errors: string[] } {
 }
 
 /**
- * Get all questions for a specific dimension
- * 
- * Useful for dimension-specific analysis and reporting
- * 
- * @param dimension - The dimension to filter by
- * @returns Array of questions for that dimension
- * 
+ * Retrieves all quiz questions that belong to a specific dimension.
+ * This is useful for dimension-specific scoring, analysis, and reporting.
+ *
+ * @param {QuizDimension} dimension - The dimension to filter by (e.g., 'strategy', 'implementation').
+ * @returns {QuizQuestion[]} An array of `QuizQuestion` objects that match the specified dimension.
+ *
  * @example
  * ```typescript
  * const strategyQuestions = getQuestionsByDimension('strategy');
@@ -322,17 +321,15 @@ export function getQuestionsByDimension(dimension: QuizDimension): QuizQuestion[
 }
 
 /**
- * Get the dimension for a specific question ID
- * 
- * Used for scoring and analysis to map answers back to dimensions
- * 
- * @param questionId - The question ID to look up (e.g., 'q1', 'q2')
- * @returns The dimension for that question, or null if not found
- * 
+ * Retrieves the dimension for a given question ID.
+ * This function is used in the scoring process to map a user's answer back to the correct AI maturity dimension.
+ *
+ * @param {string} questionId - The ID of the question to look up (e.g., 'q1', 'q2').
+ * @returns {QuizDimension | null} The dimension associated with the question ID, or `null` if the ID is not found.
+ *
  * @example
  * ```typescript
- * const dimension = getDimensionForQuestion('q1');
- * // Returns: 'strategy'
+ * const dimension = getDimensionForQuestion('q1'); // 'strategy'
  * ```
  */
 export function getDimensionForQuestion(questionId: string): QuizDimension | null {

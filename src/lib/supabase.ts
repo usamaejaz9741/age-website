@@ -115,10 +115,12 @@ export interface ConversionInput {
 }
 
 /**
- * Convert UserSubmission to DatabaseSubmission format
- * 
- * @param submission - User submission data to convert
- * @returns DatabaseSubmission object ready for database insertion
+ * Converts a user submission object from the application's format to the database table format.
+ * This function handles data mapping, validation, and sanitization before insertion into the database.
+ *
+ * @param {ConversionInput} submission - The user submission data in the application's format.
+ * @returns {DatabaseSubmission} The submission data formatted for the `audit_submissions` table.
+ * @throws {Error} If the submission contains invalid dimension scores or an out-of-range overall score.
  */
 export function convertToDatabaseFormat(submission: ConversionInput): DatabaseSubmission {
   // Validate dimensions are all numbers
@@ -173,10 +175,12 @@ export interface ConversionOutput {
 }
 
 /**
- * Convert DatabaseSubmission back to UserSubmission format
- * 
- * @param dbSubmission - Database submission to convert
- * @returns ConversionOutput object with UserSubmission structure
+ * Converts a database submission object back to the application's user-friendly format.
+ * This is useful for displaying submission data that has been fetched from the database.
+ *
+ * @param {DatabaseSubmission} dbSubmission - The submission data from the database.
+ * @returns {ConversionOutput} The submission data in the application's format.
+ * @throws {Error} If the database submission object is missing required fields like `email` or `band`.
  */
 export function convertFromDatabaseFormat(dbSubmission: DatabaseSubmission): ConversionOutput {
   // Validate required fields exist

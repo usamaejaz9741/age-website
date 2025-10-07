@@ -46,15 +46,12 @@ export interface UserSubmission {
 }
 
 /**
- * Saves user assessment data to database with localStorage fallback
- * 
- * This function stores user submissions in the following priority:
- * 1. Saves to Supabase database (primary storage)
- * 2. Falls back to localStorage if database fails
- * 3. Logs data to console for debugging
- * 
- * @param data - User submission data to save
- * @returns Promise<boolean> - Success status of the save operation
+ * Saves user assessment data, prioritizing database storage with a fallback to localStorage.
+ * This function ensures data is persisted, first attempting to save to a Supabase database.
+ * If the database operation fails, it falls back to saving the data in the browser's localStorage.
+ *
+ * @param {UserSubmission} data - The user submission data to be saved.
+ * @returns {Promise<boolean>} A promise that resolves to `true` if the data was saved successfully (either to the database or localStorage), and `false` otherwise.
  */
 export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
   try {
@@ -91,7 +88,12 @@ export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
 };
 
 /**
- * Save data to localStorage (fallback method)
+ * Saves user submission data to the browser's localStorage as a fallback.
+ * This function manages a list of submissions, ensuring it doesn't exceed a certain size or age.
+ *
+ * @private
+ * @param {UserSubmission} data - The user submission data to save to localStorage.
+ * @returns {Promise<void>} A promise that resolves when the data has been saved.
  */
 const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
   try {
@@ -176,13 +178,10 @@ const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
 
 
 /**
- * Exports all user submissions to CSV format for analysis
- * 
- * This function reads all stored submissions from localStorage and converts them 
- * to CSV format for easy analysis in spreadsheet applications or data analysis tools.
- * The CSV file is automatically downloaded to the user's device.
- * 
- * @returns boolean - Success status of the export operation
+ * Exports all user submissions stored in localStorage to a CSV file.
+ * This function retrieves the submissions, converts them to a CSV format, and triggers a download of the file.
+ *
+ * @returns {boolean} `true` if the export was successful, `false` otherwise (e.g., if no data is available).
  */
 export const exportToCSV = (): boolean => {
   try {

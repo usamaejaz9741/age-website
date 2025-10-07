@@ -32,9 +32,13 @@ import {
 import { ANIMATION_DELAYS } from "@/constants/animations";
 
 /**
- * Services Grid component displaying core service offerings
- * 
- * @returns JSX element with animated service cards
+ * Renders a grid of services offered by the company.
+ *
+ * This component showcases the core service pillars in a responsive grid layout.
+ * Each service is presented in an animated card that includes an icon, title,
+ * description, and a list of key features, providing a clear overview of the company's capabilities.
+ *
+ * @returns {JSX.Element} The services grid section, composed of animated cards for each service.
  */
 const ServicesGrid = () => {
   const services = [

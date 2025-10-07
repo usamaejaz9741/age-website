@@ -19,27 +19,27 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
 interface PreloaderProps {
-  /** Minimum duration in milliseconds to show the preloader (default: 1500) */
+  /** The minimum duration in milliseconds that the preloader should be visible. Defaults to 1500. */
   minDuration?: number;
-  /** Maximum duration in milliseconds before force completion (default: 5000) */
+  /** The maximum duration in milliseconds before the preloader is forcibly hidden. Defaults to 5000. */
   maxDuration?: number;
-  /** Additional CSS classes */
+  /** Additional CSS classes to apply to the preloader's root element. */
   className?: string;
-  /** Callback when preloader finishes */
+  /** A callback function that is invoked when the preloader has finished its animation and is hidden. */
   onComplete?: () => void;
-  /** Enable progress indication (default: true) */
+  /** If `true`, a progress bar and percentage will be displayed. Defaults to `true`. */
   showProgress?: boolean;
 }
 
 /**
- * Optimized preloader component with intelligent loading detection
- * 
- * @param minDuration - Minimum time to show preloader
- * @param maxDuration - Maximum time before force completion
- * @param className - Additional CSS classes
- * @param onComplete - Callback when preloader finishes
- * @param showProgress - Whether to show progress indication
- * @returns JSX element with optimized loading animation
+ * Displays an optimized loading animation while the application's initial resources are being loaded.
+ *
+ * This component provides an enhanced user experience by showing a progress indicator and an animation
+ * during the initial page load. It intelligently detects when critical resources like fonts and images
+ * are ready, and manages its own visibility with smooth transitions.
+ *
+ * @param {PreloaderProps} props - The properties for the component.
+ * @returns {JSX.Element | null} The preloader component, or `null` if it is no longer visible.
  */
 const Preloader = ({ 
   minDuration = 1500,

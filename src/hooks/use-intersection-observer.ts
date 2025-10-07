@@ -19,42 +19,57 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 /**
- * Configuration options for the intersection observer
+ * Defines the configuration options for the `useIntersectionObserver` hook.
  */
 interface UseIntersectionObserverOptions {
-  /** Percentage of element that must be visible to trigger (0-1) */
+  /**
+   * The percentage of the element's visibility at which the observer's callback should be executed.
+   * A value of 0 means the callback will run as soon as one pixel is visible; 1.0 means the entire element must be visible.
+   * @default 0.1
+   */
   threshold?: number;
-  /** Margin around the root element for intersection calculation */
+  /**
+   * A string with syntax similar to the CSS `margin` property, used to grow or shrink the intersection area.
+   * For example, `'0px 0px -50px 0px'` starts detection 50px before the element enters the viewport from the bottom.
+   * @default '0px 0px -50px 0px'
+   */
   rootMargin?: string;
-  /** Whether to trigger only once or continuously */
+  /**
+   * If `true`, the observer will stop observing the element after it has intersected for the first time.
+   * If `false`, it will continue to report changes in intersection status.
+   * @default true
+   */
   triggerOnce?: boolean;
 }
 
 /**
- * Custom hook for intersection observer functionality
- * 
- * This hook provides a React-friendly interface to the Intersection Observer API,
- * allowing components to easily detect when elements enter or leave the viewport.
- * It's particularly useful for scroll-triggered animations and lazy loading.
- * 
- * @param options - Configuration options for the intersection observer
- * @returns Object containing ref to attach to elements and intersection state
- * 
+ * A custom React hook that provides an easy way to use the Intersection Observer API.
+ *
+ * This hook simplifies the process of detecting when an element enters or leaves the viewport.
+ * It's highly useful for implementing features like lazy loading of images, infinite scrolling,
+ * or triggering animations when an element becomes visible.
+ *
+ * @template T - The type of the HTML element to be observed. Defaults to `HTMLElement`.
+ * @param {UseIntersectionObserverOptions} [options={}] - Optional configuration for the Intersection Observer.
+ * @returns {{ref: React.RefObject<T>, isIntersecting: boolean}} An object containing:
+ * - `ref`: A React ref to be attached to the DOM element you want to observe.
+ * - `isIntersecting`: A boolean that is `true` if the element is currently intersecting with the viewport, and `false` otherwise.
+ *
  * @example
  * ```tsx
- * const { ref, isIntersecting } = useIntersectionObserver({
- *   threshold: 0.5,
- *   triggerOnce: true
- * });
- * 
- * return (
- *   <div ref={ref}>
- *     {isIntersecting ? 'Visible!' : 'Not visible'}
- *   </div>
- * );
+ * function MyComponent() {
+ *   const { ref, isIntersecting } = useIntersectionObserver({
+ *     threshold: 0.5,
+ *     triggerOnce: true
+ *   });
+ *
+ *   return (
+ *     <div ref={ref} className={isIntersecting ? 'animate-fade-in' : 'opacity-0'}>
+ *       This will fade in when 50% visible.
+ *     </div>
+ *   );
+ * }
  * ```
- * 
- * @since 1.0.0
  */
 export function useIntersectionObserver<T extends HTMLElement = HTMLElement>(
   options: UseIntersectionObserverOptions = {}

@@ -32,9 +32,14 @@ import {
 import { ANIMATION_DURATIONS } from "@/constants/animations";
 
 /**
- * How We Work component displaying the 90-day methodology
- * 
- * @returns JSX element with animated process cards
+ * Renders a section explaining the company's 90-day methodology.
+ *
+ * This component visually breaks down the "BUILD, MEASURE, SCALE" process into three
+ * distinct phases, each presented in an animated card. It highlights the key activities
+ * and timeline for each phase, reinforcing the company's promise of delivering results
+ * within a 90-day timeframe.
+ *
+ * @returns {JSX.Element} The "How We Work" section, including animated cards for each phase of the methodology.
  */
 const HowWeWork = () => {
   const steps = [

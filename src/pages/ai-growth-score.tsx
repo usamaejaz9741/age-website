@@ -30,7 +30,15 @@ const AIGrowthScore = () => {
     
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(param => {
       const value = urlParams.get(param);
-      if (value) utm[param] = value;
+      if (value) {
+        // Security: Sanitize UTM parameters to prevent XSS
+        // Limit length and remove potentially dangerous characters
+        const sanitized = value
+          .trim()
+          .substring(0, 100) // Limit length
+          .replace(/[<>"'`]/g, ''); // Remove dangerous characters
+        utm[param] = sanitized;
+      }
     });
     
     setUtmParams(utm);
@@ -49,7 +57,7 @@ const AIGrowthScore = () => {
     
     // Move to email step
     setCurrentStep('email');
-  }, [calculateResults]);
+  }, []);
 
   const handleEmailSubmit = useCallback(async () => {
     if (!userEmail || !hasConsent || !quizResults) return;
@@ -134,8 +142,8 @@ const AIGrowthScore = () => {
         <SectionTemplate variant="gradient" padding="xl" maxWidth="7xl" align="center">
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight animate-fade-in">
-            Discover Your AI{" "}
-            <span className="text-primary font-bold">Growth Score</span>
+            Discover Your<br />
+            AI <span className="text-primary font-bold">Growth Score</span>
           </h1>
           
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed animate-fade-in">

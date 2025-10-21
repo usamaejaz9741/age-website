@@ -182,7 +182,8 @@ const EmailStep = memo(({ email, setEmail, hasConsent, setHasConsent, onSubmit, 
               id="consent"
               checked={hasConsent}
               onCheckedChange={(checked) => {
-                setHasConsent(checked as boolean);
+                // Type-safe: checked can be boolean | "indeterminate"
+                setHasConsent(checked === true);
                 setConsentError(''); // Clear error when user checks the box
               }}
               className="mt-1"

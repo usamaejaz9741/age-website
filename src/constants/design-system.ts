@@ -199,10 +199,30 @@ export const HOVER_EFFECTS = {
 export const BUTTON_STYLES = {
   /** Minimum width for consistency */
   minWidth: 'sm:min-w-[200px]',
+  /** Larger minimum width for emphasis */
+  minWidthLarge: 'min-w-[280px]',
   /** Full width on mobile, auto on larger screens */
   responsive: 'w-full sm:w-auto',
   /** Button gap for icon + text layouts */
   gap: 'gap-2',
+} as const;
+
+/**
+ * Component sizing constants
+ */
+export const COMPONENT_SIZES = {
+  /** Minimum touch target height (44px WCAG requirement) */
+  minTouchTarget: 'min-h-[44px]',
+  /** Large touch target (60px) */
+  touchTargetLarge: 'min-h-[60px]',
+  /** Card minimum height */
+  cardMinHeight: 'min-h-[400px]',
+  /** Modal minimum width */
+  modalMinWidth: 'min-w-[320px]',
+  /** Modal maximum width */
+  modalMaxWidth: 'max-w-[480px]',
+  /** Content maximum width */
+  contentMaxWidth: 'max-w-[65ch]',
 } as const;
 
 /**

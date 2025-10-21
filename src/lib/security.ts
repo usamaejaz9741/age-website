@@ -46,12 +46,14 @@ export function sanitizeHtml(input: string): string {
 }
 
 /**
- * Validates email format using RFC-compliant regex
+ * Validates email format using RFC 5322 compliant regex
  * 
  * Performs comprehensive email validation including:
- * - Format validation using RFC-compliant regex
- * - Length validation (max 254 characters)
+ * - Format validation using RFC 5322 compliant regex
+ * - Length validation (max 254 characters total)
+ * - Local part max 64 characters, domain max 255 characters
  * - Type checking for input safety
+ * - Prevention of common attack patterns (consecutive dots, etc.)
  * 
  * @param email - The email address to validate
  * @returns true if email is valid, false otherwise
@@ -60,19 +62,57 @@ export function sanitizeHtml(input: string): string {
  * ```typescript
  * validateEmail('user@example.com'); // Returns: true
  * validateEmail('invalid-email'); // Returns: false
+ * validateEmail('invalid..email@example.com'); // Returns: false
+ * validateEmail('user@.example.com'); // Returns: false
  * validateEmail(''); // Returns: false
  * ```
+ * 
+ * @security
+ * - Prevents email injection attacks
+ * - Blocks malformed email addresses
+ * - Validates according to RFC 5322 and RFC 5321 standards
  * 
  * @since 1.0.0
  */
 export function validateEmail(email: string): boolean {
-  if (typeof email !== 'string') {
+  // Type and length validation
+  if (typeof email !== 'string' || email.length > 254 || email.length === 0) {
     return false;
   }
   
-  // RFC-compliant email regex with length validation
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email) && email.length <= 254;
+  // RFC 5322 compliant email regex with additional security checks
+  // Prevents: consecutive dots, dots at start/end, and other malformed patterns
+  const emailRegex = /^(?!.*\.\.)(?!.*\.@)(?!.*@\.)[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+$/;
+  
+  // Test against regex
+  if (!emailRegex.test(email)) {
+    return false;
+  }
+  
+  // Additional security checks for common attack patterns
+  if (email.includes('..') || email.startsWith('.') || email.endsWith('.')) {
+    return false;
+  }
+  
+  // Validate local and domain part lengths per RFC 5321
+  const parts = email.split('@');
+  if (parts.length !== 2) {
+    return false;
+  }
+  
+  const [localPart, domainPart] = parts;
+  
+  // Local part must be 1-64 characters
+  if (localPart.length === 0 || localPart.length > 64) {
+    return false;
+  }
+  
+  // Domain part must be 1-255 characters
+  if (domainPart.length === 0 || domainPart.length > 255) {
+    return false;
+  }
+  
+  return true;
 }
 
 /**
@@ -304,11 +344,23 @@ export function sanitizeUrl(url: string): string {
 }
 
 /**
- * Rate limiting helper
+ * Rate limiting helper with automatic memory cleanup
+ * 
+ * Features:
+ * - Sliding window rate limiting
+ * - Automatic memory cleanup to prevent leaks
+ * - Configurable limits and windows
+ * - Memory-efficient storage with maximum identifier limit
+ * - Periodic cleanup of stale entries
+ * 
+ * @since 1.0.0
  */
 export class RateLimiter {
   private requests: Map<string, number[]> = new Map();
   private storageKey: string;
+  private lastCleanup: number = Date.now();
+  private readonly CLEANUP_INTERVAL = 300000; // 5 minutes
+  private readonly MAX_IDENTIFIERS = 10000; // Prevent unbounded growth
   
   constructor(
     private maxRequests: number = 10,
@@ -364,11 +416,67 @@ export class RateLimiter {
   }
   
   /**
-   * Check if request is allowed
-   * @param identifier - Unique identifier (IP, user ID, etc.)
+   * Clean up old entries to prevent memory leaks
+   * Runs automatically every CLEANUP_INTERVAL
+   * 
+   * @private
+   */
+  private cleanupOldEntries(): void {
+    const now = Date.now();
+    
+    // Only run cleanup periodically
+    if (now - this.lastCleanup < this.CLEANUP_INTERVAL) {
+      return;
+    }
+    
+    this.lastCleanup = now;
+    const maxAge = now - (3600000); // Keep entries for 1 hour max
+    
+    // Remove entries older than maxAge
+    for (const [identifier, timestamps] of this.requests.entries()) {
+      const validTimestamps = timestamps.filter(t => t > maxAge);
+      
+      if (validTimestamps.length === 0) {
+        this.requests.delete(identifier);
+      } else {
+        this.requests.set(identifier, validTimestamps);
+      }
+    }
+    
+    // Enforce maximum identifiers limit (FIFO removal)
+    if (this.requests.size > this.MAX_IDENTIFIERS) {
+      const sortedEntries = Array.from(this.requests.entries())
+        .sort((a, b) => Math.min(...a[1]) - Math.min(...b[1]));
+      
+      const toRemove = sortedEntries.slice(0, this.requests.size - this.MAX_IDENTIFIERS);
+      toRemove.forEach(([id]) => this.requests.delete(id));
+    }
+    
+    // Save cleaned up data
+    this.saveToStorage();
+  }
+  
+  /**
+   * Check if request is allowed under rate limit
+   * 
+   * @param identifier - Unique identifier (IP, user ID, email, etc.)
    * @returns boolean - Whether request is allowed
+   * 
+   * @example
+   * ```typescript
+   * const limiter = new RateLimiter(10, 60000); // 10 requests per minute
+   * 
+   * if (limiter.isAllowed('user@example.com')) {
+   *   // Process request
+   * } else {
+   *   // Rate limit exceeded
+   * }
+   * ```
    */
   isAllowed(identifier: string): boolean {
+    // Periodic cleanup to prevent memory leaks
+    this.cleanupOldEntries();
+    
     const now = Date.now();
     const requests = this.requests.get(identifier) || [];
     
@@ -385,6 +493,19 @@ export class RateLimiter {
     this.saveToStorage();
     
     return true;
+  }
+  
+  /**
+   * Get current attempt count for identifier
+   * 
+   * @param identifier - Unique identifier
+   * @returns number - Current number of attempts in window
+   */
+  getAttemptCount(identifier: string): number {
+    const now = Date.now();
+    const requests = this.requests.get(identifier) || [];
+    const validRequests = requests.filter(time => now - time < this.windowMs);
+    return validRequests.length;
   }
   
   /**

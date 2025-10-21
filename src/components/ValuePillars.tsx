@@ -42,29 +42,29 @@ const ValuePillars = () => {
       icon: Zap,
       title: "Performance-first",
       description: "Every solution optimized for measurable business outcomes and revenue impact",
-      iconColor: "var(--icon-purple)",
-      bgColor: "var(--icon-purple-bg)"
+      iconColorClass: "text-icon-purple",
+      bgColorClass: "bg-icon-purple-bg"
     },
     {
       icon: Brain,
       title: "AI-embedded",
       description: "Native AI integration across automation, analytics, and decision-making processes",
-      iconColor: "var(--icon-blue)",
-      bgColor: "var(--icon-blue-bg)"
+      iconColorClass: "text-icon-blue",
+      bgColorClass: "bg-icon-blue-bg"
     },
     {
       icon: Layers,
       title: "Full-stack delivery",
       description: "End-to-end execution from strategy through implementation and optimization",
-      iconColor: "var(--icon-green)",
-      bgColor: "var(--icon-green-bg)"
+      iconColorClass: "text-icon-green",
+      bgColorClass: "bg-icon-green-bg"
     },
     {
       icon: Globe,
       title: "Emerging-market edge",
       description: "Deep expertise in high-growth markets with localized strategies that scale",
-      iconColor: "var(--icon-indigo)",
-      bgColor: "var(--icon-indigo-bg)"
+      iconColorClass: "text-icon-indigo",
+      bgColorClass: "bg-icon-indigo-bg"
     }
   ];
 
@@ -72,8 +72,8 @@ const ValuePillars = () => {
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
-            Built different, built to{" "}
-            <span className="text-primary">win</span>
+            Built different,<br />
+            built to <span className="text-primary">win</span>
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             We don't just build software—we engineer complete revenue systems 
@@ -92,12 +92,10 @@ const ValuePillars = () => {
                 className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} ${HOVER_EFFECTS.scale} ${HOVER_EFFECTS.scaleDown}`}
               >
                 <div 
-                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
-                  style={{ backgroundColor: pillar.bgColor }}
+                  className={`${ICON_CONTAINER.large} ${pillar.bgColorClass} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                 >
                   <Icon 
-                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
-                    style={{ color: pillar.iconColor }}
+                    className={`${ICON_SIZES.large} ${pillar.iconColorClass} flex-shrink-0 mx-auto my-auto`}
                   />
                 </div>
                 <h3 className={`${HEADING_SIZES.h5} text-foreground ${MARGIN_BOTTOM.small}`}>

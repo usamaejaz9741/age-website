@@ -30,6 +30,7 @@ import {
   HOVER_EFFECTS
 } from "@/constants/design-system";
 import { ANIMATION_DELAYS } from "@/constants/animations";
+import { generateMailtoLink } from "@/constants/contact";
 
 /**
  * Industries component displaying industry expertise areas
@@ -42,36 +43,36 @@ const Industries = () => {
       icon: Brain,
       name: "AI & Machine Learning",
       description: "Next-gen AI solutions for enterprise automation and intelligence",
-      iconColor: "var(--icon-purple)",
-      bgColor: "var(--icon-purple-bg)"
+      iconColorClass: "text-icon-purple",
+      bgColorClass: "bg-icon-purple-bg"
     },
     {
       icon: DollarSign,
       name: "Fintech & Banking",
       description: "Digital financial services and payment platform development",
-      iconColor: "var(--icon-blue)",
-      bgColor: "var(--icon-blue-bg)"
+      iconColorClass: "text-icon-blue",
+      bgColorClass: "bg-icon-blue-bg"
     },
     {
       icon: Home,
       name: "Real Estate Tech",
       description: "PropTech solutions for property management and transactions",
-      iconColor: "var(--icon-green)",
-      bgColor: "var(--icon-green-bg)"
+      iconColorClass: "text-icon-green",
+      bgColorClass: "bg-icon-green-bg"
     },
     {
       icon: Plane,
       name: "Travel & Hospitality",
       description: "Booking platforms and customer experience optimization",
-      iconColor: "var(--icon-indigo)",
-      bgColor: "var(--icon-indigo-bg)"
+      iconColorClass: "text-icon-indigo",
+      bgColorClass: "bg-icon-indigo-bg"
     },
     {
       icon: ShoppingCart,
       name: "E-commerce & Retail",
       description: "Omnichannel commerce and marketplace solutions",
-      iconColor: "var(--icon-red)",
-      bgColor: "var(--icon-red-bg)"
+      iconColorClass: "text-icon-red",
+      bgColorClass: "bg-icon-red-bg"
     }
   ];
 
@@ -79,7 +80,7 @@ const Industries = () => {
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
-            Industries we{" "}
+            Industries we<br />
             <span className="text-primary">accelerate</span>
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
@@ -98,12 +99,10 @@ const Industries = () => {
                 className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} cursor-pointer`}
               >
                 <div 
-                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
-                  style={{ backgroundColor: industry.bgColor }}
+                  className={`${ICON_CONTAINER.large} ${industry.bgColorClass} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                 >
                   <Icon 
-                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
-                    style={{ color: industry.iconColor }}
+                    className={`${ICON_SIZES.large} ${industry.iconColorClass} flex-shrink-0 mx-auto my-auto`}
                   />
                 </div>
                 
@@ -131,7 +130,14 @@ const Industries = () => {
           <p className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.medium}`}>
             We adapt our expertise to any high-growth market opportunity.
           </p>
-          <button className={`${TEXT_SIZES.base} text-primary font-bold hover:underline`}>
+          <button 
+            type="button"
+            className={`${TEXT_SIZES.base} text-primary font-bold hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1`}
+            onClick={() => {
+              window.location.href = generateMailtoLink('generalInquiry', 'Industry-Specific Solutions');
+            }}
+            aria-label="Contact us to discuss your specific industry needs"
+          >
             Discuss your market →
           </button>
         </div>

@@ -49,49 +49,60 @@ export default defineConfig(({ mode }) => ({
   // Build configuration
   build: {
     // Generate source maps for debugging
-    sourcemap: true,
+    sourcemap: mode !== 'production',
+    // Enable minification optimizations
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+        pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
+      },
+      format: {
+        comments: false
+      }
+    },
     rollupOptions: {
       output: {
-        // Enhanced manual chunk splitting for better caching
-        manualChunks: {
-          // Core React libraries
-          'vendor-react': ['react', 'react-dom'],
-          // Routing and navigation
-          'vendor-router': ['react-router-dom'],
-          // UI component libraries
-          'vendor-ui': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-toast',
-            '@radix-ui/react-tooltip',
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog'
-          ],
+        // Optimized manual chunk splitting with dynamic imports
+        manualChunks: (id) => {
+          // Radix UI - automatically split by usage
+          if (id.includes('@radix-ui')) {
+            return 'vendor-radix';
+          }
+          // Core React
+          if (id.includes('react') || id.includes('react-dom')) {
+            return 'vendor-react';
+          }
+          // Router
+          if (id.includes('react-router')) {
+            return 'vendor-router';
+          }
+          // Charts (lazy loaded on AI Growth Score page)
+          if (id.includes('recharts')) {
+            return 'vendor-charts';
+          }
+          // Data layer
+          if (id.includes('supabase') || id.includes('react-query')) {
+            return 'vendor-data';
+          }
+          // Form libraries
+          if (id.includes('react-hook-form') || id.includes('@hookform')) {
+            return 'vendor-forms';
+          }
+          // DOMPurify and security
+          if (id.includes('dompurify')) {
+            return 'vendor-security';
+          }
           // Utility libraries
-          'vendor-utils': [
-            'clsx',
-            'tailwind-merge',
-            'class-variance-authority',
-            'date-fns',
-            'zod'
-          ],
-          // Data fetching and state management
-          'vendor-data': [
-            '@tanstack/react-query',
-            '@supabase/supabase-js'
-          ],
-          // Form handling
-          'vendor-forms': [
-            'react-hook-form',
-            '@hookform/resolvers'
-          ],
-          // Charts and visualization
-          'vendor-charts': [
-            'recharts'
-          ]
+          if (id.includes('node_modules') && !id.includes('@radix-ui')) {
+            return 'vendor-utils';
+          }
         }
       }
-    }
+    },
+    // Enable chunk size warnings
+    chunkSizeWarningLimit: 500
   },
   
   // Dependency optimization

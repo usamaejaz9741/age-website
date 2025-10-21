@@ -67,15 +67,14 @@ const Header = () => {
   };
 
   /**
-   * Handle Calendly booking button click
+   * Handle Calendly booking button click with focus management
    * 
-   * @param e - Optional mouse event to prevent default behavior
+   * @param e - Mouse event containing the trigger element
    */
-  const handleBookConsultation = (e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  const handleBookConsultation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     openCalendlyBooking(
       undefined,
       {
@@ -84,7 +83,8 @@ const Header = () => {
         utmMedium: 'header',
         utmContent: 'book-consultation'
       },
-      'Header CTA'
+      'Header CTA',
+      e.currentTarget as HTMLElement
     );
     setIsMenuOpen(false);
   };

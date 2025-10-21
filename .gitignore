@@ -40,3 +40,13 @@ credentials/
 *.njsproj
 *.sln
 *.sw?
+
+# Testing artifacts
+coverage/
+playwright-report/
+test-results/
+*.spec.ts-snapshots/
+.nyc_output/
+
+# Build artifacts
+*.tsbuildinfo

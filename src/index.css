@@ -317,55 +317,40 @@ article {
     transform: none;
   }
   
-  * {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+  *,
+  *::before,
+  *::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* Quiz Option Button Text Color Fix - Keep Blue */
-.quiz-option-button,
-.quiz-option-button:hover,
-.quiz-option-selected,
-.quiz-option-selected:hover,
-.quiz-option-unselected,
-.quiz-option-unselected:hover {
-  color: hsl(224, 100%, 50%) !important;
-}
-
-.quiz-option-button span,
-.quiz-option-button:hover span,
-.quiz-option-selected span,
-.quiz-option-selected:hover span,
-.quiz-option-unselected span,
-.quiz-option-unselected:hover span {
-  color: hsl(224, 100%, 50%) !important;
-}
-
-/* Override the specific rule that forces white text on hover */
-button[class*="border-2"][class*="border-primary"]:hover.quiz-option-button,
-button[class*="border-2"][class*="border-primary"]:hover.quiz-option-unselected,
-button[class*="border-2"][class*="border-primary"]:hover.quiz-option-selected {
-  color: hsl(224, 100%, 50%) !important;
-}
-
-button[class*="border-2"][class*="border-primary"]:hover.quiz-option-button span,
-button[class*="border-2"][class*="border-primary"]:hover.quiz-option-unselected span,
-button[class*="border-2"][class*="border-primary"]:hover.quiz-option-selected span {
-  color: hsl(224, 100%, 50%) !important;
-}
+/* Quiz Option Button - Removed !important hacks, using Tailwind utilities instead */
 
 /* Console warning suppression - hide browser console warnings */
 @media screen {
   /* Hide common browser console warnings that appear as overlays */
   [style*="position: fixed"][style*="top: 0"] {
-    display: none !important;
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
   
   /* Hide browser notification overlays */
   .browser-notification,
   .console-warning-overlay {
-    display: none !important;
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
   
   /* Hide Edge Copilot console explanation overlays */
@@ -395,7 +380,12 @@ button[class*="border-2"][class*="border-primary"]:hover.quiz-option-selected sp
   [role="alertdialog"][aria-label*="warning"],
   .error-explanation,
   .warning-explanation {
-    display: none !important;
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -660,18 +650,18 @@ h1, h2, h3, h4, h5, h6 {
     
     /* Multicolored icon system - Enhanced visibility and accessibility - Updated 2024 */
     /* All colors meet WCAG 2.1 AA contrast requirements (4.5:1 ratio minimum) */
-    --icon-purple: hsl(270, 100%, 65%);    /* Purple for AI & Strategy - 4.8:1 contrast ratio */
-    --icon-blue: hsl(210, 100%, 55%);      /* Blue for Engineering & Data - 5.2:1 contrast ratio */
-    --icon-green: hsl(120, 100%, 45%);     /* Green for Growth & Success - 6.1:1 contrast ratio */
-    --icon-indigo: hsl(240, 100%, 65%);    /* Indigo for Creative & Innovation - 4.7:1 contrast ratio */
-    --icon-red: hsl(0, 100%, 55%);         /* Red for Operations & Urgency - 5.3:1 contrast ratio */
+    --icon-purple: 270 100% 65%;    /* Purple for AI & Strategy - 4.8:1 contrast ratio */
+    --icon-blue: 210 100% 55%;      /* Blue for Engineering & Data - 5.2:1 contrast ratio */
+    --icon-green: 120 100% 45%;     /* Green for Growth & Success - 6.1:1 contrast ratio */
+    --icon-indigo: 240 100% 65%;    /* Indigo for Creative & Innovation - 4.7:1 contrast ratio */
+    --icon-red: 0 100% 55%;         /* Red for Operations & Urgency - 5.3:1 contrast ratio */
     
     /* Icon background colors with 10% opacity for better visual hierarchy */
-    --icon-purple-bg: hsl(270, 100%, 65%, 0.1);
-    --icon-blue-bg: hsl(210, 100%, 55%, 0.1);
-    --icon-green-bg: hsl(120, 100%, 45%, 0.1);
-    --icon-indigo-bg: hsl(240, 100%, 65%, 0.1);
-    --icon-red-bg: hsl(0, 100%, 55%, 0.1);
+    --icon-purple-bg: 270 100% 65% / 0.1;
+    --icon-blue-bg: 210 100% 55% / 0.1;
+    --icon-green-bg: 120 100% 45% / 0.1;
+    --icon-indigo-bg: 240 100% 65% / 0.1;
+    --icon-red-bg: 0 100% 55% / 0.1;
     
     /* Neutral System (based on opacity) */
     --neutral-75: 0 0% 0% / 0.75;

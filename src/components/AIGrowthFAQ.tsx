@@ -15,6 +15,7 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, BORDER_RADIUS, SHADOWS } from "@/constants/design-system";
+import { CONTACT_INFO } from "@/constants/contact";
 
 /**
  * AI Growth FAQ component displaying frequently asked questions
@@ -54,7 +55,8 @@ const AIGrowthFAQ = () => {
       <div className="max-w-4xl mx-auto px-6">
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
-            Frequently Asked Questions
+            Frequently Asked<br />
+            Questions
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground`}>
             Everything you need to know about the AI Growth Score
@@ -83,10 +85,10 @@ const AIGrowthFAQ = () => {
             Have more questions?
           </p>
           <a 
-            href="mailto:hello@alviglobal.com?subject=AI Growth Score Questions"
+            href={`mailto:${CONTACT_INFO.email}?subject=AI Growth Score Questions`}
             className="text-primary hover:text-primary/80 font-medium"
           >
-            Contact us at hello@alviglobal.com
+            Contact us at {CONTACT_INFO.email}
           </a>
         </div>
       </div>

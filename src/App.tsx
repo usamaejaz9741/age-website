@@ -199,19 +199,23 @@ const App = () => {
               <Route path="/" element={<Index />} />
               {/* AI Growth Score assessment page */}
               <Route path="/ai-growth-score" element={
-                <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                </div>}>
-                  <AIGrowthScore />
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>}>
+                    <AIGrowthScore />
+                  </Suspense>
+                </ErrorBoundary>
               } />
               {/* 404 fallback route */}
               <Route path="*" element={
-                <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                </div>}>
-                  <NotFound />
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>}>
+                    <NotFound />
+                  </Suspense>
+                </ErrorBoundary>
               } />
             </Routes>
           </BrowserRouter>

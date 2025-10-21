@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
 import { calculateResults } from '@/lib/quiz-helpers';
-import { quizQuestions as originalQuizQuestions } from '@/constants/quiz-questions';
 import type { QuizAnswers } from '@/types/quiz';
 import type { QuizQuestion } from '@/constants/quiz-questions';
 

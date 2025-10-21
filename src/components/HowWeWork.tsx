@@ -44,8 +44,8 @@ const HowWeWork = () => {
       subtitle: "Days 1-30",
       description: "Strategic foundation, system architecture, and initial deployment",
       features: ["Market analysis & positioning", "Tech stack selection", "MVP development", "Team integration"],
-      iconColor: "var(--icon-purple)",
-      bgColor: "var(--icon-purple-bg)"
+      iconColorClass: "text-icon-purple",
+      bgColorClass: "bg-icon-purple-bg"
     },
     {
       icon: BarChart3, 
@@ -53,8 +53,8 @@ const HowWeWork = () => {
       subtitle: "Days 31-60",
       description: "Data collection, performance tracking, and optimization insights",
       features: ["KPI dashboard setup", "User behavior analysis", "Performance monitoring", "Feedback loops"],
-      iconColor: "var(--icon-blue)",
-      bgColor: "var(--icon-blue-bg)"
+      iconColorClass: "text-icon-blue",
+      bgColorClass: "bg-icon-blue-bg"
     },
     {
       icon: Rocket,
@@ -62,8 +62,8 @@ const HowWeWork = () => {
       subtitle: "Days 61-90",
       description: "Growth acceleration, market expansion, and revenue optimization",
       features: ["Growth strategy execution", "Market expansion", "Revenue optimization", "Sustainable systems"],
-      iconColor: "var(--icon-green)",
-      bgColor: "var(--icon-green-bg)"
+      iconColorClass: "text-icon-green",
+      bgColorClass: "bg-icon-green-bg"
     }
   ];
 
@@ -71,7 +71,8 @@ const HowWeWork = () => {
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
-            <span className="text-primary">90 days</span> to revenue
+            <span className="text-primary">90 days</span><br />
+            to revenue
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
             Our proven methodology delivers measurable results in 3 months, 
@@ -87,21 +88,14 @@ const HowWeWork = () => {
                 key={step.title}
                 delay={index * ANIMATION_DURATIONS.CASE_STUDY_STAGGER}
                 direction="up"
-                className="relative group"
+                className="group"
               >
-                {/* Connection Line */}
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary/30 z-0" />
-                )}
-                
-                <div className={`relative ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift}`}>
+                <div className={`${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift}`}>
                   <div 
-                    className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
-                    style={{ backgroundColor: step.bgColor }}
+                    className={`${ICON_CONTAINER.large} ${step.bgColorClass} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                   >
                     <Icon 
-                      className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
-                      style={{ color: step.iconColor }}
+                      className={`${ICON_SIZES.large} ${step.iconColorClass} flex-shrink-0 mx-auto my-auto`}
                     />
                   </div>
                   
@@ -135,15 +129,15 @@ const HowWeWork = () => {
         {/* Timeline Visualization */}
         <div className={`relative ${CARD_PADDING.large} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft}`}>
           <div className={`grid grid-cols-3 ${GAP.small} text-center`}>
-            <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-small)" }}>
+            <div className="animate-fade-in [animation-delay:100ms]">
               <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>30</div>
               <div className={`${TEXT_SIZES.base} text-muted-foreground`}>Days to MVP</div>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-medium)" }}>
+            <div className="animate-fade-in [animation-delay:200ms]">
               <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>60</div>
               <div className={`${TEXT_SIZES.base} text-muted-foreground`}>Days to optimization</div>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: "var(--animation-delay-large)" }}>
+            <div className="animate-fade-in [animation-delay:300ms]">
               <div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}>90</div>
               <div className={`${TEXT_SIZES.base} text-muted-foreground`}>Days to scale</div>
             </div>

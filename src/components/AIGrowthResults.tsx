@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBandColors } from "@/constants/colors";
-import { QuizResults } from "@/pages/ai-growth-score";
+import type { QuizResults } from "@/types/quiz";
 import { GeminiAPI } from "@/lib/geminiAPI";
 import { openCalendlyBooking } from "@/lib/calendly";
 import { toast } from "@/components/ui/use-toast";
@@ -52,6 +52,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, ICON_SIZES, BORDER_RADIUS, SHADOWS, GAP, BACKGROUNDS, CARD_PADDING } from "@/constants/design-system";
+import { generateMailtoLink } from "@/constants/contact";
 
 /**
  * Props interface for the AIGrowthResults component
@@ -306,12 +307,12 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
                 const label = dimensionLabels[key as keyof typeof dimensionLabels];
                 const scoreValue = score as number;
                 
-                // Assign different colors to different dimensions
-                const dimensionColors = {
-                  strategy: 'var(--icon-purple)',
-                  implementation: 'var(--icon-blue)',
-                  data: 'var(--icon-green)',
-                  culture: 'var(--icon-indigo)'
+                // Assign different colors to different dimensions using Tailwind classes
+                const dimensionColorClasses = {
+                  strategy: 'text-icon-purple',
+                  implementation: 'text-icon-blue',
+                  data: 'text-icon-green',
+                  culture: 'text-icon-indigo'
                 };
                 
                 return (
@@ -319,8 +320,7 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <Icon 
-                          className={`${ICON_SIZES.default} mr-2`} 
-                          style={{ color: dimensionColors[key as keyof typeof dimensionColors] }}
+                          className={`${ICON_SIZES.default} ${dimensionColorClasses[key as keyof typeof dimensionColorClasses]} mr-2`}
                         />
                         <span className={`${TEXT_SIZES.base} font-medium`}>{label}</span>
                       </div>
@@ -338,7 +338,7 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
         <Card className={`${SHADOWS.medium} ${MARGIN_BOTTOM.large}`}>
           <CardHeader>
             <CardTitle className={`${HEADING_SIZES.h3} flex items-center`}>
-              <Target className={`${ICON_SIZES.medium} mr-2 text-[var(--icon-blue)]`} />
+              <Target className={`${ICON_SIZES.medium} mr-2 text-icon-blue`} />
               AI-Powered Recommendations
             </CardTitle>
           </CardHeader>
@@ -394,7 +394,9 @@ const AIGrowthResults = memo(({ results, userEmail, utmParams, quizAnswers, audi
               variant="cta-outline" 
               size="xl"
               className="group min-w-[280px]"
-              onClick={() => window.location.href = 'mailto:hello@alviglobal.com?subject=AI Growth Score Results&body=Hi, I just completed the AI Growth Score assessment and would like to discuss my results.'}
+              onClick={() => {
+                window.location.href = generateMailtoLink('growthScoreResults');
+              }}
               aria-label="Send email to discuss AI Growth Score results"
             >
               <Mail className="mr-2" />

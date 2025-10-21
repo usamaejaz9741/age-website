@@ -66,7 +66,7 @@ const CaseStudies = () => {
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
-            Results that{" "}
+            Results that<br />
             <span className="text-primary">speak numbers</span>
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
@@ -117,20 +117,20 @@ const CaseStudies = () => {
                 <div className="text-center">
                   <div className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.xs}`}>Revenue</div>
                   <div className={`${TEXT_SIZES.xs} text-destructive ${MARGIN_BOTTOM.xs}`}>{caseStudy.results.before.revenue}</div>
-                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} text-[var(--icon-green)] flex-shrink-0`} />
-                  <div className={`${TEXT_SIZES.base} font-semibold text-[var(--icon-green)]`}>{caseStudy.results.after.revenue}</div>
+                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} text-green-600 flex-shrink-0`} />
+                  <div className={`${TEXT_SIZES.base} font-semibold text-green-600`}>{caseStudy.results.after.revenue}</div>
                 </div>
                 <div className="text-center">
                   <div className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.xs}`}>Conversion</div>
                   <div className={`${TEXT_SIZES.xs} text-destructive ${MARGIN_BOTTOM.xs}`}>{caseStudy.results.before.conversion}</div>
-                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} text-[var(--icon-blue)] flex-shrink-0`} />
-                  <div className={`${TEXT_SIZES.base} font-semibold text-[var(--icon-blue)]`}>{caseStudy.results.after.conversion}</div>
+                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} text-green-600 flex-shrink-0`} />
+                  <div className={`${TEXT_SIZES.base} font-semibold text-green-600`}>{caseStudy.results.after.conversion}</div>
                 </div>
                 <div className="text-center">
                   <div className={`${TEXT_SIZES.base} text-muted-foreground ${MARGIN_BOTTOM.xs}`}>CAC</div>
                   <div className={`${TEXT_SIZES.xs} text-destructive ${MARGIN_BOTTOM.xs}`}>{caseStudy.results.before.cac}</div>
-                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} rotate-180 text-[var(--icon-red)] flex-shrink-0`} />
-                  <div className={`${TEXT_SIZES.base} font-semibold text-[var(--icon-red)]`}>{caseStudy.results.after.cac}</div>
+                  <TrendingUp className={`${ICON_SIZES.default} mx-auto ${MARGIN_BOTTOM.xs} rotate-180 text-green-600 flex-shrink-0`} />
+                  <div className={`${TEXT_SIZES.base} font-semibold text-green-600`}>{caseStudy.results.after.cac}</div>
                 </div>
               </div>
             </AnimatedCard>

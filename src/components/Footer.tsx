@@ -18,6 +18,7 @@
 
 import { MapPin, Mail, Phone, Linkedin, Twitter, Globe } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { CONTACT_INFO } from "@/constants/contact";
 
 /**
  * Footer component with comprehensive site information
@@ -118,13 +119,15 @@ const Footer = () => {
             <div className="space-y-2 text-sm text-primary-foreground/80">
               <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
-                <a href="mailto:hello@alviglobal.com" className="hover:text-primary-foreground transition-colors">
-                  hello@alviglobal.com
+                <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-primary-foreground transition-colors">
+                  {CONTACT_INFO.email}
                 </a>
               </div>
               <div className="flex items-center">
                 <Phone className="w-4 h-4 mr-2" />
-                <span>+92 301 8222054</span>
+                <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-primary-foreground transition-colors">
+                  {CONTACT_INFO.phoneDisplay}
+                </a>
               </div>
             </div>
           </div>
@@ -188,26 +191,52 @@ const Footer = () => {
               © 2025 Alvi Global Enterprises. All rights reserved.
             </div>
 
-            <div className="flex items-center space-x-4">
-              <button className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
+            <nav className="flex items-center space-x-4" aria-label="Legal navigation">
+              <a 
+                href="/privacy-policy"
+                className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary rounded px-2 py-1"
+                aria-label="Read our Privacy Policy"
+              >
                 Privacy Policy
-              </button>
-              <button className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
+              </a>
+              <a 
+                href="/terms-of-service"
+                className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary rounded px-2 py-1"
+                aria-label="Read our Terms of Service"
+              >
                 Terms of Service
-              </button>
-            </div>
+              </a>
+            </nav>
 
-            <div className="flex items-center space-x-4">
-              <button className="text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </button>
-              <button className="text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                <Twitter className="w-5 h-5" />
-              </button>
-              <button className="text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                <Globe className="w-5 h-5" />
-              </button>
-            </div>
+            <nav className="flex items-center space-x-4" aria-label="Social media links">
+              <a 
+                href={CONTACT_INFO.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary rounded p-1"
+                aria-label="Visit our LinkedIn page (opens in new tab)"
+              >
+                <Linkedin className="w-5 h-5" aria-hidden="true" />
+              </a>
+              <a 
+                href={CONTACT_INFO.social.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary rounded p-1"
+                aria-label="Visit our Twitter profile (opens in new tab)"
+              >
+                <Twitter className="w-5 h-5" aria-hidden="true" />
+              </a>
+              <a 
+                href={CONTACT_INFO.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary rounded p-1"
+                aria-label="Visit our website (opens in new tab)"
+              >
+                <Globe className="w-5 h-5" aria-hidden="true" />
+              </a>
+            </nav>
           </div>
         </div>
       </div>

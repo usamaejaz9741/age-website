@@ -135,12 +135,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Multicolored icon system
+        // Multicolored icon system (with background variants)
         'icon-purple': "hsl(var(--icon-purple))",
+        'icon-purple-bg': "hsl(var(--icon-purple-bg))",
         'icon-blue': "hsl(var(--icon-blue))",
+        'icon-blue-bg': "hsl(var(--icon-blue-bg))",
         'icon-green': "hsl(var(--icon-green))",
+        'icon-green-bg': "hsl(var(--icon-green-bg))",
         'icon-indigo': "hsl(var(--icon-indigo))",
+        'icon-indigo-bg': "hsl(var(--icon-indigo-bg))",
         'icon-red': "hsl(var(--icon-red))",
+        'icon-red-bg': "hsl(var(--icon-red-bg))",
       },
       
       // Custom background images

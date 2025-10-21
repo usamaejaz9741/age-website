@@ -14,8 +14,8 @@ import {
 
 describe('sanitizeHtml', () => {
   it('should return an empty string for non-string inputs', () => {
-    expect(sanitizeHtml(null as any)).toBe('');
-    expect(sanitizeHtml(undefined as any)).toBe('');
+    expect(sanitizeHtml(null as unknown as string)).toBe('');
+    expect(sanitizeHtml(undefined as unknown as string)).toBe('');
   });
 
   it('should remove script tags and their content', () => {

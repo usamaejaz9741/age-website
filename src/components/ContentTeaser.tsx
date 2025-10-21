@@ -77,24 +77,24 @@ const ContentTeaser = () => {
       title: "Emerging Market Playbook 2025",
       description: "Complete strategy guide for scaling B2B SaaS in Southeast Asia",
       type: "Strategy Guide",
-      iconColor: "var(--icon-purple)",
-      bgColor: "var(--icon-purple-bg)"
+      iconColorClass: "text-icon-purple",
+      bgColorClass: "bg-icon-purple-bg"
     },
     {
       icon: FileText,
       title: "AI Automation ROI Calculator",
       description: "Calculate potential savings and revenue impact of AI implementation",
       type: "Interactive Tool",
-      iconColor: "var(--icon-blue)",
-      bgColor: "var(--icon-blue-bg)"
+      iconColorClass: "text-icon-blue",
+      bgColorClass: "bg-icon-blue-bg"
     },
     {
       icon: Mail,
       title: "Weekly Growth Insights",
       description: "Data-driven strategies and market intelligence delivered weekly",
       type: "Newsletter",
-      iconColor: "var(--icon-green)",
-      bgColor: "var(--icon-green-bg)"
+      iconColorClass: "text-icon-green",
+      bgColorClass: "bg-icon-green-bg"
     }
   ];
 
@@ -102,7 +102,7 @@ const ContentTeaser = () => {
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.default}`}>
-            Stay ahead with{" "}
+            Stay ahead with<br />
             <span className="text-primary">actionable insights</span>
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto`}>
@@ -122,12 +122,10 @@ const ContentTeaser = () => {
                 className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} cursor-pointer`}
               >
                 <div 
-                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
-                  style={{ backgroundColor: insight.bgColor }}
+                  className={`${ICON_CONTAINER.large} ${insight.bgColorClass} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                 >
                   <Icon 
-                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
-                    style={{ color: insight.iconColor }}
+                    className={`${ICON_SIZES.large} ${insight.iconColorClass} flex-shrink-0 mx-auto my-auto`}
                   />
                 </div>
                 
@@ -200,14 +198,15 @@ const ContentTeaser = () => {
 
           <p className={`${TEXT_SIZES.small} text-muted-foreground text-center mt-4`}>
             No spam. Unsubscribe anytime. Read our{" "}
-            <button 
-              type="button"
-              className="text-primary hover:underline"
-              onClick={() => window.open('/privacy-policy', '_blank', 'noopener,noreferrer')}
-              aria-label="Read our privacy policy in a new tab"
+            <a 
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-1"
+              aria-label="Read our privacy policy (opens in new tab)"
             >
               privacy policy
-            </button>.
+            </a>.
           </p>
         </div>
     </div>

@@ -43,40 +43,40 @@ const ServicesGrid = () => {
       title: "AI & Automation",
       description: "Intelligent systems that scale your operations and reduce manual overhead",
       features: ["Process Automation", "AI-Powered Analytics", "Smart Decision Systems"],
-      iconColor: "var(--icon-purple)",
-      bgColor: "var(--icon-purple-bg)"
+      iconColorClass: "text-icon-purple",
+      bgColorClass: "bg-icon-purple-bg"
     },
     {
       icon: Code,
       title: "Product & Engineering", 
       description: "Full-stack development with performance and scalability at the core",
       features: ["Custom Software", "API Development", "Cloud Infrastructure"],
-      iconColor: "var(--icon-blue)",
-      bgColor: "var(--icon-blue-bg)"
+      iconColorClass: "text-icon-blue",
+      bgColorClass: "bg-icon-blue-bg"
     },
     {
       icon: TrendingUp,
       title: "Growth & GTM",
       description: "Data-driven strategies that accelerate market entry and revenue growth",
       features: ["Market Analysis", "Sales Optimization", "Performance Marketing"],
-      iconColor: "var(--icon-green)",
-      bgColor: "var(--icon-green-bg)"
+      iconColorClass: "text-icon-green",
+      bgColorClass: "bg-icon-green-bg"
     },
     {
       icon: Palette,
       title: "Creative & Content",
       description: "Brand experiences that resonate with your target markets and drive conversion",
       features: ["Brand Strategy", "Content Systems", "Design Systems"],
-      iconColor: "var(--icon-indigo)",
-      bgColor: "var(--icon-indigo-bg)"
+      iconColorClass: "text-icon-indigo",
+      bgColorClass: "bg-icon-indigo-bg"
     },
     {
       icon: Settings,
       title: "Revenue Ops",
       description: "Operational excellence that ensures sustainable growth and profitability",
       features: ["Sales Operations", "Customer Success", "Business Intelligence"],
-      iconColor: "var(--icon-red)",
-      bgColor: "var(--icon-red-bg)"
+      iconColorClass: "text-icon-red",
+      bgColorClass: "bg-icon-red-bg"
     }
   ];
 
@@ -84,7 +84,7 @@ const ServicesGrid = () => {
     <div>
         <div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}>
           <h2 className={`${HEADING_SIZES.h2} font-bold text-foreground ${MARGIN_BOTTOM.default} leading-tight`}>
-            Complete business{" "}
+            Complete business<br />
             <span className="text-primary">ecosystems</span>
           </h2>
           <p className={`${TEXT_SIZES.medium} text-muted-foreground max-w-3xl mx-auto leading-relaxed`}>
@@ -104,12 +104,10 @@ const ServicesGrid = () => {
                 className={`group ${CARD_PADDING.responsive} bg-gradient-card ${BORDER_RADIUS.xl} ${SHADOWS.soft} hover:${SHADOWS.medium} transition-all ${TRANSITIONS.default} ease-out ${HOVER_EFFECTS.lift} ${HOVER_EFFECTS.scale} ${HOVER_EFFECTS.scaleDown}`}
               >
                 <div 
-                  className={`${ICON_CONTAINER.large} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
-                  style={{ backgroundColor: service.bgColor }}
+                  className={`${ICON_CONTAINER.large} ${service.bgColorClass} ${BORDER_RADIUS.xl} flex items-center justify-center ${MARGIN_BOTTOM.default} group-hover:scale-110 transition-transform ${TRANSITIONS.default} ease-bounce mx-auto`}
                 >
                   <Icon 
-                    className={`${ICON_SIZES.large} flex-shrink-0 mx-auto my-auto`}
-                    style={{ color: service.iconColor }}
+                    className={`${ICON_SIZES.large} ${service.iconColorClass} flex-shrink-0 mx-auto my-auto`}
                   />
                 </div>
                 

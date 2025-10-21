@@ -56,10 +56,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
-import { useState, memo } from "react";
-import GrowthAuditModal from "./GrowthAuditModal";
+import { memo } from "react";
 import SplineBackground from "./SplineBackground";
-import { blurActiveElement } from "@/lib/console-utils";
+import { openCalendlyBooking } from "@/lib/calendly";
 import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, BUTTON_STYLES, BACKGROUNDS, GAP } from "@/constants/design-system";
 
 /**
@@ -97,21 +96,6 @@ import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, BUTTON_STYLES, BACKGROUNDS, G
  * @returns {JSX.Element} Full-screen hero section with interactive background
  */
 const Hero = memo(() => {
-  // ============================================================================
-  // STATE MANAGEMENT
-  // ============================================================================
-  
-  /**
-   * Controls the visibility of the growth audit modal
-   * 
-   * When true, displays a modal with information about the AI Growth Audit
-   * service and allows users to book a consultation via Calendly.
-   * 
-   * @state
-   * @default false
-   */
-  const [showGrowthAudit, setShowGrowthAudit] = useState(false);
-
   return (
     <div 
       className="relative min-h-screen flex items-center justify-center overflow-hidden" 
@@ -240,7 +224,7 @@ const Hero = memo(() => {
             id="hero-heading" 
             className={`${HEADING_SIZES.h1} text-foreground ${MARGIN_BOTTOM.medium} pointer-events-none select-none`}
           >
-            Engineer revenue,{" "}
+            Engineer revenue,<br />
             <span className="text-primary font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
               not just software
             </span>
@@ -320,11 +304,11 @@ const Hero = memo(() => {
             className={`flex flex-col sm:flex-row ${GAP.medium} justify-center items-center animate-slide-up pointer-events-auto`} 
             style={{ willChange: 'transform, opacity' }}
           >
-            {/**
+            {            /**
              * Primary CTA: Book Free Consultation
              * 
-             * Highest-intent action targeting users ready to engage. Opens a modal
-             * with information about the AI Growth Audit service and Calendly booking.
+             * Highest-intent action targeting users ready to engage. Opens Calendly
+             * directly in a new tab for immediate booking.
              * 
              * Visual Design:
              * - variant="cta": Primary brand color with strong shadow
@@ -334,8 +318,8 @@ const Hero = memo(() => {
              * - BUTTON_STYLES.minWidth: Minimum 200px width on desktop
              * 
              * Interaction:
-             * - onClick: Blurs active element (prevents accessibility warnings)
-             * - Opens growth audit modal with consultation details
+             * - onClick: Opens Calendly booking in new tab
+             * - UTM tracking for marketing attribution (hero-cta campaign)
              * - Calendar icon provides visual affordance
              * - Arrow icon animates on hover (group-hover:translate-x-1)
              * 
@@ -347,6 +331,7 @@ const Hero = memo(() => {
              * 
              * Conversion Optimization:
              * - "Free" removes friction and risk
+             * - Direct Calendly booking reduces steps to conversion
              * - Calendar icon signals scheduling action
              * - Arrow icon suggests forward progress
              * - Prominent placement and visual weight
@@ -355,11 +340,18 @@ const Hero = memo(() => {
               variant="cta" 
               size="xl"
               className={`group ${BUTTON_STYLES.responsive} ${BUTTON_STYLES.minWidth}`}
-              onClick={() => {
-                // Blur any focused element to prevent React aria-hidden warnings
-                // when modal opens and hides the currently focused button
-                blurActiveElement();
-                setShowGrowthAudit(true);
+              onClick={(e) => {
+                openCalendlyBooking(
+                  undefined,
+                  {
+                    utmCampaign: 'hero-cta',
+                    utmSource: 'age-website',
+                    utmMedium: 'hero',
+                    utmContent: 'book-consultation'
+                  },
+                  'Hero CTA',
+                  e.currentTarget as HTMLElement
+                );
               }}
               aria-label="Book a free AI growth consultation with Alvi Global Enterprises"
             >
@@ -411,40 +403,6 @@ const Hero = memo(() => {
           </div>
         </div>
       </div>
-
-      {/* ====================================================================
-          GROWTH AUDIT MODAL
-          ==================================================================== */}
-      
-      {/**
-       * Growth Audit Consultation Modal
-       * 
-       * Renders a modal dialog with information about the AI Growth Audit
-       * service when the primary CTA is clicked. Provides details about
-       * the consultation and allows booking via Calendly integration.
-       * 
-       * Props:
-       * - isOpen: Controls modal visibility (from showGrowthAudit state)
-       * - onClose: Callback to close modal (sets showGrowthAudit to false)
-       * 
-       * Features:
-       * - Responsive design (fits mobile screens with padding)
-       * - Focus trap for accessibility (keyboard navigation contained)
-       * - Backdrop click and Escape key to close
-       * - Calendly integration for booking
-       * - UTM tracking for marketing attribution
-       * 
-       * Accessibility:
-       * - role="dialog" and aria-modal="true"
-       * - Focus management (traps focus while open)
-       * - Backdrop prevents interaction with page content
-       * - Close button with aria-label
-       * - Keyboard accessible (Tab, Escape)
-       */}
-      <GrowthAuditModal 
-        isOpen={showGrowthAudit}
-        onClose={() => setShowGrowthAudit(false)}
-      />
 
       {/* ====================================================================
           SCROLL INDICATOR (z-20)

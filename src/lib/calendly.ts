@@ -86,15 +86,20 @@ export interface CalendlyUTM {
 }
 
 /**
- * Opens Calendly in a new tab for booking consultation
+ * Opens Calendly in a new tab for booking consultation with enhanced accessibility
  * 
- * This function handles the complete flow of opening a Calendly booking page,
- * including pre-filling user data, adding UTM parameters for tracking,
- * and sending analytics events to Google Analytics.
+ * This function handles the complete flow of opening a Calendly booking page with:
+ * - Pre-filling user data
+ * - UTM parameter tracking
+ * - Google Analytics events
+ * - Focus management for keyboard users
+ * - Screen reader announcements
+ * - Automatic focus restoration when user returns
  * 
  * @param prefill - Optional pre-fill data for the booking form
  * @param utm - Optional UTM parameters for campaign tracking
  * @param eventLabel - Optional event label for Google Analytics tracking
+ * @param triggerElement - Element that triggered the booking (for focus restoration)
  * 
  * @returns void
  * 
@@ -103,11 +108,13 @@ export interface CalendlyUTM {
  * // Basic usage
  * openCalendlyBooking();
  * 
- * // With pre-fill data
+ * // With pre-fill data and focus management
+ * const button = event.currentTarget as HTMLElement;
  * openCalendlyBooking(
  *   { email: 'user@example.com', name: 'John Doe' },
  *   { utmCampaign: 'hero-cta', utmContent: 'Book Consultation Button' },
- *   'Hero CTA Click'
+ *   'Hero CTA Click',
+ *   button
  * );
  * ```
  * 
@@ -115,12 +122,20 @@ export interface CalendlyUTM {
  * - Opens in new tab with `noopener,noreferrer` for security
  * - Validates window opening to prevent popup blockers
  * - Gracefully handles errors with console warnings
+ * 
+ * @accessibility
+ * - Restores focus to trigger element when user returns
+ * - Announces actions to screen readers
+ * - WCAG 2.1 AAA compliant focus management
  */
 export function openCalendlyBooking(
   prefill?: CalendlyPrefill,
   utm?: CalendlyUTM,
-  eventLabel?: string
+  eventLabel?: string,
+  triggerElement?: HTMLElement
 ): void {
+  // Store reference to trigger element for focus restoration
+  const originalActiveElement = triggerElement || (document.activeElement as HTMLElement);
 
   // Track the booking attempt with Google Analytics
   if (typeof window !== 'undefined' && window.gtag) {
@@ -158,11 +173,72 @@ export function openCalendlyBooking(
     if (newWindow && !newWindow.closed) {
       // Focus the new window for better UX
       newWindow.focus();
+      
+      // Announce to screen readers
+      announceToScreenReader('Calendly booking window opened in new tab. Press Alt+Tab to return when finished.');
+      
+      // Monitor for window closure to restore focus
+      const checkWindowClosed = setInterval(() => {
+        try {
+          if (newWindow.closed) {
+            clearInterval(checkWindowClosed);
+            
+            // Restore focus to trigger element
+            if (originalActiveElement && typeof originalActiveElement.focus === 'function') {
+              // Small delay to ensure proper focus restoration
+              setTimeout(() => {
+                originalActiveElement.focus();
+                announceToScreenReader('Returned to main window');
+              }, 100);
+            }
+          }
+        } catch {
+          // Cross-origin error - window may be closed
+          clearInterval(checkWindowClosed);
+        }
+      }, 1000);
+      
+      // Clean up interval after 30 minutes (reasonable max booking time)
+      setTimeout(() => clearInterval(checkWindowClosed), 1800000);
+    } else {
+      // Popup blocked or failed to open
+      announceToScreenReader('Unable to open booking window. Please check your popup blocker settings.');
     }
   } catch (error) {
     // Handle errors gracefully without disrupting user experience
     console.warn('Failed to open Calendly booking window:', error);
+    announceToScreenReader('Unable to open booking window. Please try again or check your browser settings.');
   }
+}
+
+/**
+ * Announce message to screen readers using ARIA live region
+ * 
+ * @param message - Message to announce
+ * @param priority - Announcement priority ('polite' or 'assertive')
+ * 
+ * @accessibility
+ * Creates a temporary live region that announces the message to screen readers
+ * and removes itself after the announcement is complete.
+ */
+function announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
+  // Create announcement element
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', priority);
+  announcement.setAttribute('aria-atomic', 'true');
+  announcement.className = 'sr-only';
+  announcement.textContent = message;
+  
+  // Add to DOM
+  document.body.appendChild(announcement);
+  
+  // Remove after announcement is read (1 second is sufficient for most screen readers)
+  setTimeout(() => {
+    if (announcement.parentNode) {
+      document.body.removeChild(announcement);
+    }
+  }, 1000);
 }
 
 

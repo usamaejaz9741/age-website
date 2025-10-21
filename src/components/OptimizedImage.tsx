@@ -50,6 +50,10 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   showSkeleton?: boolean;
   /** Skeleton className */
   skeletonClassName?: string;
+  /** Enable WebP format with fallback (default: true) */
+  useWebP?: boolean;
+  /** Responsive srcset for different screen sizes */
+  sizes?: string;
 }
 
 /**
@@ -73,6 +77,8 @@ const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
     skeletonClassName,
     className,
     onError,
+    useWebP = true,
+    sizes,
     ...props
   }, ref) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -81,6 +87,11 @@ const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
 
     // Get optimized loading attributes
     const optimizedAttrs = loadingStrategy || getOptimizedImageAttrs(type);
+
+    // Generate WebP source if enabled and source is not already WebP
+    const webpSrc = useWebP && !src.endsWith('.webp') && !src.endsWith('.svg')
+      ? src.replace(/\.(jpg|jpeg|png)$/i, '.webp')
+      : null;
 
     // Handle image load
     const handleLoad = () => {
@@ -115,34 +126,47 @@ const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
         {isLoading && showSkeleton && (
           <div 
             className={cn(
-              "absolute inset-0 bg-muted animate-pulse rounded",
+              "absolute inset-0 bg-muted/10 animate-pulse rounded",
               skeletonClassName
             )}
             aria-hidden="true"
           />
         )}
         
-        {/* Optimized image */}
-        <img
-          ref={ref}
-          src={currentSrc}
-          alt={alt}
-          className={cn(
-            "transition-opacity duration-300",
-            isLoading ? "opacity-0" : "opacity-100",
-            hasError && currentSrc === fallbackSrc ? "opacity-60" : "",
-            className
+        {/* Optimized image with WebP support */}
+        <picture>
+          {/* Modern WebP format for supported browsers */}
+          {webpSrc && (
+            <source 
+              srcSet={webpSrc}
+              type="image/webp"
+              sizes={sizes}
+            />
           )}
-          {...optimizedAttrs}
-          onLoad={handleLoad}
-          onError={handleImageErrorEvent}
-          {...props}
-        />
+          
+          {/* Fallback to original format */}
+          <img
+            ref={ref}
+            src={currentSrc}
+            alt={alt}
+            className={cn(
+              "transition-opacity duration-300 ease-out",
+              isLoading ? "opacity-0 scale-105" : "opacity-100 scale-100",
+              hasError && currentSrc === fallbackSrc ? "opacity-60 grayscale" : "",
+              className
+            )}
+            {...optimizedAttrs}
+            sizes={sizes}
+            onLoad={handleLoad}
+            onError={handleImageErrorEvent}
+            {...props}
+          />
+        </picture>
         
         {/* Error state indicator */}
         {hasError && currentSrc === fallbackSrc && (
           <div 
-            className="absolute inset-0 flex items-center justify-center bg-muted/50 rounded"
+            className="absolute inset-0 flex items-center justify-center bg-muted/50 rounded backdrop-blur-sm"
             aria-label="Image failed to load"
           >
             <svg 
@@ -150,6 +174,7 @@ const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path 
                 strokeLinecap="round" 

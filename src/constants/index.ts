@@ -24,3 +24,6 @@ export * from './design-system';
 
 // Color system
 export * from './colors';
+
+// Contact information
+export * from './contact';

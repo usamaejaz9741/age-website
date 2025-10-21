@@ -36,54 +36,20 @@ import CaseStudies from "@/components/CaseStudies";
 import HowWeWork from "@/components/HowWeWork";
 import Industries from "@/components/Industries";
 import ContentTeaser from "@/components/ContentTeaser";
-import GrowthAuditModal from "@/components/GrowthAuditModal";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 /**
  * Main landing page component
  * 
- * Manages the growth audit modal state and sets up global event listeners
- * for growth audit buttons throughout the page. Handles scroll restoration
- * and provides comprehensive page layout with all marketing sections.
+ * Handles scroll restoration and provides comprehensive page layout with all marketing sections.
+ * All booking CTAs connect directly to Calendly for streamlined conversion flow.
  * 
  * @returns JSX.Element - Complete landing page with all sections
  */
 const Index = () => {
-  /** State for controlling the growth audit modal visibility */
-  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
   /** React Router location object for navigation state */
   const location = useLocation();
-
-  /**
-   * Set up global event listeners for growth audit buttons
-   * 
-   * This allows any button with the data-growth-audit attribute to trigger
-   * the growth audit modal, providing a consistent user experience across
-   * all page sections.
-   */
-  useEffect(() => {
-    const handleGrowthAuditClick = () => {
-      setIsAuditModalOpen(true);
-    };
-
-    // Find all buttons with the growth audit data attribute
-    const auditButtons = document.querySelectorAll('[data-growth-audit]');
-    
-    // Add click event listeners to all audit buttons
-    auditButtons.forEach(button => {
-      button.addEventListener('click', handleGrowthAuditClick);
-    });
-
-    // Cleanup: Remove event listeners when component unmounts
-    return () => {
-      // Re-query buttons to ensure we have the current references
-      const currentButtons = document.querySelectorAll('[data-growth-audit]');
-      currentButtons.forEach(button => {
-        button.removeEventListener('click', handleGrowthAuditClick);
-      });
-    };
-  }, []);
 
   /**
    * Handle scroll to section when navigating from other pages
@@ -199,12 +165,6 @@ const Index = () => {
       <SectionTemplate variant="gradient" padding="xl" maxWidth="7xl" align="center">
         <ContentTeaser />
       </SectionTemplate>
-      
-      {/* Growth audit modal for lead capture */}
-      <GrowthAuditModal 
-        isOpen={isAuditModalOpen} 
-        onClose={() => setIsAuditModalOpen(false)} 
-      />
     </PageTemplate>
   );
 };

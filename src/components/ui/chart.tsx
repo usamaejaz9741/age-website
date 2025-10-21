@@ -39,44 +39,6 @@ const ChartContainer = React.forwardRef<
   const uniqueId = React.useId();
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
 
-  // Add error boundary for chart rendering
-  const [hasError, setHasError] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleError = () => setHasError(true);
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
-  }, []);
-
-  if (hasError) {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "flex aspect-video justify-center items-center text-muted-foreground bg-muted/10 rounded-lg border border-dashed",
-          className,
-        )}
-        {...props}
-      >
-        <div className="text-center p-4">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <p className="font-medium mb-2">Chart unavailable</p>
-          <p className="text-sm text-muted-foreground mb-3">There was an error loading the chart data</p>
-          <button 
-            onClick={() => setHasError(false)}
-            className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <ChartContext.Provider value={{ config }}>
       <div
@@ -169,6 +131,11 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       const [item] = payload;
+      // Type guard: ensure item exists
+      if (!item) {
+        return null;
+      }
+      
       const key = `${labelKey || item.dataKey || item.name || "value"}`;
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
       const value =

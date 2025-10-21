@@ -38,7 +38,7 @@ CREATE POLICY "Allow public insert" ON audit_submissions
   FOR INSERT 
   WITH CHECK (
     -- Basic email validation
-    email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$',
+    email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
     -- Basic score validation
     AND score >= 0 AND score <= 100
     -- Basic band validation

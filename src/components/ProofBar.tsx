@@ -90,9 +90,6 @@ const ProofBar = () => {
                   alt={`${client.name} - Trusted client partner`}
                   className="max-h-8 max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 ease-gentle"
                   {...getOptimizedImageAttrs('logo')}
-                  onLoad={() => {
-                    // Image loaded successfully
-                  }}
                   onError={(e) => handleImageError(e)}
                 />
                 </div>

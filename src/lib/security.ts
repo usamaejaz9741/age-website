@@ -535,11 +535,67 @@ export class RateLimiter {
 }
 
 /**
- * Create a rate limiter instance for API calls
+ * Lazy-initialized rate limiter instances to avoid module-level initialization issues
  */
-export const apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit'); // 5 requests per minute
+let _apiRateLimiter: RateLimiter | null = null;
+let _formRateLimiter: RateLimiter | null = null;
 
 /**
- * Create a rate limiter instance for form submissions
+ * Get or create API rate limiter instance (lazy initialization)
  */
-export const formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit'); // 3 submissions per 5 minutes
+export const apiRateLimiter = {
+  isAllowed: (identifier: string) => {
+    if (!_apiRateLimiter) {
+      _apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit');
+    }
+    return _apiRateLimiter.isAllowed(identifier);
+  },
+  getAttemptCount: (identifier: string) => {
+    if (!_apiRateLimiter) {
+      _apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit');
+    }
+    return _apiRateLimiter.getAttemptCount(identifier);
+  },
+  getRemainingRequests: (identifier: string) => {
+    if (!_apiRateLimiter) {
+      _apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit');
+    }
+    return _apiRateLimiter.getRemainingRequests(identifier);
+  },
+  clear: () => {
+    if (!_apiRateLimiter) {
+      _apiRateLimiter = new RateLimiter(5, 60000, 'age_api_rate_limit');
+    }
+    return _apiRateLimiter.clear();
+  }
+};
+
+/**
+ * Get or create form rate limiter instance (lazy initialization)
+ */
+export const formRateLimiter = {
+  isAllowed: (identifier: string) => {
+    if (!_formRateLimiter) {
+      _formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit');
+    }
+    return _formRateLimiter.isAllowed(identifier);
+  },
+  getAttemptCount: (identifier: string) => {
+    if (!_formRateLimiter) {
+      _formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit');
+    }
+    return _formRateLimiter.getAttemptCount(identifier);
+  },
+  getRemainingRequests: (identifier: string) => {
+    if (!_formRateLimiter) {
+      _formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit');
+    }
+    return _formRateLimiter.getRemainingRequests(identifier);
+  },
+  clear: () => {
+    if (!_formRateLimiter) {
+      _formRateLimiter = new RateLimiter(3, 300000, 'age_form_rate_limit');
+    }
+    return _formRateLimiter.clear();
+  }
+};

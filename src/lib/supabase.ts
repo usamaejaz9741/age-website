@@ -8,65 +8,25 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-// Supabase configuration from environment variables
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-// Security: Validate environment variables
-if (!supabaseUrl || !supabaseAnonKey) {
-  // Missing Supabase environment variables
-  throw new Error('Supabase configuration is incomplete');
-}
-
-// Security: Validate URL format
-try {
-  new URL(supabaseUrl);
-  } catch (error) {
-  // Invalid Supabase URL format
-  console.error('Invalid Supabase URL configuration:', error);
-  throw new Error('Invalid Supabase URL configuration');
-}
-
-// Security: Validate key format (should be a JWT-like string)
-if (!supabaseAnonKey.startsWith('eyJ') || supabaseAnonKey.length < 100) {
-  // Invalid Supabase anon key format
-  throw new Error('Invalid Supabase key configuration');
-}
-
-/**
- * Supabase client for client-side operations
- * Uses the anonymous key for public operations like inserting submissions
- */
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    // Disable auto-refresh for this use case since we're not using auth
-    autoRefreshToken: false,
-    persistSession: false
-  },
-  // Security: Disable realtime for anonymous users
-  realtime: {
-    params: {
-      eventsPerSecond: 2
-    }
-  },
-  // Connection pooling and performance optimizations
-  global: {
-    headers: {
-      'Connection': 'keep-alive',
-      'Keep-Alive': 'timeout=5, max=1000'
-    }
-  },
-  // Database connection settings
-  db: {
-    schema: 'public'
-  }
-})
-
-
 /**
  * Database table name for audit submissions
  */
 export const AUDIT_SUBMISSIONS_TABLE = 'audit_submissions'
+
+/**
+ * Supabase client for client-side operations
+ * Uses environment variables or falls back to placeholder values
+ */
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co',
+  import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI4MDAsImV4cCI6MTk2MDc2ODgwMH0.placeholder',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+)
 
 /**
  * Type definitions for database operations

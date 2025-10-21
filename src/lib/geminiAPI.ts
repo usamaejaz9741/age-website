@@ -45,16 +45,16 @@ export class GeminiAPI {
   /**
    * Initializes the Gemini API client
    * 
-   * @throws Error if API key is not found in environment variables
+   * @note If API key is not found, methods will fail gracefully with helpful error messages
    */
   constructor() {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     
-    
-    if (!apiKey) {
-      throw new Error('Gemini API key not found in environment variables. Make sure VITE_GEMINI_API_KEY is set in .env.local');
+    if (!apiKey && import.meta.env.DEV) {
+      console.warn('Gemini API key not found in environment variables. AI features will be disabled. Add VITE_GEMINI_API_KEY to .env.local to enable AI-powered recommendations.');
     }
-    this.apiKey = apiKey;
+    
+    this.apiKey = apiKey || '';
     this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
   }
 
@@ -71,6 +71,11 @@ export class GeminiAPI {
    * @throws Error if API request fails or response is invalid
    */
   async generateContent(prompt: string, signal?: AbortSignal): Promise<string> {
+    // Check if API key is configured
+    if (!this.apiKey) {
+      throw new Error('Gemini API key not configured. AI-powered recommendations are currently unavailable. Please add VITE_GEMINI_API_KEY to your environment variables to enable this feature.');
+    }
+    
     // Check rate limiting before making API call
     const clientId = 'anonymous'; // In a real app, use user ID or IP
     if (!apiRateLimiter.isAllowed(clientId)) {

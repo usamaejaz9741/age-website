@@ -29,31 +29,55 @@
 /**
  * Enhanced FOUC Prevention
  * Prevents flash of unstyled content during page load
+ * 
+ * IMPORTANT: Uses animation to ensure content shows even if JS fails
+ * The 3s delay gives JS time to load, but guarantees visibility eventually
  */
 html {
   visibility: hidden;
   /* Prevent layout shift during loading */
   overflow-x: hidden;
+  /* Fallback: ensure content shows even if JS fails */
+  animation: reveal-html 0s 3s forwards;
+}
+
+@keyframes reveal-html {
+  to {
+    visibility: visible;
+  }
 }
 
 html.loaded {
   visibility: visible;
+  animation: none;
 }
 
 /**
  * Prevent flash of unstyled content with smoother transition
  * Provides smooth fade-in effect when page is fully loaded
+ * 
+ * IMPORTANT: Uses animation to ensure content shows even if JS fails
  */
 body {
   opacity: 0;
   transition: opacity 0.3s ease-out;
   /* Prevent scroll during loading */
   overflow: hidden;
+  /* Fallback: ensure content shows even if JS fails */
+  animation: reveal-body 0.3s 3s forwards;
+}
+
+@keyframes reveal-body {
+  to {
+    opacity: 1;
+    overflow: auto;
+  }
 }
 
 body.loaded {
   opacity: 1;
   overflow: auto;
+  animation: none;
 }
 
 /* Critical above-the-fold styles to prevent layout shift */

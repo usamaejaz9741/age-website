@@ -50,59 +50,17 @@ export default defineConfig(({ mode }) => ({
   build: {
     // Generate source maps for debugging
     sourcemap: mode !== 'production',
-    // Enable minification optimizations
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production',
-        pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
-      },
-      format: {
-        comments: false
-      }
-    },
+    // Use esbuild for faster builds
+    minify: 'esbuild',
+    // Target modern browsers
+    target: 'esnext',
     rollupOptions: {
       output: {
-        // Optimized manual chunk splitting with dynamic imports
-        manualChunks: (id) => {
-          // Radix UI - automatically split by usage
-          if (id.includes('@radix-ui')) {
-            return 'vendor-radix';
-          }
-          // Core React
-          if (id.includes('react') || id.includes('react-dom')) {
-            return 'vendor-react';
-          }
-          // Router
-          if (id.includes('react-router')) {
-            return 'vendor-router';
-          }
-          // Charts (lazy loaded on AI Growth Score page)
-          if (id.includes('recharts')) {
-            return 'vendor-charts';
-          }
-          // Data layer
-          if (id.includes('supabase') || id.includes('react-query')) {
-            return 'vendor-data';
-          }
-          // Form libraries
-          if (id.includes('react-hook-form') || id.includes('@hookform')) {
-            return 'vendor-forms';
-          }
-          // DOMPurify and security
-          if (id.includes('dompurify')) {
-            return 'vendor-security';
-          }
-          // Utility libraries
-          if (id.includes('node_modules') && !id.includes('@radix-ui')) {
-            return 'vendor-utils';
-          }
-        }
+        // Simplified chunk splitting - let Vite handle it automatically
+        // This prevents module initialization order issues
+        manualChunks: undefined
       }
-    },
-    // Enable chunk size warnings
-    chunkSizeWarningLimit: 500
+    }
   },
   
   // Dependency optimization
@@ -114,7 +72,6 @@ export default defineConfig(({ mode }) => ({
       'react-router-dom',
       '@tanstack/react-query',
       '@supabase/supabase-js',
-      '@google/generative-ai',
       'react-hook-form',
       'clsx',
       'tailwind-merge'

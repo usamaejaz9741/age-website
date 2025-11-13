@@ -147,9 +147,9 @@ const Index = () => {
       </SectionTemplate>
       
       {/* Case Studies Section */}
-      <SectionTemplate id="case-studies" variant="default" padding="xl" maxWidth="7xl" align="center">
-        <CaseStudies />
-      </SectionTemplate>
+      {/* <SectionTemplate id="case-studies" variant="default" padding="xl" maxWidth="7xl" align="center">
+        <CaseStudies />z
+      </SectionTemplate> */}
       
       {/* How We Work Section */}
       <SectionTemplate id="how-we-work" variant="muted" padding="xl" maxWidth="7xl" align="center">

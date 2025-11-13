@@ -7,6 +7,7 @@
  */
 
 import { GeminiAPI } from './geminiAPI';
+import { logError } from './console-utils';
 
 // Type definitions for audit data
 export interface QuizAuditData {
@@ -39,58 +40,25 @@ export interface QuizAuditData {
  */
 export async function generateQuizAudit(data: QuizAuditData, signal?: AbortSignal): Promise<string> {
   try {
-    /**
-     * Comprehensive input validation and sanitization
-     * 
-     * This validation layer ensures data integrity and prevents AI prompt injection
-     * by thoroughly validating all input parameters before processing. Each validation
-     * includes specific error messages for debugging and user feedback.
-     * 
-     * @security Prevents prompt injection attacks by validating data structure
-     * @validation Ensures data quality and prevents AI generation errors
-     * @error-handling Provides specific error messages for troubleshooting
-     */
-    
-    // Primary data structure validation
+    // Validate input data to prevent prompt injection and ensure data quality
     if (!data || typeof data !== 'object') {
       throw new Error('Invalid audit data provided');
     }
 
-    // Email validation with type checking and sanitization
     if (!data.email || typeof data.email !== 'string') {
       throw new Error('Invalid email address');
     }
 
-    // Score validation with mathematical bounds checking
     if (typeof data.score !== 'number' || data.score < 0 || data.score > 100) {
       throw new Error('Invalid score value');
     }
 
-    // Band validation using whitelist approach for security
     if (!data.band || !['Explorer', 'Experimenter', 'Accelerator'].includes(data.band)) {
       throw new Error('Invalid maturity band');
     }
 
-    /**
-     * AI Prompt Engineering for Comprehensive Audit Generation
-     * 
-     * This prompt is carefully crafted to generate high-quality, actionable AI audit reports.
-     * The prompt structure follows best practices for AI prompt engineering:
-     * 
-     * 1. **Context Setting**: Provides clear background and user data
-     * 2. **Task Definition**: Specifies exact deliverables and structure
-     * 3. **Format Requirements**: Ensures consistent, professional output
-     * 4. **Quality Guidelines**: Emphasizes actionability and business value
-     * 
-     * @prompt-engineering
-     * - Uses structured markdown for clear AI comprehension
-     * - Includes specific word counts and section requirements
-     * - Emphasizes business value and ROI focus
-     * - Provides clear formatting guidelines for consistency
-     * 
-     * @security Data sanitization prevents prompt injection attacks
-     * @personalization Uses actual user data for customized recommendations
-     */
+    // Construct AI prompt with user assessment data
+    // Structured to generate actionable, business-focused recommendations
     const prompt = `# AI Growth Audit Report Generation
 
 You are an expert AI consultant creating a comprehensive audit report for a company that completed an AI maturity assessment.
@@ -141,58 +109,20 @@ Create a comprehensive AI Growth Audit Report that includes:
 Make the report comprehensive, professional, and immediately actionable for business leaders.`;
 
     // Generate audit using Gemini API with cancellation support
-    /**
-     * AI Content Generation with Error Handling and Cancellation Support
-     * 
-     * This section handles the actual AI content generation using the Gemini API.
-     * It includes comprehensive error handling and supports request cancellation
-     * for better user experience and resource management.
-     * 
-     * @api-integration Uses GeminiAPI class for secure, rate-limited AI requests
-     * @cancellation Supports AbortSignal for request cancellation
-     * @error-handling Comprehensive error handling with specific error types
-     * @validation Validates AI response before returning to caller
-     */
     const geminiAPI = new GeminiAPI();
     const response = await geminiAPI.generateContent(prompt, signal);
     
-    /**
-     * Response validation and quality assurance
-     * 
-     * Ensures the AI service returned a valid, non-empty response before
-     * proceeding. This prevents downstream errors and ensures data quality.
-     * 
-     * @validation Checks for null/undefined responses
-     * @quality Ensures response contains actual content
-     */
+    // Validate response
     if (!response) {
       throw new Error('No response received from AI service');
     }
 
     return response;
   } catch (error) {
-    /**
-     * Graceful Degradation with Fallback Audit Report
-     * 
-     * When AI generation fails, this fallback mechanism ensures users still receive
-     * valuable insights. The fallback report is:
-     * 1. **Personalized**: Uses actual user assessment data
-     * 2. **Actionable**: Provides specific, implementable recommendations
-     * 3. **Professional**: Maintains high-quality formatting and structure
-     * 4. **Transparent**: Clearly indicates it's a fallback report
-     * 
-     * @fallback-strategy Ensures service continuity during AI service outages
-     * @user-experience Maintains value delivery even when primary service fails
-     * @data-utilization Uses actual assessment data for personalized recommendations
-     * @quality-maintenance Provides professional-quality fallback content
-     * 
-     * @error-logging Logs the original error for monitoring and debugging
-     */
-    if (import.meta.env.DEV) {
-      console.error('AI audit generation failed, using fallback report:', error);
-    }
+    // Log error and use fallback report
+    logError('AI Audit Generation', error, { band: data.band, score: data.score });
     
-    // Return a comprehensive fallback audit report with personalized data
+    // Return fallback audit report with personalized data
     return `# AI Growth Audit Report
 
 ## Executive Summary

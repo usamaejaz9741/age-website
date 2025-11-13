@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/54</span>
+                <span class='fraction'>0/56</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/54</span>
+                <span class='fraction'>0/56</span>
             </div>
         
             
@@ -179,7 +179,9 @@
 <a name='L114'></a><a href='#L114'>114</a>
 <a name='L115'></a><a href='#L115'>115</a>
 <a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -250,23 +252,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -282,7 +273,20 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -314,14 +318,14 @@
  * @since 1.0.0
 <span class="cstat-no" title="statement not covered" > */</span>
 &nbsp;
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 <span class="cstat-no" title="statement not covered" >import { useIntersectionObserver } from '@/hooks/use-intersection-observer';</span>
 <span class="cstat-no" title="statement not covered" >import { cn } from '@/lib/utils';</span>
 &nbsp;
 /**
  * Props for the AnimatedCard component
  */
-interface AnimatedCardProps {
+interface AnimatedCardProps extends Omit&lt;HTMLAttributes&lt;HTMLDivElement&gt;, 'children'&gt; {
   /** Content to display inside the animated card */
   children: ReactNode;
   /** Additional CSS classes to apply */
@@ -358,10 +362,11 @@ interface AnimatedCardProps {
 <span class="cstat-no" title="statement not covered" >  className,</span>
 <span class="cstat-no" title="statement not covered" >  delay = 0,</span>
 <span class="cstat-no" title="statement not covered" >  direction = 'up',</span>
-<span class="cstat-no" title="statement not covered" >  duration = 600</span>
+<span class="cstat-no" title="statement not covered" >  duration: _duration = 600,</span>
+<span class="cstat-no" title="statement not covered" >  ...rest</span>
 <span class="cstat-no" title="statement not covered" >}: AnimatedCardProps) {</span>
 <span class="cstat-no" title="statement not covered" >  // Set up intersection observer to detect when element enters viewport</span>
-<span class="cstat-no" title="statement not covered" >  const { ref, isIntersecting } = useIntersectionObserver({</span>
+<span class="cstat-no" title="statement not covered" >  const { ref, isIntersecting } = useIntersectionObserver&lt;HTMLDivElement&gt;({</span>
 <span class="cstat-no" title="statement not covered" >    threshold: 0.1,                    // Trigger when 10% of element is visible</span>
 <span class="cstat-no" title="statement not covered" >    rootMargin: '0px 0px -50px 0px',  // Start animation 50px before element enters viewport</span>
 <span class="cstat-no" title="statement not covered" >    triggerOnce: true                  // Only animate once (don't re-trigger on scroll out)</span>
@@ -373,8 +378,8 @@ interface AnimatedCardProps {
    * @returns CSS class string for animation state
 <span class="cstat-no" title="statement not covered" >   */</span>
 <span class="cstat-no" title="statement not covered" >  const getAnimationClasses = () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    // Base transition classes with custom easing</span>
-<span class="cstat-no" title="statement not covered" >    const baseClasses = 'transition-all ease-gentle duration-300';</span>
+<span class="cstat-no" title="statement not covered" >    // Base transition classes with design system easing and duration</span>
+<span class="cstat-no" title="statement not covered" >    const baseClasses = 'transition-all duration-300 ease-out';</span>
     
 <span class="cstat-no" title="statement not covered" >    // Hidden state classes (before animation)</span>
 <span class="cstat-no" title="statement not covered" >    if (!isIntersecting) {</span>
@@ -406,6 +411,7 @@ interface AnimatedCardProps {
 <span class="cstat-no" title="statement not covered" >      style={{</span>
 <span class="cstat-no" title="statement not covered" >        transitionDelay: `${delay}ms`              // Apply custom delay for staggered animations</span>
 <span class="cstat-no" title="statement not covered" >      }}</span>
+<span class="cstat-no" title="statement not covered" >      {...rest}                                    // Spread remaining HTML attributes</span>
     &gt;
 <span class="cstat-no" title="statement not covered" >      {children}</span>
     &lt;/div&gt;
@@ -418,7 +424,7 @@ interface AnimatedCardProps {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T08:50:15.946Z
+                at 2025-10-22T07:34:44.782Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

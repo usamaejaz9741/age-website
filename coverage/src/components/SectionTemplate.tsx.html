@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/217</span>
+                <span class='fraction'>0/220</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/217</span>
+                <span class='fraction'>0/220</span>
             </div>
         
             
@@ -457,7 +457,10 @@
 <a name='L392'></a><a href='#L392'>392</a>
 <a name='L393'></a><a href='#L393'>393</a>
 <a name='L394'></a><a href='#L394'>394</a>
-<a name='L395'></a><a href='#L395'>395</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -712,10 +715,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -999,7 +1005,7 @@ interface SectionTemplateProps {
 <span class="cstat-no" title="statement not covered" >  containerQueries = false,</span>
 <span class="cstat-no" title="statement not covered" >  isLoading = false,</span>
 <span class="cstat-no" title="statement not covered" >  skeletonComponent,</span>
-<span class="cstat-no" title="statement not covered" >  focusTrap = false,</span>
+<span class="cstat-no" title="statement not covered" >  focusTrap: _focusTrap = false,</span>
 <span class="cstat-no" title="statement not covered" >  ariaLabel,</span>
 <span class="cstat-no" title="statement not covered" >  ariaDescribedBy,</span>
 <span class="cstat-no" title="statement not covered" >  scrollSpy = false,</span>
@@ -1020,14 +1026,14 @@ interface SectionTemplateProps {
 <span class="cstat-no" title="statement not covered" >    accent: 'bg-primary/5'</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  // Enhanced padding variants</span>
+<span class="cstat-no" title="statement not covered" >  // Enhanced padding variants - using design system spacing tokens</span>
 <span class="cstat-no" title="statement not covered" >  const paddingVariants = {</span>
-<span class="cstat-no" title="statement not covered" >    xs: 'py-8',</span>
-<span class="cstat-no" title="statement not covered" >    sm: 'py-12',</span>
-<span class="cstat-no" title="statement not covered" >    md: 'py-16',</span>
-<span class="cstat-no" title="statement not covered" >    lg: 'py-24',</span>
-<span class="cstat-no" title="statement not covered" >    xl: 'py-32',</span>
-<span class="cstat-no" title="statement not covered" >    '2xl': 'py-40',</span>
+<span class="cstat-no" title="statement not covered" >    xs: 'py-[var(--space-2xl)]',      // 2rem (32px)</span>
+<span class="cstat-no" title="statement not covered" >    sm: 'py-[var(--space-3xl)]',      // 2.5rem (40px) </span>
+<span class="cstat-no" title="statement not covered" >    md: 'py-[var(--space-4xl)]',      // 3.75rem (60px)</span>
+<span class="cstat-no" title="statement not covered" >    lg: 'py-[var(--space-4xl)]',      // 3.75rem (60px) - section spacing</span>
+<span class="cstat-no" title="statement not covered" >    xl: 'pt-[calc(var(--space-4xl)+4rem)] pb-[var(--space-4xl)]',      // 7.75rem (124px) top, 3.75rem (60px) bottom</span>
+<span class="cstat-no" title="statement not covered" >    '2xl': 'pt-[calc(var(--space-4xl)+6rem)] pb-[var(--space-4xl)]',   // 9.75rem (156px) top, 3.75rem (60px) bottom</span>
 <span class="cstat-no" title="statement not covered" >    none: 'py-0'</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
 &nbsp;
@@ -1085,7 +1091,7 @@ interface SectionTemplateProps {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    const observer = new IntersectionObserver(</span>
 <span class="cstat-no" title="statement not covered" >      ([entry]) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (entry.isIntersecting) {</span>
+<span class="cstat-no" title="statement not covered" >        if (entry?.isIntersecting) {</span>
 <span class="cstat-no" title="statement not covered" >          setIsVisible(true);</span>
 <span class="cstat-no" title="statement not covered" >          setIsInView(true);</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
@@ -1101,35 +1107,38 @@ interface SectionTemplateProps {
 <span class="cstat-no" title="statement not covered" >    return () =&gt; observer.disconnect();</span>
 <span class="cstat-no" title="statement not covered" >  }, [useIntersectionObserver, scrollSpyOffset]);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  // Scroll spy functionality</span>
+<span class="cstat-no" title="statement not covered" >  // Scroll spy functionality with throttling for performance</span>
 <span class="cstat-no" title="statement not covered" >  useEffect(() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (!scrollSpy || !id) return;</span>
 &nbsp;
+<span class="cstat-no" title="statement not covered" >    let ticking = false;</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >    const handleScroll = () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (sectionRef.current) {</span>
-<span class="cstat-no" title="statement not covered" >        const rect = sectionRef.current.getBoundingClientRect();</span>
-<span class="cstat-no" title="statement not covered" >        const isInViewport = rect.top &lt;= 100 &amp;&amp; rect.bottom &gt;= 100;</span>
-        
-<span class="cstat-no" title="statement not covered" >        if (isInViewport) {</span>
-<span class="cstat-no" title="statement not covered" >          // Update active navigation item</span>
-<span class="cstat-no" title="statement not covered" >          const navItems = document.querySelectorAll(`a[href="#${id}"]`);</span>
-<span class="cstat-no" title="statement not covered" >          navItems.forEach(item =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            item.classList.add('active');</span>
-<span class="cstat-no" title="statement not covered" >            item.setAttribute('aria-current', 'true');</span>
-<span class="cstat-no" title="statement not covered" >          });</span>
-<span class="cstat-no" title="statement not covered" >        } else {</span>
-<span class="cstat-no" title="statement not covered" >          const navItems = document.querySelectorAll(`a[href="#${id}"]`);</span>
-<span class="cstat-no" title="statement not covered" >          navItems.forEach(item =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            item.classList.remove('active');</span>
-<span class="cstat-no" title="statement not covered" >            item.removeAttribute('aria-current');</span>
-<span class="cstat-no" title="statement not covered" >          });</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
+<span class="cstat-no" title="statement not covered" >      if (!ticking) {</span>
+<span class="cstat-no" title="statement not covered" >        requestAnimationFrame(() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          if (sectionRef.current &amp;&amp; isInView) {</span>
+<span class="cstat-no" title="statement not covered" >            // Update active navigation item</span>
+<span class="cstat-no" title="statement not covered" >            const navItems = document.querySelectorAll(`a[href="#${id}"]`);</span>
+<span class="cstat-no" title="statement not covered" >            navItems.forEach(item =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >              item.classList.add('active');</span>
+<span class="cstat-no" title="statement not covered" >              item.setAttribute('aria-current', 'true');</span>
+<span class="cstat-no" title="statement not covered" >            });</span>
+<span class="cstat-no" title="statement not covered" >          } else {</span>
+<span class="cstat-no" title="statement not covered" >            const navItems = document.querySelectorAll(`a[href="#${id}"]`);</span>
+<span class="cstat-no" title="statement not covered" >            navItems.forEach(item =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >              item.classList.remove('active');</span>
+<span class="cstat-no" title="statement not covered" >              item.removeAttribute('aria-current');</span>
+<span class="cstat-no" title="statement not covered" >            });</span>
+<span class="cstat-no" title="statement not covered" >          }</span>
+<span class="cstat-no" title="statement not covered" >          ticking = false;</span>
+<span class="cstat-no" title="statement not covered" >        });</span>
+<span class="cstat-no" title="statement not covered" >        ticking = true;</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    };</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    window.addEventListener('scroll', handleScroll);</span>
+<span class="cstat-no" title="statement not covered" >    window.addEventListener('scroll', handleScroll, { passive: true });</span>
 <span class="cstat-no" title="statement not covered" >    return () =&gt; window.removeEventListener('scroll', handleScroll);</span>
-<span class="cstat-no" title="statement not covered" >  }, [scrollSpy, id]);</span>
+<span class="cstat-no" title="statement not covered" >  }, [scrollSpy, id, isInView]);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  // Animation styles</span>
 <span class="cstat-no" title="statement not covered" >  const animationStyles = animate ? {</span>
@@ -1252,7 +1261,7 @@ interface SectionTemplateProps {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T08:50:15.946Z
+                at 2025-10-22T07:34:44.782Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

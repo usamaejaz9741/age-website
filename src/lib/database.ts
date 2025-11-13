@@ -20,6 +20,8 @@
 
 import { supabase, AUDIT_SUBMISSIONS_TABLE, convertToDatabaseFormat } from './supabase'
 import type { UserSubmission } from './storage'
+import { validateEmail, sanitizeEmail } from './security'
+import { logError } from './console-utils'
 
 /**
  * Save user submission to the database with comprehensive validation
@@ -64,9 +66,8 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
       return false;
     }
 
-    // Validate email format
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!submission.email || !emailRegex.test(submission.email)) {
+    // Validate email format using centralized security utility
+    if (!submission.email || !validateEmail(submission.email)) {
       // Invalid email format
       return false;
     }
@@ -84,10 +85,10 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
       return false;
     }
 
-    // Sanitize email
+    // Sanitize email using centralized security utility
     const sanitizedSubmission = {
       ...submission,
-      email: submission.email.trim().toLowerCase()
+      email: sanitizeEmail(submission.email)
     };
     
     // Convert to database format
@@ -101,16 +102,16 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
     
     if (error) {
       // Log error securely without exposing sensitive information
-      if (import.meta.env.DEV) {
-        if (error.message && error.message.includes('row-level security policy')) {
-          console.error('Database RLS policy violation. You need to run the database setup scripts in Supabase SQL Editor.');
-          console.error('Required scripts: 1) Your audit submissions table SQL, 2) Your RLS policy reset SQL, 3) database-views-security-fix.sql');
-        } else if (error.message && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
-          console.error('Database authentication failed. Your environment variables are set, but the database may not be properly configured.');
-          console.error('Please run the database setup scripts in your Supabase SQL Editor.');
-        } else {
-          console.error('Database error:', error.message || 'Unknown database error');
-        }
+      if (error.message && error.message.includes('row-level security policy')) {
+        logError('Database Save', 'RLS policy violation. Run database setup scripts in Supabase SQL Editor.', {
+          requiredScripts: ['audit submissions table SQL', 'RLS policy reset SQL', 'database-views-security-fix.sql']
+        });
+      } else if (error.message && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
+        logError('Database Save', 'Authentication failed. Database may not be properly configured.', {
+          action: 'Run database setup scripts in Supabase SQL Editor'
+        });
+      } else {
+        logError('Database Save', error.message || 'Unknown database error');
       }
       return false
     }
@@ -119,9 +120,7 @@ export async function saveSubmissionToDatabase(submission: UserSubmission): Prom
     
   } catch (error) {
     // Log error securely without exposing sensitive information
-    if (import.meta.env.DEV) {
-      console.error('Error saving to database:', error instanceof Error ? error.message : 'Unknown error');
-    }
+    logError('Database Save', error instanceof Error ? error : 'Unknown error');
     return false
   }
 }

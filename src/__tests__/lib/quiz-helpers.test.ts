@@ -5,12 +5,12 @@ import type { QuizQuestion } from '@/constants/quiz-questions';
 
 // Mock the quiz-questions module
 vi.mock('@/constants/quiz-questions', async () => {
-  const original = await vi.importActual('@/constants/quiz-questions');
-  const mockedQuizQuestions = [
+  const original = await vi.importActual<typeof import('@/constants/quiz-questions')>('@/constants/quiz-questions');
+  const mockedQuizQuestions: QuizQuestion[] = [
     ...original.quizQuestions,
     {
       id: 'q13',
-      dimension: 'strategy',
+      dimension: 'strategy' as const,
       question: 'This is an extra question for testing.',
       options: [
         { text: 'Option 1', score: 0 },
@@ -25,16 +25,58 @@ vi.mock('@/constants/quiz-questions', async () => {
     ...original,
     quizQuestions: mockedQuizQuestions,
     getDimensionForQuestion: (questionId: string) => {
-      const question = mockedQuizQuestions.find((q: QuizQuestion) => q.id === questionId);
+      const question = mockedQuizQuestions.find((q) => q.id === questionId);
       return question ? question.dimension : null;
     },
     getQuestionsByDimension: (dimension: 'strategy' | 'implementation' | 'data' | 'culture') => {
-      return mockedQuizQuestions.filter((q: QuizQuestion) => q.dimension === dimension);
+      return mockedQuizQuestions.filter((q) => q.dimension === dimension);
     },
   };
 });
 
 describe('calculateResults', () => {
+  it('should handle empty answers without division by zero error', () => {
+    // Arrange: Create empty answers object
+    const emptyAnswers: QuizAnswers = {};
+
+    // Act: This would previously cause division by zero (NaN or Infinity)
+    const results = calculateResults(emptyAnswers);
+
+    // Assert: Should return sensible defaults instead of NaN
+    expect(results.score).toBe(0);
+    expect(results.band).toBe('Explorer');
+    expect(results.breakdown.strategy).toBe(0);
+    expect(results.breakdown.implementation).toBe(0);
+    expect(results.breakdown.data).toBe(0);
+    expect(results.breakdown.culture).toBe(0);
+    
+    // Verify no NaN or Infinity values
+    expect(isNaN(results.score)).toBe(false);
+    expect(isFinite(results.score)).toBe(true);
+    expect(Object.values(results.breakdown).every(score => isFinite(score))).toBe(true);
+  });
+
+  it('should calculate results correctly with valid answers', () => {
+    // Arrange: Create valid quiz answers
+    const answers: QuizAnswers = {
+      'q1': 2, 'q2': 2, 'q3': 2, // strategy questions
+      'q4': 2, 'q5': 2, 'q6': 2, // implementation
+      'q7': 2, 'q8': 2, 'q9': 2, // data
+      'q10': 2, 'q11': 2, 'q12': 2, // culture
+    };
+
+    // Act
+    const results = calculateResults(answers);
+
+    // Assert: Should calculate percentage correctly
+    // Total score = 12 questions * 2 points = 24
+    // Max score = 12 questions * 3 points = 36
+    // Percentage = (24 / 36) * 100 = 66.67, rounded = 67
+    expect(results.score).toBe(67);
+    expect(results.band).toBe('Experimenter');
+    expect(isFinite(results.score)).toBe(true);
+  });
+
   it('should fail to calculate dimension breakdown correctly when a dimension has a different number of questions', () => {
     // Arrange: Create answers for a quiz where 'strategy' has 4 questions
     const answers: QuizAnswers = {

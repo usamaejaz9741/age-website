@@ -507,8 +507,7 @@
 <a name='L442'></a><a href='#L442'>442</a>
 <a name='L443'></a><a href='#L443'>443</a>
 <a name='L444'></a><a href='#L444'>444</a>
-<a name='L445'></a><a href='#L445'>445</a>
-<a name='L446'></a><a href='#L446'>446</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L445'></a><a href='#L445'>445</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -542,6 +541,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -550,7 +550,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -561,6 +560,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -719,14 +720,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -833,7 +830,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -903,6 +899,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -987,7 +985,8 @@
 <span class="cstat-no" title="statement not covered" >import { Button } from "@/components/ui/button";</span>
 <span class="cstat-no" title="statement not covered" >import { Progress } from "@/components/ui/progress";</span>
 <span class="cstat-no" title="statement not covered" >import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";</span>
-import { QuizResults } from "@/pages/ai-growth-score";
+<span class="cstat-no" title="statement not covered" >import { getBandColors } from "@/constants/colors";</span>
+import type { QuizResults } from "@/types/quiz";
 <span class="cstat-no" title="statement not covered" >import { GeminiAPI } from "@/lib/geminiAPI";</span>
 <span class="cstat-no" title="statement not covered" >import { openCalendlyBooking } from "@/lib/calendly";</span>
 <span class="cstat-no" title="statement not covered" >import { toast } from "@/components/ui/use-toast";</span>
@@ -1003,9 +1002,10 @@ import { QuizResults } from "@/pages/ai-growth-score";
   CheckCircle2,
   ArrowRight,
   Mail,
-  Loader2,
   ExternalLink
 } from "lucide-react";
+<span class="cstat-no" title="statement not covered" >import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, ICON_SIZES, BORDER_RADIUS, SHADOWS, GAP, BACKGROUNDS, CARD_PADDING } from "@/constants/design-system";</span>
+<span class="cstat-no" title="statement not covered" >import { generateMailtoLink } from "@/constants/contact";</span>
 &nbsp;
 /**
  * Props interface for the AIGrowthResults component
@@ -1165,12 +1165,8 @@ interface AIGrowthResultsProps {
 <span class="cstat-no" title="statement not covered" >  }, [results, geminiAPI, userEmail, utmParams, auditContent, quizAnswers]);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  const getBandColor = useCallback((band: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    switch (band) {</span>
-<span class="cstat-no" title="statement not covered" >      case 'Accelerator': return 'text-green-600 bg-green-50 border-green-200';</span>
-<span class="cstat-no" title="statement not covered" >      case 'Experimenter': return 'text-yellow-600 bg-yellow-50 border-yellow-200';</span>
-<span class="cstat-no" title="statement not covered" >      case 'Explorer': return 'text-blue-600 bg-blue-50 border-blue-200';</span>
-<span class="cstat-no" title="statement not covered" >      default: return 'text-muted-foreground bg-muted border-border';</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    const colors = getBandColors(band);</span>
+<span class="cstat-no" title="statement not covered" >    return `${colors.text} ${colors.bg} ${colors.border}`;</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  const getBandDescription = useCallback((band: string) =&gt; {</span>
@@ -1226,21 +1222,21 @@ interface AIGrowthResultsProps {
 <span class="cstat-no" title="statement not covered" >    &lt;div className="min-h-screen bg-background pt-20"&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;div className="max-w-6xl mx-auto px-6 py-8"&gt;</span>
         {/* Header */}
-<span class="cstat-no" title="statement not covered" >        &lt;div className="text-center mb-16 animate-fade-in"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          &lt;h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6" style={{ lineHeight: 'var(--line-height-tight)' }}&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className={`text-center ${MARGIN_BOTTOM.section} animate-fade-in`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;h1 className={`${HEADING_SIZES.h1} text-foreground ${MARGIN_BOTTOM.medium}`}&gt;</span>
             Your AI Growth Score
           &lt;/h1&gt;
-<span class="cstat-no" title="statement not covered" >          &lt;p className="text-xl text-muted-foreground"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;p className={`${TEXT_SIZES.large} text-muted-foreground`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >            Personalized insights for {userEmail}</span>
           &lt;/p&gt;
         &lt;/div&gt;
 &nbsp;
         {/* Score Overview */}
-<span class="cstat-no" title="statement not covered" >        &lt;div className="grid md:grid-cols-2 gap-8 mb-12"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          &lt;Card className="shadow-medium"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className={`grid md:grid-cols-2 ${GAP.large} ${MARGIN_BOTTOM.large}`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;Card className={SHADOWS.medium}&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;CardHeader className="text-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;CardTitle className="text-2xl mb-4"&gt;Overall Score&lt;/CardTitle&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;div className="text-6xl font-bold text-primary mb-2"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;CardTitle className={`${HEADING_SIZES.h3} ${MARGIN_BOTTOM.small}`}&gt;Overall Score&lt;/CardTitle&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;div className={`text-6xl font-bold text-primary ${MARGIN_BOTTOM.xs}`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >                {results.score}%</span>
               &lt;/div&gt;
 <span class="cstat-no" title="statement not covered" >              &lt;div className={`inline-flex px-4 py-2 rounded-full border ${getBandColor(results.band)}`}&gt;</span>
@@ -1248,15 +1244,15 @@ interface AIGrowthResultsProps {
               &lt;/div&gt;
             &lt;/CardHeader&gt;
 <span class="cstat-no" title="statement not covered" >            &lt;CardContent&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;p className="text-muted-foreground text-center"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;p className={`${TEXT_SIZES.base} text-muted-foreground text-center`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >                {getBandDescription(results.band)}</span>
               &lt;/p&gt;
             &lt;/CardContent&gt;
           &lt;/Card&gt;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          &lt;Card className="shadow-medium"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;Card className={SHADOWS.medium}&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;CardHeader&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;CardTitle className="text-2xl mb-4"&gt;Dimension Breakdown&lt;/CardTitle&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;CardTitle className={`${HEADING_SIZES.h3} ${MARGIN_BOTTOM.small}`}&gt;Dimension Breakdown&lt;/CardTitle&gt;</span>
             &lt;/CardHeader&gt;
 <span class="cstat-no" title="statement not covered" >            &lt;CardContent className="space-y-6"&gt;</span>
 <span class="cstat-no" title="statement not covered" >              {Object.entries(results.breakdown).map(([key, score]) =&gt; {</span>
@@ -1264,12 +1260,12 @@ interface AIGrowthResultsProps {
 <span class="cstat-no" title="statement not covered" >                const label = dimensionLabels[key as keyof typeof dimensionLabels];</span>
 <span class="cstat-no" title="statement not covered" >                const scoreValue = score as number;</span>
                 
-<span class="cstat-no" title="statement not covered" >                // Assign different colors to different dimensions</span>
-<span class="cstat-no" title="statement not covered" >                const dimensionColors = {</span>
-<span class="cstat-no" title="statement not covered" >                  strategy: 'var(--icon-purple)',</span>
-<span class="cstat-no" title="statement not covered" >                  implementation: 'var(--icon-blue)',</span>
-<span class="cstat-no" title="statement not covered" >                  data: 'var(--icon-green)',</span>
-<span class="cstat-no" title="statement not covered" >                  culture: 'var(--icon-indigo)'</span>
+<span class="cstat-no" title="statement not covered" >                // Assign different colors to different dimensions using Tailwind classes</span>
+<span class="cstat-no" title="statement not covered" >                const dimensionColorClasses = {</span>
+<span class="cstat-no" title="statement not covered" >                  strategy: 'text-icon-purple',</span>
+<span class="cstat-no" title="statement not covered" >                  implementation: 'text-icon-blue',</span>
+<span class="cstat-no" title="statement not covered" >                  data: 'text-icon-green',</span>
+<span class="cstat-no" title="statement not covered" >                  culture: 'text-icon-indigo'</span>
 <span class="cstat-no" title="statement not covered" >                };</span>
                 
 <span class="cstat-no" title="statement not covered" >                return (</span>
@@ -1277,12 +1273,11 @@ interface AIGrowthResultsProps {
 <span class="cstat-no" title="statement not covered" >                    &lt;div className="flex items-center justify-between"&gt;</span>
 <span class="cstat-no" title="statement not covered" >                      &lt;div className="flex items-center"&gt;</span>
 <span class="cstat-no" title="statement not covered" >                        &lt;Icon </span>
-<span class="cstat-no" title="statement not covered" >                          className="w-5 h-5 mr-2" </span>
-<span class="cstat-no" title="statement not covered" >                          style={{ color: dimensionColors[key as keyof typeof dimensionColors] }}</span>
+<span class="cstat-no" title="statement not covered" >                          className={`${ICON_SIZES.default} ${dimensionColorClasses[key as keyof typeof dimensionColorClasses]} mr-2`}</span>
                         /&gt;
-<span class="cstat-no" title="statement not covered" >                        &lt;span className="font-medium"&gt;{label}&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >                        &lt;span className={`${TEXT_SIZES.base} font-medium`}&gt;{label}&lt;/span&gt;</span>
                       &lt;/div&gt;
-<span class="cstat-no" title="statement not covered" >                      &lt;span className="font-semibold"&gt;{scoreValue}%&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >                      &lt;span className={`${TEXT_SIZES.base} font-semibold`}&gt;{scoreValue}%&lt;/span&gt;</span>
                     &lt;/div&gt;
 <span class="cstat-no" title="statement not covered" >                    &lt;Progress value={scoreValue} className="h-2" /&gt;</span>
                   &lt;/div&gt;
@@ -1293,10 +1288,10 @@ interface AIGrowthResultsProps {
         &lt;/div&gt;
 &nbsp;
         {/* AI-Generated Recommendations */}
-<span class="cstat-no" title="statement not covered" >        &lt;Card className="shadow-medium mb-12"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;Card className={`${SHADOWS.medium} ${MARGIN_BOTTOM.large}`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;CardHeader&gt;</span>
-<span class="cstat-no" title="statement not covered" >            &lt;CardTitle className="text-2xl flex items-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;Target className="w-6 h-6 mr-2 text-[var(--icon-blue)]" /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;CardTitle className={`${HEADING_SIZES.h3} flex items-center`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;Target className={`${ICON_SIZES.medium} mr-2 text-icon-blue`} /&gt;</span>
               AI-Powered Recommendations
             &lt;/CardTitle&gt;
           &lt;/CardHeader&gt;
@@ -1309,13 +1304,13 @@ interface AIGrowthResultsProps {
 <span class="cstat-no" title="statement not covered" >                className="py-12"</span>
               /&gt;
             ) : (
-<span class="cstat-no" title="statement not covered" >              &lt;div className="grid md:grid-cols-3 gap-6"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;div className={`grid md:grid-cols-3 ${GAP.medium}`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >                {recommendations.map((recommendation, index) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >                  &lt;div key={index} className="bg-muted/10 p-6 rounded-xl"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;div className="text-2xl font-bold text-primary mb-2"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;div key={index} className={`bg-muted/10 ${CARD_PADDING.medium} ${BORDER_RADIUS.xl}`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    &lt;div className={`${HEADING_SIZES.h3} text-primary ${MARGIN_BOTTOM.xs}`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >                      {index + 1}</span>
                     &lt;/div&gt;
-<span class="cstat-no" title="statement not covered" >                    &lt;p className="text-foreground font-medium"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    &lt;p className={`${TEXT_SIZES.base} text-foreground font-medium`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >                      {recommendation}</span>
                     &lt;/p&gt;
                   &lt;/div&gt;
@@ -1326,16 +1321,16 @@ interface AIGrowthResultsProps {
         &lt;/Card&gt;
 &nbsp;
         {/* Next Steps */}
-<span class="cstat-no" title="statement not covered" >        &lt;div className="bg-gradient-hero rounded-xl p-8 text-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          &lt;h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className={`${BACKGROUNDS.heroGradient} ${BORDER_RADIUS.xl} p-8 text-center`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;h2 className={`${HEADING_SIZES.h2} text-foreground ${MARGIN_BOTTOM.small}`}&gt;</span>
             Ready to Accelerate Your AI Journey?
           &lt;/h2&gt;
-<span class="cstat-no" title="statement not covered" >          &lt;p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;p className={`${TEXT_SIZES.large} text-muted-foreground ${MARGIN_BOTTOM.large} max-w-3xl mx-auto`}&gt;</span>
             Get a personalized 30-minute strategy session with our AI growth specialists. 
             We'll dive deeper into your results and create a tailored roadmap for your organization.
           &lt;/p&gt;
           
-<span class="cstat-no" title="statement not covered" >          &lt;div className="flex flex-col sm:flex-row gap-4 justify-center items-center"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div className={`flex flex-col sm:flex-row ${GAP.small} justify-center items-center`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >                &lt;Button</span>
 <span class="cstat-no" title="statement not covered" >                  type="button"</span>
 <span class="cstat-no" title="statement not covered" >                  variant="cta"</span>
@@ -1345,14 +1340,16 @@ interface AIGrowthResultsProps {
                 &gt;
 <span class="cstat-no" title="statement not covered" >                &lt;Calendar className="mr-2" /&gt;</span>
                 Book Free Consultation
-<span class="cstat-no" title="statement not covered" >                &lt;ExternalLink className="ml-2 w-4 h-4" /&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;ExternalLink className={`${ICON_SIZES.xs} ml-2`} /&gt;</span>
               &lt;/Button&gt;
             
 <span class="cstat-no" title="statement not covered" >            &lt;Button </span>
 <span class="cstat-no" title="statement not covered" >              variant="cta-outline" </span>
 <span class="cstat-no" title="statement not covered" >              size="xl"</span>
 <span class="cstat-no" title="statement not covered" >              className="group min-w-[280px]"</span>
-<span class="cstat-no" title="statement not covered" >              onClick={() =&gt; window.location.href = 'mailto:hello@alviglobal.com?subject=AI Growth Score Results&amp;body=Hi, I just completed the AI Growth Score assessment and would like to discuss my results.'}</span>
+<span class="cstat-no" title="statement not covered" >              onClick={() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                window.location.href = generateMailtoLink('growthScoreResults');</span>
+<span class="cstat-no" title="statement not covered" >              }}</span>
 <span class="cstat-no" title="statement not covered" >              aria-label="Send email to discuss AI Growth Score results"</span>
             &gt;
 <span class="cstat-no" title="statement not covered" >              &lt;Mail className="mr-2" /&gt;</span>
@@ -1363,29 +1360,29 @@ interface AIGrowthResultsProps {
         &lt;/div&gt;
 &nbsp;
         {/* What's Included */}
-<span class="cstat-no" title="statement not covered" >        &lt;div className="mt-12 bg-gradient-card p-8 rounded-xl shadow-soft"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          &lt;h3 className="text-2xl font-bold text-center mb-8"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className={`mt-12 bg-gradient-card ${CARD_PADDING.large} ${BORDER_RADIUS.xl} ${SHADOWS.soft}`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;h3 className={`${HEADING_SIZES.h3} text-center ${MARGIN_BOTTOM.large}`}&gt;</span>
             What's Included in Your Strategy Session
           &lt;/h3&gt;
-<span class="cstat-no" title="statement not covered" >          &lt;div className="grid md:grid-cols-3 gap-6"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div className={`grid md:grid-cols-3 ${GAP.medium}`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;div className="text-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" /&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;h4 className="font-semibold mb-2"&gt;Deep Dive Analysis&lt;/h4&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;p className="text-muted-foreground text-sm"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;CheckCircle2 className={`${ICON_SIZES.large} mx-auto my-auto ${MARGIN_BOTTOM.small} text-[var(--icon-green)] flex-shrink-0`} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;h4 className={`${HEADING_SIZES.h5} ${MARGIN_BOTTOM.xs}`}&gt;Deep Dive Analysis&lt;/h4&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;p className={`${TEXT_SIZES.small} text-muted-foreground`}&gt;</span>
                 Detailed review of your assessment results and current AI maturity
               &lt;/p&gt;
             &lt;/div&gt;
 <span class="cstat-no" title="statement not covered" >            &lt;div className="text-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" /&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;h4 className="font-semibold mb-2"&gt;Custom Roadmap&lt;/h4&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;p className="text-muted-foreground text-sm"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;CheckCircle2 className={`${ICON_SIZES.large} mx-auto my-auto ${MARGIN_BOTTOM.small} text-[var(--icon-green)] flex-shrink-0`} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;h4 className={`${HEADING_SIZES.h5} ${MARGIN_BOTTOM.xs}`}&gt;Custom Roadmap&lt;/h4&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;p className={`${TEXT_SIZES.small} text-muted-foreground`}&gt;</span>
                 90-day action plan with prioritized initiatives and success metrics
               &lt;/p&gt;
             &lt;/div&gt;
 <span class="cstat-no" title="statement not covered" >            &lt;div className="text-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;CheckCircle2 className="w-8 h-8 mx-auto my-auto mb-4 text-[var(--icon-green)] flex-shrink-0" /&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;h4 className="font-semibold mb-2"&gt;Resource Recommendations&lt;/h4&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;p className="text-muted-foreground text-sm"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;CheckCircle2 className={`${ICON_SIZES.large} mx-auto my-auto ${MARGIN_BOTTOM.small} text-[var(--icon-green)] flex-shrink-0`} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;h4 className={`${HEADING_SIZES.h5} ${MARGIN_BOTTOM.xs}`}&gt;Resource Recommendations&lt;/h4&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;p className={`${TEXT_SIZES.small} text-muted-foreground`}&gt;</span>
                 Specific tools, partners, and capabilities needed for your next phase
               &lt;/p&gt;
             &lt;/div&gt;
@@ -1405,7 +1402,7 @@ interface AIGrowthResultsProps {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T08:50:15.946Z
+                at 2025-10-22T07:34:44.782Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

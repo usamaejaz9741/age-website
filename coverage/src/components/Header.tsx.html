@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/155</span>
+                <span class='fraction'>0/154</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/155</span>
+                <span class='fraction'>0/154</span>
             </div>
         
             
@@ -374,7 +374,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -602,15 +602,14 @@
 <span class="cstat-no" title="statement not covered" >  };</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  /**</span>
-   * Handle Calendly booking button click
+   * Handle Calendly booking button click with focus management
    * 
-   * @param e - Optional mouse event to prevent default behavior
+   * @param e - Mouse event containing the trigger element
 <span class="cstat-no" title="statement not covered" >   */</span>
-<span class="cstat-no" title="statement not covered" >  const handleBookConsultation = (e?: React.MouseEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (e) {</span>
-<span class="cstat-no" title="statement not covered" >      e.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >      e.stopPropagation();</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >  const handleBookConsultation = (e: React.MouseEvent&lt;HTMLButtonElement&gt;) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >    e.stopPropagation();</span>
+    
 <span class="cstat-no" title="statement not covered" >    openCalendlyBooking(</span>
 <span class="cstat-no" title="statement not covered" >      undefined,</span>
 <span class="cstat-no" title="statement not covered" >      {</span>
@@ -619,7 +618,8 @@
 <span class="cstat-no" title="statement not covered" >        utmMedium: 'header',</span>
 <span class="cstat-no" title="statement not covered" >        utmContent: 'book-consultation'</span>
 <span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >      'Header CTA'</span>
+<span class="cstat-no" title="statement not covered" >      'Header CTA',</span>
+<span class="cstat-no" title="statement not covered" >      e.currentTarget as HTMLElement</span>
     );
 <span class="cstat-no" title="statement not covered" >    setIsMenuOpen(false);</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
@@ -662,7 +662,7 @@
       {/* Skip to main content link for accessibility */}
 <span class="cstat-no" title="statement not covered" >      &lt;a </span>
 <span class="cstat-no" title="statement not covered" >        href="#main-content" </span>
-<span class="cstat-no" title="statement not covered" >        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"</span>
+<span class="cstat-no" title="statement not covered" >        className="sr-only focus:not-sr-only focus:absolute focus:top-[var(--space-md)] focus:left-[var(--space-md)] bg-primary text-primary-foreground px-[var(--space-md)] py-[var(--space-sm)] rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"</span>
 <span class="cstat-no" title="statement not covered" >      &gt;</span>
         Skip to main content
       &lt;/a&gt;
@@ -690,7 +690,7 @@
 <span class="cstat-no" title="statement not covered" >                decoding="sync"</span>
 <span class="cstat-no" title="statement not covered" >                width="120"</span>
 <span class="cstat-no" title="statement not covered" >                height="40"</span>
-<span class="cstat-no" title="statement not covered" >                fetchpriority="high"</span>
+<span class="cstat-no" title="statement not covered" >                fetchPriority="high"</span>
               /&gt;
             &lt;/button&gt;
           &lt;/div&gt;
@@ -725,7 +725,7 @@
 <span class="cstat-no" title="statement not covered" >          &lt;div className="md:hidden"&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;button</span>
 <span class="cstat-no" title="statement not covered" >              onClick={() =&gt; setIsMenuOpen(!isMenuOpen)}</span>
-<span class="cstat-no" title="statement not covered" >              className="text-neutral-75 hover:text-resolution-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md p-1"</span>
+<span class="cstat-no" title="statement not covered" >              className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] text-neutral-75 hover:text-resolution-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md"</span>
 <span class="cstat-no" title="statement not covered" >              aria-label="Toggle mobile menu"</span>
 <span class="cstat-no" title="statement not covered" >              aria-expanded={isMenuOpen}</span>
             &gt;
@@ -775,7 +775,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T08:50:15.946Z
+                at 2025-10-22T07:34:44.782Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

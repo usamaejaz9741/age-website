@@ -75,7 +75,7 @@ interface State {
 class ErrorBoundary extends Component<Props, State> {
   private static readonly MAX_RETRIES = 3;
   private static readonly RETRY_DELAY = 1000; // Base delay in milliseconds
-  private retryTimeout?: number;
+  private retryTimeout?: ReturnType<typeof setTimeout>;
   
   /**
    * Constructor for the ErrorBoundary component

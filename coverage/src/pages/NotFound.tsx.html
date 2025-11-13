@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/85</span>
+                <span class='fraction'>0/86</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/85</span>
+                <span class='fraction'>0/86</span>
             </div>
         
             
@@ -265,7 +265,8 @@
 <a name='L200'></a><a href='#L200'>200</a>
 <a name='L201'></a><a href='#L201'>201</a>
 <a name='L202'></a><a href='#L202'>202</a>
-<a name='L203'></a><a href='#L203'>203</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,6 +291,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -498,6 +500,7 @@
 <span class="cstat-no" title="statement not covered" >import { Home, ArrowLeft } from "lucide-react";</span>
 <span class="cstat-no" title="statement not covered" >import PageTemplate from "@/components/PageTemplate";</span>
 <span class="cstat-no" title="statement not covered" >import SectionTemplate from "@/components/SectionTemplate";</span>
+<span class="cstat-no" title="statement not covered" >import { HEADING_SIZES, TEXT_SIZES, MARGIN_BOTTOM, GAP, BUTTON_STYLES } from "@/constants/design-system";</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >/**</span>
  * 404 Not Found Page Component
@@ -565,8 +568,8 @@
 <span class="cstat-no" title="statement not covered" >      });</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
     
-<span class="cstat-no" title="statement not covered" >    // TODO: Integrate with error tracking service (e.g., Sentry)</span>
-<span class="cstat-no" title="statement not covered" >    // Example: Sentry.captureException(new Error(`404: ${location.pathname}`));</span>
+<span class="cstat-no" title="statement not covered" >    // Error tracking integration can be added here when needed</span>
+<span class="cstat-no" title="statement not covered" >    // Example: errorTrackingService.captureException(new Error(`404: ${location.pathname}`));</span>
 <span class="cstat-no" title="statement not covered" >  }, [location.pathname]);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  /**</span>
@@ -626,23 +629,23 @@
       &gt;
 <span class="cstat-no" title="statement not covered" >        &lt;div className="text-center"&gt;</span>
           {/* Error code display with brand styling */}
-<span class="cstat-no" title="statement not covered" >          &lt;div className="mb-8"&gt;</span>
-<span class="cstat-no" title="statement not covered" >            &lt;h1 className="text-8xl font-bold text-primary mb-4"&gt;404&lt;/h1&gt;</span>
-<span class="cstat-no" title="statement not covered" >            &lt;h2 className="text-2xl font-heading font-bold text-foreground mb-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div className={MARGIN_BOTTOM.large}&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;h1 className={`text-8xl font-bold text-primary ${MARGIN_BOTTOM.small}`}&gt;404&lt;/h1&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;h2 className={`${HEADING_SIZES.h3} text-foreground ${MARGIN_BOTTOM.small}`}&gt;</span>
               Page Not Found
             &lt;/h2&gt;
-<span class="cstat-no" title="statement not covered" >            &lt;p className="text-muted-foreground leading-relaxed"&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;p className={`${TEXT_SIZES.base} text-muted-foreground`}&gt;</span>
               The page you're looking for doesn't exist or has been moved. 
               Let's get you back on track.
             &lt;/p&gt;
           &lt;/div&gt;
           
           {/* Navigation buttons */}
-<span class="cstat-no" title="statement not covered" >          &lt;div className="flex flex-col sm:flex-row gap-4 justify-center"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div className={`flex flex-col sm:flex-row ${GAP.small} justify-center`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Button </span>
 <span class="cstat-no" title="statement not covered" >              onClick={handleGoHome}</span>
 <span class="cstat-no" title="statement not covered" >              variant="cta"</span>
-<span class="cstat-no" title="statement not covered" >              className="group"</span>
+<span class="cstat-no" title="statement not covered" >              className={`group ${BUTTON_STYLES.responsive}`}</span>
             &gt;
 <span class="cstat-no" title="statement not covered" >              &lt;Home className="w-4 h-4 mr-2" /&gt;</span>
               Go Home
@@ -651,7 +654,7 @@
 <span class="cstat-no" title="statement not covered" >            &lt;Button </span>
 <span class="cstat-no" title="statement not covered" >              onClick={handleGoBack}</span>
 <span class="cstat-no" title="statement not covered" >              variant="cta-outline"</span>
-<span class="cstat-no" title="statement not covered" >              className="group"</span>
+<span class="cstat-no" title="statement not covered" >              className={`group ${BUTTON_STYLES.responsive}`}</span>
             &gt;
 <span class="cstat-no" title="statement not covered" >              &lt;ArrowLeft className="w-4 h-4 mr-2" /&gt;</span>
               Go Back
@@ -659,7 +662,7 @@
           &lt;/div&gt;
           
           {/* Additional help text */}
-<span class="cstat-no" title="statement not covered" >          &lt;p className="text-sm text-muted-foreground mt-8"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;p className={`${TEXT_SIZES.small} text-muted-foreground mt-8`}&gt;</span>
             If you believe this is an error, please contact our support team.
           &lt;/p&gt;
         &lt;/div&gt;
@@ -676,7 +679,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T08:50:15.946Z
+                at 2025-10-22T07:34:44.782Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

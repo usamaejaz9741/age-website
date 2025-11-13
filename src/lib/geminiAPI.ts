@@ -131,12 +131,25 @@ export class GeminiAPI {
       // Parse and validate response
       const data = (await response.json()) as GeminiResponse;
       
-      // Extract generated text from response
+      // Extract generated text from response with comprehensive validation
       if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        throw new Error('Invalid response format from Gemini API');
+        throw new Error('Invalid response format from Gemini API: missing candidates or content');
       }
       
-      return data.candidates[0].content.parts[0].text;
+      const content = data.candidates[0].content;
+      
+      // Validate parts array exists and has elements
+      if (!content.parts || !Array.isArray(content.parts) || content.parts.length === 0) {
+        throw new Error('Invalid response format from Gemini API: missing or empty parts array');
+      }
+      
+      // Validate first part has text property
+      const firstPart = content.parts[0];
+      if (!firstPart || typeof firstPart.text !== 'string') {
+        throw new Error('Invalid response format from Gemini API: missing text in response');
+      }
+      
+      return firstPart.text;
     } catch (error) {
       // Enhanced error handling with specific error types
       if (error instanceof Error) {

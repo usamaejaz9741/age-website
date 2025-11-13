@@ -10,6 +10,18 @@
  * analytics capabilities, and admin access to all submissions.
  */
 
+import { logError } from './console-utils';
+
+/**
+ * Storage configuration constants
+ */
+const STORAGE_RETENTION_DAYS = 90; // Keep submissions for 90 days
+const MAX_SUBMISSIONS = 100; // Maximum number of submissions to store
+const MAX_STORAGE_SIZE_MB = 4; // Maximum storage size in MB before cleanup
+const FALLBACK_SUBMISSION_COUNT_HIGH = 50; // First fallback: keep 50 submissions
+const FALLBACK_SUBMISSION_COUNT_LOW = 10; // Second fallback: keep 10 submissions
+const STORAGE_KEY = 'age_user_submissions'; // Primary storage key
+
 /**
  * Interface for user submission data structure
  * Contains all assessment results and metadata for analysis
@@ -51,10 +63,22 @@ export interface UserSubmission {
  * This function stores user submissions in the following priority:
  * 1. Saves to Supabase database (primary storage)
  * 2. Falls back to localStorage if database fails
- * 3. Logs data to console for debugging
+ * 3. Logs errors for debugging in development mode
  * 
  * @param data - User submission data to save
  * @returns Promise<boolean> - Success status of the save operation
+ * 
+ * @example
+ * ```typescript
+ * const success = await saveUserData({
+ *   timestamp: new Date().toISOString(),
+ *   email: 'user@example.com',
+ *   score: 75,
+ *   band: 'Accelerator',
+ *   dimensions: { strategy: 80, implementation: 70, data: 75, culture: 80 },
+ *   recommendations: ['Develop AI strategy']
+ * });
+ * ```
  */
 export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
   try {
@@ -83,94 +107,184 @@ export const saveUserData = async (data: UserSubmission): Promise<boolean> => {
 
     return true;
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.error('Error saving user data:', error);
-    }
+    logError('Save User Data', error);
     return false;
   }
 };
 
 /**
+ * Load existing submissions from localStorage
+ * 
+ * @returns Array of existing submissions, or empty array if none found or parse fails
+ */
+const loadExistingSubmissions = (): UserSubmission[] => {
+  const existingDataString = localStorage.getItem(STORAGE_KEY);
+  
+  if (!existingDataString) {
+    return [];
+  }
+  
+  try {
+    const submissions = JSON.parse(existingDataString);
+    return Array.isArray(submissions) ? submissions : [];
+  } catch (parseError) {
+    logError('Load Submissions', parseError, { action: 'Parsing localStorage data' });
+    return [];
+  }
+};
+
+/**
+ * Remove submissions older than the retention period
+ * 
+ * @param submissions - Array of submissions to filter
+ * @returns Filtered array with only recent submissions
+ */
+const cleanupOldSubmissions = (submissions: UserSubmission[]): UserSubmission[] => {
+  const retentionCutoff = Date.now() - (STORAGE_RETENTION_DAYS * 24 * 60 * 60 * 1000);
+  return submissions.filter(sub => 
+    new Date(sub.timestamp).getTime() > retentionCutoff
+  );
+};
+
+/**
+ * Enforce submission count limit
+ * 
+ * @param submissions - Array of submissions
+ * @returns Array limited to MAX_SUBMISSIONS
+ */
+const enforceSubmissionLimit = (submissions: UserSubmission[]): UserSubmission[] => {
+  if (submissions.length >= MAX_SUBMISSIONS) {
+    return submissions.slice(-(MAX_SUBMISSIONS - 1)); // Keep (MAX-1), add 1 new = MAX total
+  }
+  return submissions;
+};
+
+/**
+ * Check if serialized data exceeds size threshold
+ * 
+ * @param jsonString - Serialized JSON string
+ * @returns true if data is too large
+ */
+const exceedsStorageLimit = (jsonString: string): boolean => {
+  const sizeInBytes = jsonString.length;
+  const maxSizeInBytes = MAX_STORAGE_SIZE_MB * 1024 * 1024;
+  return sizeInBytes > maxSizeInBytes;
+};
+
+/**
+ * Persist submissions to localStorage with progressive fallback strategy
+ * 
+ * This function implements a multi-tier fallback strategy:
+ * 1. Try to save all submissions
+ * 2. If too large, reduce to FALLBACK_SUBMISSION_COUNT_HIGH (50) submissions
+ * 3. If quota exceeded, reduce to FALLBACK_SUBMISSION_COUNT_LOW (10) submissions
+ * 4. If still failing, save only the current submission
+ * 5. If completely unavailable, fail silently
+ * 
+ * @param submissions - Array of submissions to persist
+ * @param currentSubmission - The current submission being saved
+ */
+const persistSubmissions = (submissions: UserSubmission[], currentSubmission: UserSubmission): void => {
+  try {
+    let dataToSave = submissions;
+    const jsonString = JSON.stringify(dataToSave);
+    
+    // Check if data is too large before attempting to save
+    if (exceedsStorageLimit(jsonString)) {
+      logError('Persist Submissions', `Storage size exceeds ${MAX_STORAGE_SIZE_MB}MB, reducing to ${FALLBACK_SUBMISSION_COUNT_HIGH} submissions`);
+      dataToSave = submissions.slice(-FALLBACK_SUBMISSION_COUNT_HIGH);
+    }
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+  } catch (storageError) {
+    logError('Persist Submissions', storageError);
+    
+    // Progressive fallback strategy for quota exceeded errors
+    saveWithFallback(submissions, currentSubmission);
+  }
+};
+
+/**
+ * Save submissions with progressive fallback strategy when quota is exceeded
+ * 
+ * @param submissions - Original array of submissions
+ * @param currentSubmission - The current submission being saved
+ */
+const saveWithFallback = (submissions: UserSubmission[], currentSubmission: UserSubmission): void => {
+  // Fallback 1: Try with last FALLBACK_SUBMISSION_COUNT_LOW submissions
+  try {
+    const reducedSubmissions = submissions.slice(-FALLBACK_SUBMISSION_COUNT_LOW);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reducedSubmissions));
+    logError('Save Fallback', `Reduced to ${FALLBACK_SUBMISSION_COUNT_LOW} submissions due to quota`);
+    return;
+  } catch {
+    // Continue to next fallback
+  }
+  
+  // Fallback 2: Try with only current submission
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([currentSubmission]));
+    logError('Save Fallback', 'Reduced to single submission due to quota');
+    return;
+  } catch {
+    // Continue to final fallback
+  }
+  
+  // Fallback 3: localStorage is completely unavailable - fail silently
+  logError('Save Fallback', 'localStorage completely unavailable, data not persisted');
+};
+
+/**
+ * Save individual submission with timestamped key
+ * 
+ * @param data - Submission to save individually
+ */
+const saveIndividualSubmission = (data: UserSubmission): void => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const sanitizedEmail = data.email.replace('@', '_at_').replace(/[^a-zA-Z0-9._-]/g, '_');
+  const individualKey = `age_submission_${sanitizedEmail}_${timestamp}`;
+  
+  try {
+    localStorage.setItem(individualKey, JSON.stringify(data));
+  } catch (storageError) {
+    // Individual submission storage failed - non-critical
+    logError('Save Individual Submission', storageError, { key: individualKey });
+  }
+};
+
+/**
  * Save data to localStorage (fallback method)
+ * 
+ * Implements a robust storage strategy with automatic cleanup and fallback mechanisms:
+ * - Loads existing submissions
+ * - Removes old submissions based on retention policy
+ * - Enforces submission count limits
+ * - Adds new submission
+ * - Persists with progressive fallback on quota errors
+ * - Saves individual timestamped copy
  */
 const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
   try {
-    // Save to localStorage for client-side access
-    const existingDataString = localStorage.getItem('age_user_submissions');
-    let submissions: UserSubmission[] = [];
+    // Load existing submissions
+    let submissions = loadExistingSubmissions();
     
-    // Safely parse existing data
-    if (existingDataString) {
-      try {
-        submissions = JSON.parse(existingDataString);
-      } catch (parseError) {
-        if (import.meta.env.DEV) {
-          console.error('Error parsing existing localStorage data:', parseError);
-        }
-        // Reset to empty array if parse fails
-        submissions = [];
-      }
-    }
-
-    // Remove submissions older than 90 days to save space
-    const ninetyDaysAgo = Date.now() - (90 * 24 * 60 * 60 * 1000);
-    submissions = submissions.filter(sub => 
-      new Date(sub.timestamp).getTime() > ninetyDaysAgo
-    );
-
-    // Limit to 100 most recent submissions
-    if (submissions.length >= 100) {
-      submissions = submissions.slice(-99); // Keep 99, add 1 new = 100 total
-    }
-
-    // Add new submission to the array
+    // Cleanup old submissions
+    submissions = cleanupOldSubmissions(submissions);
+    
+    // Enforce submission limit
+    submissions = enforceSubmissionLimit(submissions);
+    
+    // Add new submission
     submissions.push(data);
-
-    // Update localStorage with enhanced error handling
-    try {
-      const jsonString = JSON.stringify(submissions);
-      // Check if data is too large (localStorage limit is typically 5-10MB)
-      if (jsonString.length > 4 * 1024 * 1024) { // 4MB threshold
-        // Keep only the most recent 50 submissions
-        submissions = submissions.slice(-50);
-      }
-      localStorage.setItem('age_user_submissions', JSON.stringify(submissions));
-    } catch (storageError) {
-      if (import.meta.env.DEV) {
-        console.error('Error setting localStorage:', storageError);
-      }
-      // Quota exceeded - progressively reduce data
-      try {
-        // Try with last 10 submissions
-        localStorage.setItem('age_user_submissions', JSON.stringify(submissions.slice(-10)));
-      } catch {
-        // Last resort: keep only current submission
-        try {
-          localStorage.setItem('age_user_submissions', JSON.stringify([data]));
-        } catch {
-          // localStorage is completely unavailable - fail silently
-        }
-      }
-    }
-
-    // Save individual submission with timestamp
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const sanitizedEmail = data.email.replace('@', '_at_').replace(/[^a-zA-Z0-9._-]/g, '_');
-    const individualKey = `age_submission_${sanitizedEmail}_${timestamp}`;
     
-    try {
-      localStorage.setItem(individualKey, JSON.stringify(data));
-    } catch (storageError) {
-      // Individual submission storage failed - non-critical
-      if (import.meta.env.DEV) {
-        console.error('Error saving individual submission:', storageError);
-      }
-    }
-
+    // Persist with progressive fallback strategy
+    persistSubmissions(submissions, data);
+    
+    // Save individual submission with timestamp (non-critical)
+    saveIndividualSubmission(data);
+    
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.error('Error saving to localStorage:', error);
-    }
+    logError('Save to localStorage', error);
   }
 };
 
@@ -180,14 +294,24 @@ const saveToLocalStorage = async (data: UserSubmission): Promise<void> => {
  * 
  * This function reads all stored submissions from localStorage and converts them 
  * to CSV format for easy analysis in spreadsheet applications or data analysis tools.
- * The CSV file is automatically downloaded to the user's device.
+ * The CSV file is automatically downloaded to the user's device with timestamp.
  * 
  * @returns boolean - Success status of the export operation
+ * 
+ * @example
+ * ```typescript
+ * const success = exportToCSV();
+ * if (success) {
+ *   console.log('Export completed successfully');
+ * }
+ * ```
+ * 
+ * @throws Does not throw - returns false on error
  */
 export const exportToCSV = (): boolean => {
   try {
     // Read submissions from localStorage
-    const existingData = localStorage.getItem('age_user_submissions');
+    const existingData = localStorage.getItem(STORAGE_KEY);
     
     if (!existingData) {
       return false;
@@ -197,9 +321,7 @@ export const exportToCSV = (): boolean => {
     try {
       submissions = JSON.parse(existingData);
     } catch (parseError) {
-      if (import.meta.env.DEV) {
-        console.error('Error parsing localStorage data for export:', parseError);
-      }
+      logError('Export to CSV', parseError, { action: 'Parsing localStorage data' });
       return false;
     }
 
@@ -256,9 +378,7 @@ export const exportToCSV = (): boolean => {
 
     return true;
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.error('Error exporting to CSV:', error);
-    }
+    logError('Export to CSV', error);
     return false;
   }
 };

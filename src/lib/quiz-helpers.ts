@@ -108,9 +108,25 @@ export const calculateResults = (answers: QuizAnswers): QuizResults => {
    * - maxScore = number of questions × 3 (maximum points per question)
    *
    * @rounding Math.round() ensures clean integer percentages for user display
+   * @edge-case Returns 0 when no answers are provided (prevents division by zero)
    */
   const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
   const maxScore = Object.keys(answers).length * 3; // 3-point scale (0-3)
+  
+  // Prevent division by zero when no answers are provided
+  if (maxScore === 0) {
+    return {
+      score: SCORE_THRESHOLDS.MIN_SCORE,
+      band: 'Explorer' as const,
+      breakdown: {
+        strategy: SCORE_THRESHOLDS.MIN_SCORE,
+        implementation: SCORE_THRESHOLDS.MIN_SCORE,
+        data: SCORE_THRESHOLDS.MIN_SCORE,
+        culture: SCORE_THRESHOLDS.MIN_SCORE
+      }
+    };
+  }
+  
   const percentage = Math.round((totalScore / maxScore) * 100);
 
   /**

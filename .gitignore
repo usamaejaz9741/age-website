@@ -48,5 +48,9 @@ test-results/
 *.spec.ts-snapshots/
 .nyc_output/
 
+# Test output files (should not be committed)
+test_*.txt
+audit_report.json
+
 # Build artifacts
 *.tsbuildinfo

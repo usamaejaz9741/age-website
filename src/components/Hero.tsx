@@ -146,8 +146,7 @@ const Hero = memo(() => {
        * Uses BACKGROUNDS.gradientOverlay token for consistent theming
        */}
       <div 
-        className={`fixed inset-0 z-20 pointer-events-none ${BACKGROUNDS.gradientOverlay}`} 
-        style={{ willChange: 'auto' }} 
+        className={`absolute inset-0 z-20 pointer-events-none ${BACKGROUNDS.gradientOverlay}`}
       />
 
       {/* ====================================================================
@@ -187,7 +186,7 @@ const Hero = memo(() => {
          * Will-change is used to create a new composite layer for smooth
          * animation, then removed after animation completes (handled by CSS).
          */}
-        <div className="animate-fade-in" style={{ willChange: 'transform, opacity' }}>
+        <div className="animate-fade-in">
           
           {/* ==================================================================
               MAIN HEADLINE
@@ -301,8 +300,7 @@ const Hero = memo(() => {
            * - Touch target size minimum 44x44px (WCAG 2.1)
            */}
           <div 
-            className={`flex flex-col sm:flex-row ${GAP.medium} justify-center items-center animate-slide-up pointer-events-auto`} 
-            style={{ willChange: 'transform, opacity' }}
+            className={`flex flex-col sm:flex-row ${GAP.medium} justify-center items-center animate-slide-up pointer-events-auto`}
           >
             {            /**
              * Primary CTA: Book Free Consultation
@@ -439,9 +437,9 @@ const Hero = memo(() => {
        * - Hidden once user scrolls (natural behavior)
        * - Respects prefers-reduced-motion preferences
        */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-pulse-soft z-20 pointer-events-none">
-        <div className="w-6 h-10 border-2 border-muted-foreground rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-muted-foreground rounded-full mt-2 animate-bounce" />
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none">
+        <div className="w-6 h-10 border-2 border-muted-foreground rounded-full flex justify-center opacity-60">
+          <div className="w-1 h-3 bg-muted-foreground rounded-full mt-2 motion-safe:animate-bounce" />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-[var(--font-size-sm)] font-medium leading-none ring-offset-background transition-all duration-300 ease-gentle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:flex-shrink-0 [&_svg]:transition-colors [&_svg]:duration-300 [&_svg]:stroke-current",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium leading-none ring-offset-background transition-all duration-300 ease-gentle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:flex-shrink-0 [&_svg]:transition-colors [&_svg]:duration-300 [&_svg]:stroke-current",
   {
     variants: {
       variant: {
@@ -19,7 +19,7 @@ export const buttonVariants = cva(
         default: "h-10 min-h-[44px] px-4 py-2",        // 44px height (meets touch target)
         sm: "h-9 min-h-[44px] px-3",                   // 44px height (meets touch target)
         lg: "h-12 min-h-[48px] px-8",                  // 48px height (enhanced touch target)
-        xl: "h-16 min-h-[64px] px-10 text-[var(--font-size-lg)]",        // 64px height (extra emphasis)
+        xl: "h-16 min-h-[64px] px-10 text-lg",        // 64px height (extra emphasis)
         icon: "h-11 w-11 min-h-[44px] min-w-[44px]",  // 44px square (meets touch target)
       },
     },

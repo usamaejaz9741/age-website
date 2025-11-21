@@ -1,4 +1,18 @@
+/**
+ * @fileoverview AI Growth Score Assessment Page
+ * 
+ * This page hosts the multi-step AI maturity assessment flow, including:
+ * 1. Hero section with value proposition
+ * 2. Interactive quiz interface
+ * 3. Email capture for lead generation
+ * 4. Results display with AI-generated recommendations
+ * 
+ * @component
+ * @route /ai-growth-score
+ */
+
 import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 import PageTemplate from "@/components/PageTemplate";
 import SectionTemplate from "@/components/SectionTemplate";
 import { AnimatedCard } from "@/components/ui/animated-card";
@@ -9,10 +23,18 @@ import EmailStep from "@/components/EmailStep";
 import { generateQuizAudit, type QuizAuditData } from "@/lib/gemini";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Target, Zap } from "lucide-react";
-// import { isValidScore, isValidBand, isValidDimensionScores } from "@/lib/type-guards"; // Unused imports removed
 import { calculateResults } from "@/lib/quiz-helpers";
 import type { QuizAnswers, QuizResults } from "@/types/quiz";
 
+/**
+ * AI Growth Score Page Component
+ * 
+ * Manages the state and transitions between different steps of the assessment:
+ * - Hero: Introduction and start button
+ * - Quiz: Interactive questions
+ * - Email: Lead capture form
+ * - Results: Score display and recommendations
+ */
 const AIGrowthScore = () => {
   const [currentStep, setCurrentStep] = useState<'hero' | 'quiz' | 'email' | 'results'>('hero');
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
@@ -23,7 +45,10 @@ const AIGrowthScore = () => {
   const [auditContent, setAuditContent] = useState<string>('');
   const [utmParams, setUtmParams] = useState<Record<string, string>>({});
 
-  // Extract UTM parameters from URL
+  /**
+   * Extract and sanitize UTM parameters from URL on mount
+   * Used for marketing attribution and analytics
+   */
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const utm: Record<string, string> = {};
@@ -44,10 +69,20 @@ const AIGrowthScore = () => {
     setUtmParams(utm);
   }, []);
 
+  /**
+   * Start the quiz flow
+   * Transitions from Hero to Quiz step
+   */
   const startQuiz = useCallback(() => {
     setCurrentStep('quiz');
   }, []);
 
+  /**
+   * Handle quiz completion
+   * Calculates results and transitions to Email step
+   * 
+   * @param answers - The user's answers to the quiz
+   */
   const handleQuizComplete = useCallback((answers: QuizAnswers) => {
     setQuizAnswers(answers);
     
@@ -59,6 +94,10 @@ const AIGrowthScore = () => {
     setCurrentStep('email');
   }, []);
 
+  /**
+   * Handle email submission and audit generation
+   * Generates personalized AI audit and transitions to Results step
+   */
   const handleEmailSubmit = useCallback(async () => {
     if (!userEmail || !hasConsent || !quizResults) return;
 
@@ -88,6 +127,15 @@ const AIGrowthScore = () => {
         // Request was cancelled - don't proceed
         return;
       }
+      
+      // Log error for debugging
+      console.error("Error generating audit:", error);
+      
+      // Show error toast
+      toast.error("There was an issue generating your personalized audit.", {
+        description: "We've provided general results instead. Please try again later for the full report.",
+        duration: 5000,
+      });
       
       // Error generating audit - handled gracefully
       // Still move to results with fallback content

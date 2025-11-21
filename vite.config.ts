@@ -26,8 +26,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "localhost",        // Server hostname
     port: 8080,              // Server port
-    strictPort: false,       // Allow fallback to other ports if 8080 is busy
-    open: true,              // Automatically open browser on start
+    strictPort: true,        // Enforce port 8080 for reliable E2E testing
+    open: false,             // Disable auto-open for better test/CI experience
   },
   
   // Plugin configuration

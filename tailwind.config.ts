@@ -220,134 +220,93 @@ export default {
         'bounce': 'var(--ease-bounce)',
       },
       
-          // Custom keyframe animations
-          keyframes: {
-            // Accordion animations (for shadcn/ui components)
-            "accordion-down": {
-              from: { height: "0" },
-              to: { height: "var(--radix-accordion-content-height)" },
-            },
-            "accordion-up": {
-              from: { height: "var(--radix-accordion-content-height)" },
-              to: { height: "0" },
-            },
-            // Alvi Global Enterprises brand animations - Mathematically optimized
-            "fade-in": {
-              "0%": {
-                opacity: "0",
-                transform: "translateY(20px)"
-              },
-              "100%": {
-                opacity: "1",
-                transform: "translateY(0)"
-              }
-            },
-            "slide-up": {
-              "0%": {
-                opacity: "0",
-                transform: "translateY(15px)"
-              },
-              "100%": {
-                opacity: "1",
-                transform: "translateY(0)"
-              }
-            },
-            "scale-in": {
-              "0%": {
-                opacity: "0",
-                transform: "scale(0.9)"
-              },
-              "100%": {
-                opacity: "1",
-                transform: "scale(1)"
-              }
-            },
-            "pulse-soft": {
-              "0%, 100%": { opacity: "1" },
-              "50%": { opacity: "0.8" }
-            },
-            // Floating blob animations
-            "float-slow": {
-              "0%, 100%": {
-                transform: "translateY(0px) translateX(0px) scale(1)"
-              },
-              "25%": {
-                transform: "translateY(-20px) translateX(10px) scale(1.05)"
-              },
-              "50%": {
-                transform: "translateY(-10px) translateX(-15px) scale(0.95)"
-              },
-              "75%": {
-                transform: "translateY(-30px) translateX(5px) scale(1.02)"
-              }
-            },
-            "float-medium": {
-              "0%, 100%": {
-                transform: "translateY(0px) translateX(0px) scale(1)"
-              },
-              "33%": {
-                transform: "translateY(-25px) translateX(-20px) scale(1.08)"
-              },
-              "66%": {
-                transform: "translateY(-15px) translateX(25px) scale(0.92)"
-              }
-            },
-            "float-fast": {
-              "0%, 100%": {
-                transform: "translateY(0px) translateX(0px) scale(1)"
-              },
-              "20%": {
-                transform: "translateY(-15px) translateX(12px) scale(1.03)"
-              },
-              "40%": {
-                transform: "translateY(-35px) translateX(-8px) scale(0.97)"
-              },
-              "60%": {
-                transform: "translateY(-20px) translateX(18px) scale(1.06)"
-              },
-              "80%": {
-                transform: "translateY(-10px) translateX(-12px) scale(0.94)"
-              }
-            },
-            // Additional animations for SectionTemplate
-            "slide-left": {
-              "0%": {
-                opacity: "0",
-                transform: "translateX(-30px)"
-              },
-              "100%": {
-                opacity: "1",
-                transform: "translateX(0)"
-              }
-            },
-            "slide-right": {
-              "0%": {
-                opacity: "0",
-                transform: "translateX(30px)"
-              },
-              "100%": {
-                opacity: "1",
-                transform: "translateX(0)"
-              }
-            },
-          },
+      // Custom animations
+      animation: {
+        "accordion-down": "accordion-down 0.2s var(--ease-natural)",
+        "accordion-up": "accordion-up 0.2s var(--ease-natural)",
+        "fade-in": "fade-in 0.5s var(--ease-decelerate)",
+        "slide-up": "slide-up 0.4s var(--ease-gentle)",
+        "scale-in": "scale-in 0.3s var(--ease-bounce)",
+        "pulse-soft": "pulse-soft 2s var(--ease-gentle) infinite",
+        "float-slow": "float-slow 6s var(--ease-gentle) infinite",
+        "float-medium": "float-medium 4s var(--ease-gentle) infinite",
+        "float-fast": "float-fast 3s var(--ease-gentle) infinite",
+        "slide-left": "slide-left 0.5s var(--ease-gentle)",
+        "slide-right": "slide-right 0.5s var(--ease-gentle)",
+        "optimized-bounce": "optimized-bounce 1.4s ease-in-out infinite",
+        "progress-shimmer": "progress-shimmer 2s ease-in-out infinite",
+        "skeleton-loading": "skeleton-loading 1.5s infinite",
+      },
+          
       
-          // Animation utilities - Mathematically optimized timing and easing
-          animation: {
-            "accordion-down": "accordion-down 0.2s var(--ease-natural)",
-            "accordion-up": "accordion-up 0.2s var(--ease-natural)",
-            "fade-in": "fade-in 0.5s var(--ease-decelerate)",        // Natural deceleration
-            "slide-up": "slide-up 0.4s var(--ease-gentle)",          // Gentle motion
-            "scale-in": "scale-in 0.3s var(--ease-bounce)",          // Playful bounce
-            "pulse-soft": "pulse-soft 2s var(--ease-gentle) infinite",
-            // Floating blob animations - Natural motion
-            "float-slow": "float-slow 6s var(--ease-gentle) infinite",
-            "float-medium": "float-medium 4s var(--ease-gentle) infinite",
-            "float-fast": "float-fast 3s var(--ease-gentle) infinite",
-            // Additional animations for SectionTemplate
-            "slide-left": "slide-left 0.5s var(--ease-gentle)",
-            "slide-right": "slide-right 0.5s var(--ease-gentle)",
-          },
+      // Custom keyframes extension
+      keyframes: {
+        // Accordion animations
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        // Brand animations
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "slide-up": {
+          "0%": { opacity: "0", transform: "translateY(15px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.9)" },
+          "100%": { opacity: "1", transform: "scale(1)" }
+        },
+        "pulse-soft": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.8" }
+        },
+        // Floating animations
+        "float-slow": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(-10px, -15px, 0)" }
+        },
+        "float-medium": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(15px, -20px, 0)" }
+        },
+        "float-fast": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(-12px, -25px, 0)" }
+        },
+        // Slide animations
+        "slide-left": {
+          "0%": { opacity: "0", transform: "translateX(-30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" }
+        },
+        "slide-right": {
+          "0%": { opacity: "0", transform: "translateX(30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" }
+        },
+        // Optimized bounce
+        "optimized-bounce": {
+          "0%, 20%, 53%, 80%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "40%, 43%": { transform: "translate3d(0, -8px, 0)" },
+          "70%": { transform: "translate3d(0, -4px, 0)" },
+          "90%": { transform: "translate3d(0, -2px, 0)" }
+        },
+        // Progress shimmer
+        "progress-shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" }
+        },
+        // Skeleton loading
+        "skeleton-loading": {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "-200% 0" }
+        }
+      },
     },
   },
   

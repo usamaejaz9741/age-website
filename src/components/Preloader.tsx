@@ -89,6 +89,14 @@ const Preloader = ({
   }, [minDuration]);
 
   // Check if all resources are loaded
+  /**
+   * Checks if all critical resources are loaded
+   * Includes:
+   * - Fonts
+   * - DOM ready state
+   * - Critical images
+   * - Spline 3D background iframe
+   */
   const checkResourcesLoaded = useCallback(() => {
     const checks = [
       // Check if fonts are loaded
@@ -206,7 +214,7 @@ const Preloader = ({
     <div 
       className={cn(
         "fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-opacity duration-200 ease-out will-change-auto",
-        isAnimating && "opacity-0",
+        isAnimating && "opacity-0 pointer-events-none",
         className
       )}
       role="status"

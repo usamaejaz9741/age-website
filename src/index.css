@@ -83,7 +83,8 @@ body.loaded {
 /* Critical above-the-fold styles to prevent layout shift */
 body {
   /* Use system fonts initially to prevent flash */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   line-height: 1.6;
@@ -95,19 +96,29 @@ body {
 
 /* Apply custom font only after it's loaded */
 body.fonts-loaded {
-  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Kufam", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Improved typography hierarchy */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Kufam", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.025em;
 }
 
 /* Better text rendering */
-body, p, span, div {
+body,
+p,
+span,
+div {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -116,23 +127,25 @@ body, p, span, div {
 /* Mobile-first responsive design improvements */
 @media (max-width: 640px) {
   /* Improve touch targets on mobile */
-  button, a, [role="button"] {
+  button,
+  a,
+  [role="button"] {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Better spacing on mobile */
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   /* Improve text readability on small screens */
   body {
     font-size: 16px;
     line-height: 1.6;
   }
-  
+
   /* Better focus states for touch devices */
   button:focus-visible,
   a:focus-visible,
@@ -146,7 +159,8 @@ body, p, span, div {
  * Prevent flash of unstyled buttons and links
  * Ensures consistent styling from the start
  */
-button, a {
+button,
+a {
   font-family: inherit;
 }
 
@@ -199,37 +213,41 @@ input,
 textarea,
 select,
 [role="button"] {
-  transition: all 0.3s ease-out;
+  transition: background-color 0.3s ease-out, color 0.3s ease-out,
+    border-color 0.3s ease-out, transform 0.3s ease-out,
+    box-shadow 0.3s ease-out, opacity 0.3s ease-out;
 }
 
-/* Perfect icon-text alignment in buttons */
+/* Better line-height for button text readability */
 button {
-  line-height: 1;
+  line-height: 1.2;
 }
 
-/* Footer styling - ensure white text on primary background */
+/* Footer styling - theme-aware text on primary background */
 footer.bg-primary {
-  color: white;
+  color: hsl(var(--primary-foreground));
+}
+
+footer.bg-primary a {
+  color: hsl(var(--primary-foreground));
 }
 
 footer.bg-primary a:hover {
   opacity: 0.8;
 }
 
-/* Spline iframe styling - ensure seamless integration */
-iframe[src*="spline"] {
+/* Consolidated iframe styling */
+iframe {
   overflow: hidden !important;
   border: none !important;
   outline: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  background: transparent !important;
 }
 
-/* Ensure no scrollbars on any iframe */
-iframe {
-  overflow: hidden !important;
-  border: none !important;
+/* Spline-specific transparent background */
+iframe[src*="spline"] {
+  background: transparent !important;
 }
 
 /* Preloader performance optimizations */
@@ -250,7 +268,6 @@ iframe {
 .animate-fade-in,
 .animate-slide-up,
 .animate-scale-in {
-  will-change: transform, opacity;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
@@ -273,15 +290,10 @@ html {
 }
 
 /* Optimize main content area for scroll performance */
-main,
-section,
-article {
-  /* Create new stacking context for better compositing */
+/* Removed excessive transform layers - apply selectively where needed */
+.gpu-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;
-  /* Improve rendering performance for off-screen content */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
 }
 
 /* Optimize fixed elements during scroll */
@@ -291,7 +303,8 @@ article {
 }
 
 /* Reduce blur rendering cost on gradients */
-.blur-2xl, .blur-3xl {
+.blur-2xl,
+.blur-3xl {
   will-change: transform;
   /* Reduce blur quality slightly for better performance */
   filter: blur(64px);
@@ -302,32 +315,7 @@ article {
 }
 
 /* Optimize animations to use GPU - simplified for better performance */
-@keyframes float-slow {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(-10px, -15px, 0);
-  }
-}
-
-@keyframes float-medium {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(15px, -20px, 0);
-  }
-}
-
-@keyframes float-fast {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(-12px, -25px, 0);
-  }
-}
+/* Float animations are now handled by Tailwind config */
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
@@ -340,7 +328,7 @@ article {
     animation: none;
     transform: none;
   }
-  
+
   *,
   *::before,
   *::after {
@@ -365,7 +353,7 @@ article {
     opacity: 0;
     pointer-events: none;
   }
-  
+
   /* Hide browser notification overlays */
   .browser-notification,
   .console-warning-overlay {
@@ -376,7 +364,7 @@ article {
     opacity: 0;
     pointer-events: none;
   }
-  
+
   /* Hide Edge Copilot console explanation overlays */
   [data-testid*="copilot"],
   [aria-label*="Copilot"],
@@ -398,7 +386,7 @@ article {
     left: -9999px !important;
     top: -9999px !important;
   }
-  
+
   /* Hide browser error explanation overlays */
   [role="alertdialog"][aria-label*="error"],
   [role="alertdialog"][aria-label*="warning"],
@@ -418,7 +406,6 @@ canvas[style*="display: block"] {
   /* Suppress WebGL context lost warnings */
   pointer-events: none;
 }
-
 
 /* Ensure text and icons are perfectly aligned in flexbox buttons */
 button[class*="inline-flex"] {
@@ -450,9 +437,15 @@ button[class*="inline-flex"] svg {
 }
 
 /* Prevent flash of unstyled headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   /* Use system fonts initially */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   line-height: 1.2;
   margin: 0;
@@ -465,7 +458,8 @@ body.fonts-loaded h3,
 body.fonts-loaded h4,
 body.fonts-loaded h5,
 body.fonts-loaded h6 {
-  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Kufam", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Optimized Preloader styles */
@@ -492,34 +486,23 @@ body.loading.loaded {
  * Optimized bounce animation for preloader dots
  * Uses transform3d for hardware acceleration
  */
-@keyframes optimized-bounce {
-  0%, 20%, 53%, 80%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  40%, 43% {
-    transform: translate3d(0, -8px, 0);
-  }
-  70% {
-    transform: translate3d(0, -4px, 0);
-  }
-  90% {
-    transform: translate3d(0, -2px, 0);
-  }
-}
-
-.animate-optimized-bounce {
-  animation: optimized-bounce 1.4s ease-in-out infinite;
-}
+/* Optimized bounce animation is now handled by Tailwind config */
 
 /* Background Pattern Classes for SectionTemplate */
 .bg-dots-pattern {
-  background-image: radial-gradient(circle, hsl(var(--muted-foreground)) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    hsl(var(--muted-foreground)) 1px,
+    transparent 1px
+  );
   background-size: 20px 20px;
 }
 
 .bg-grid-pattern {
-  background-image: 
-    linear-gradient(hsl(var(--muted-foreground)) 1px, transparent 1px),
+  background-image: linear-gradient(
+      hsl(var(--muted-foreground)) 1px,
+      transparent 1px
+    ),
     linear-gradient(90deg, hsl(var(--muted-foreground)) 1px, transparent 1px);
   background-size: 20px 20px;
 }
@@ -529,114 +512,108 @@ body.loading.loaded {
 }
 
 .bg-circles-pattern {
-  background-image: radial-gradient(circle at 25% 25%, hsl(var(--muted-foreground)) 2px, transparent 2px),
-                    radial-gradient(circle at 75% 75%, hsl(var(--muted-foreground)) 2px, transparent 2px);
+  background-image: radial-gradient(
+      circle at 25% 25%,
+      hsl(var(--muted-foreground)) 2px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      hsl(var(--muted-foreground)) 2px,
+      transparent 2px
+    );
   background-size: 40px 40px;
 }
 
 /* Progress bar animations */
-@keyframes progress-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.progress-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: progress-shimmer 2s ease-in-out infinite;
-}
+/* Progress shimmer animation is now handled by Tailwind config */
 
 /* Loading skeleton for better perceived performance */
-.skeleton {
-  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
+/* Skeleton animation is now handled by Tailwind config */
 
 /* Prevent layout shift during font loading */
 .font-loading {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 .font-loaded {
-  font-family: 'Kufam', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Kufam", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Alvi Global Enterprises B2B Design System - Performance-driven minimalism */
 
 @layer base {
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     @apply font-heading font-bold tracking-tight;
   }
-  
+
   /* Typography line heights */
-  .leading-tight { line-height: var(--line-height-tight); }
-  .leading-normal { line-height: var(--line-height-normal); }
-  .leading-relaxed { line-height: var(--line-height-relaxed); }
-  .leading-loose { line-height: var(--line-height-loose); }
-  
+  .leading-tight {
+    line-height: var(--line-height-tight);
+  }
+  .leading-normal {
+    line-height: var(--line-height-normal);
+  }
+  .leading-relaxed {
+    line-height: var(--line-height-relaxed);
+  }
+  .leading-loose {
+    line-height: var(--line-height-loose);
+  }
+
   /* Performance optimizations */
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-/* Optimize rendering performance */
-.animate-fade-in,
-.animate-slide-up,
-.animate-scale-in,
-.hover-lift,
-.hover-scale,
-.hover-glow {
-  will-change: transform, opacity, box-shadow;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
 
-/* Optimize card rendering */
-.bg-card,
-.bg-gradient-card,
-.bg-gradient-hero {
-  contain: layout style paint;
-}
+  /* Optimize rendering performance */
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-scale-in,
+  .hover-lift,
+  .hover-scale,
+  .hover-glow {
+    will-change: transform, opacity, box-shadow;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
 
-/* Optimize text rendering */
-h1, h2, h3, h4, h5, h6 {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-  
+  /* Optimize card rendering */
+  .bg-card,
+  .bg-gradient-card,
+  .bg-gradient-hero {
+    contain: layout style paint;
+  }
+
+  /* Optimize text rendering */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   /* Optimize image rendering */
   img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
-  
+
   /* Optimize scroll performance */
   .overflow-auto,
   .overflow-scroll {
     -webkit-overflow-scrolling: touch;
   }
-  
+
   /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -651,17 +628,17 @@ h1, h2, h3, h4, h5, h6 {
     /* Core Brand Colors */
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
-    
+
     /* Resolution Blue - Mathematical HSL progression - WCAG 2.1 AA Compliant */
-    --resolution-blue-500: 224 100% 55%;  /* 4.8:1 contrast ratio on white */
-    --resolution-blue-600: 224 100% 48%;  /* 5.1:1 contrast ratio on white - Enhanced for better accessibility */
-    --resolution-blue-700: 224 100% 40%;  /* 7.2:1 contrast ratio on white - Enhanced for better accessibility */
-    --resolution-blue-800: 224 100% 32%;  /* 9.1:1 contrast ratio on white - Maximum accessibility */
-    
+    --resolution-blue-500: 224 100% 55%; /* 4.8:1 contrast ratio on white */
+    --resolution-blue-600: 224 100% 48%; /* 5.1:1 contrast ratio on white - Enhanced for better accessibility */
+    --resolution-blue-700: 224 100% 40%; /* 7.2:1 contrast ratio on white - Enhanced for better accessibility */
+    --resolution-blue-800: 224 100% 32%; /* 9.1:1 contrast ratio on white - Maximum accessibility */
+
     /* Malibu - Consistent mathematical progression */
     --malibu-300: 199 98% 65%;
-    --malibu-400: 199 98% 52%;  /* 13% lightness reduction, consistent hue */
-    
+    --malibu-400: 199 98% 52%; /* 13% lightness reduction, consistent hue */
+
     /* Surface & Interface Colors */
     --card: var(--background);
     --card-foreground: var(--foreground);
@@ -671,40 +648,40 @@ h1, h2, h3, h4, h5, h6 {
     --muted-foreground: 224 40% 40%;
     --accent: var(--malibu-300);
     --accent-foreground: var(--foreground);
-    
+
     /* Multicolored icon system - Enhanced visibility and accessibility - Updated 2024 */
     /* All colors meet WCAG 2.1 AA contrast requirements (4.5:1 ratio minimum) */
-    --icon-purple: 270 100% 65%;    /* Purple for AI & Strategy - 4.8:1 contrast ratio */
-    --icon-blue: 210 100% 55%;      /* Blue for Engineering & Data - 5.2:1 contrast ratio */
-    --icon-green: 120 100% 45%;     /* Green for Growth & Success - 6.1:1 contrast ratio */
-    --icon-indigo: 240 100% 65%;    /* Indigo for Creative & Innovation - 4.7:1 contrast ratio */
-    --icon-red: 0 100% 55%;         /* Red for Operations & Urgency - 5.3:1 contrast ratio */
-    
+    --icon-purple: 270 100% 65%; /* Purple for AI & Strategy - 4.8:1 contrast ratio */
+    --icon-blue: 210 100% 55%; /* Blue for Engineering & Data - 5.2:1 contrast ratio */
+    --icon-green: 120 100% 45%; /* Green for Growth & Success - 6.1:1 contrast ratio */
+    --icon-indigo: 240 100% 65%; /* Indigo for Creative & Innovation - 4.7:1 contrast ratio */
+    --icon-red: 0 100% 55%; /* Red for Operations & Urgency - 5.3:1 contrast ratio */
+
     /* Icon background colors with 10% opacity for better visual hierarchy */
     --icon-purple-bg: 270 100% 65% / 0.1;
     --icon-blue-bg: 210 100% 55% / 0.1;
     --icon-green-bg: 120 100% 45% / 0.1;
     --icon-indigo-bg: 240 100% 65% / 0.1;
     --icon-red-bg: 0 100% 55% / 0.1;
-    
+
     /* Neutral System (based on opacity) */
     --neutral-75: 0 0% 0% / 0.75;
     --neutral-50: 0 0% 0% / 0.5;
     --neutral-25: 0 0% 0% / 0.25;
     --neutral-10: 0 0% 0% / 0.1;
     --neutral-5: 0 0% 0% / 0.05;
-    
+
     /* Semantic Colors */
     --success: 120 100% 45%;
     --success-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    
+
     /* Interface Elements */
     --border: var(--neutral-10);
     --input: var(--neutral-10);
     --ring: var(--resolution-blue-600);
-    
+
     /* Sidebar Colors */
     --sidebar-background: var(--background);
     --sidebar-foreground: var(--foreground);
@@ -714,42 +691,49 @@ h1, h2, h3, h4, h5, h6 {
     --sidebar-accent-foreground: var(--foreground);
     --sidebar-border: var(--neutral-10);
     --sidebar-ring: var(--resolution-blue-600);
-    
+
     /* State Colors */
     --hover: var(--resolution-blue-700);
     --hover-foreground: var(--foreground);
     --focus: var(--resolution-blue-600);
     --focus-foreground: var(--foreground);
-    
+
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, 
-      hsl(var(--resolution-blue-600) / 0.05) 0%, 
+    --gradient-hero: linear-gradient(
+      135deg,
+      hsl(var(--resolution-blue-600) / 0.05) 0%,
       hsl(var(--malibu-300) / 0.05) 100%
     );
-    --gradient-card: linear-gradient(145deg, 
-      hsl(var(--background)) 0%, 
+    --gradient-card: linear-gradient(
+      145deg,
+      hsl(var(--background)) 0%,
       hsl(var(--malibu-300) / 0.02) 100%
     );
-    
+
     /* Enhanced shadow system for better visual hierarchy */
-    --shadow-soft: 0 1px 3px hsl(var(--resolution-blue-600) / 0.12), 0 1px 2px hsl(var(--resolution-blue-600) / 0.24);
-    --shadow-medium: 0 4px 6px hsl(var(--resolution-blue-600) / 0.07), 0 2px 4px hsl(var(--resolution-blue-600) / 0.06);
-    --shadow-strong: 0 10px 15px hsl(var(--resolution-blue-600) / 0.1), 0 4px 6px hsl(var(--resolution-blue-600) / 0.05);
-    --shadow-stronger: 0 20px 25px hsl(var(--resolution-blue-600) / 0.1), 0 10px 10px hsl(var(--resolution-blue-600) / 0.04);
-    --shadow-glow: 0 0 20px hsl(var(--resolution-blue-600) / 0.15), 0 0 40px hsl(var(--resolution-blue-600) / 0.1);
-    
+    --shadow-soft: 0 1px 3px hsl(var(--resolution-blue-600) / 0.12),
+      0 1px 2px hsl(var(--resolution-blue-600) / 0.24);
+    --shadow-medium: 0 4px 6px hsl(var(--resolution-blue-600) / 0.07),
+      0 2px 4px hsl(var(--resolution-blue-600) / 0.06);
+    --shadow-strong: 0 10px 15px hsl(var(--resolution-blue-600) / 0.1),
+      0 4px 6px hsl(var(--resolution-blue-600) / 0.05);
+    --shadow-stronger: 0 20px 25px hsl(var(--resolution-blue-600) / 0.1),
+      0 10px 10px hsl(var(--resolution-blue-600) / 0.04);
+    --shadow-glow: 0 0 20px hsl(var(--resolution-blue-600) / 0.15),
+      0 0 40px hsl(var(--resolution-blue-600) / 0.1);
+
     /* Typography Scale - Golden Ratio (1.618) progression for mathematical harmony */
-    --font-size-xs: 0.75rem;     /* 12px - Base */
-    --font-size-sm: 0.875rem;    /* 14px - 1.167x */
-    --font-size-base: 1rem;      /* 16px - 1.143x */
-    --font-size-lg: 1.125rem;    /* 18px - 1.125x */
-    --font-size-xl: 1.25rem;     /* 20px - 1.111x */
-    --font-size-2xl: 1.5rem;     /* 24px - 1.2x */
-    --font-size-3xl: 1.875rem;   /* 30px - 1.25x */
-    --font-size-4xl: 2.5rem;     /* 40px - 1.333x */
-    --font-size-5xl: 3.75rem;    /* 60px - 1.5x */
-    --font-size-6xl: 6rem;       /* 96px - 1.6x (approaching Golden Ratio) */
-    
+    --font-size-xs: 0.75rem; /* 12px - Base */
+    --font-size-sm: 0.875rem; /* 14px - 1.167x */
+    --font-size-base: 1rem; /* 16px - 1.143x */
+    --font-size-lg: 1.125rem; /* 18px - 1.125x */
+    --font-size-xl: 1.25rem; /* 20px - 1.111x */
+    --font-size-2xl: 1.5rem; /* 24px - 1.2x */
+    --font-size-3xl: 1.875rem; /* 30px - 1.25x */
+    --font-size-4xl: 2.5rem; /* 40px - 1.333x */
+    --font-size-5xl: 3.75rem; /* 60px - 1.5x */
+    --font-size-6xl: 6rem; /* 96px - 1.6x (approaching Golden Ratio) */
+
     /* Fluid Typography - Responsive scaling */
     --fluid-text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
     --fluid-text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
@@ -761,61 +745,75 @@ h1, h2, h3, h4, h5, h6 {
     --fluid-text-4xl: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);
     --fluid-text-5xl: clamp(3.75rem, 3rem + 3.75vw, 6rem);
     --fluid-text-6xl: clamp(6rem, 4.5rem + 7.5vw, 9rem);
-    
+
     /* Line Height Scale - Optimal for readability */
-    --line-height-tight: 1.1;     /* For large headings */
-    --line-height-normal: 1.4;    /* For body text */
-    --line-height-relaxed: 1.6;   /* For long-form content */
-    --line-height-loose: 1.8;     /* For accessibility */
-    
+    --line-height-tight: 1.1; /* For large headings */
+    --line-height-normal: 1.4; /* For body text */
+    --line-height-relaxed: 1.6; /* For long-form content */
+    --line-height-loose: 1.8; /* For accessibility */
+
     /* Spacing Scale - Golden Ratio (1.618) progression for mathematical harmony */
-    --space-xs: 0.5rem;      /* 8px - Base */
-    --space-sm: 0.75rem;     /* 12px - 1.5x */
-    --space-md: 1rem;        /* 16px - 1.333x */
-    --space-lg: 1.25rem;     /* 20px - 1.25x */
-    --space-xl: 1.5rem;      /* 24px - 1.2x */
-    --space-2xl: 2rem;       /* 32px - 1.333x */
-    --space-3xl: 2.5rem;     /* 40px - 1.25x */
-    --space-4xl: 3.75rem;    /* 60px - 1.5x */
-    
+    --space-xs: 0.5rem; /* 8px - Base */
+    --space-sm: 0.75rem; /* 12px - 1.5x */
+    --space-md: 1rem; /* 16px - 1.333x */
+    --space-lg: 1.25rem; /* 20px - 1.25x */
+    --space-xl: 1.5rem; /* 24px - 1.2x */
+    --space-2xl: 2rem; /* 32px - 1.333x */
+    --space-3xl: 2.5rem; /* 40px - 1.25x */
+    --space-4xl: 3.75rem; /* 60px - 1.5x */
+
     /* Component Spacing - Based on Golden Ratio spacing scale */
-    --card-padding-sm: var(--space-md);     /* 1rem */
-    --card-padding-md: var(--space-lg);     /* 1.25rem */
-    --card-padding-lg: var(--space-xl);     /* 1.5rem */
-    --section-padding: var(--space-4xl);    /* 3.75rem */
-    --element-margin-sm: var(--space-lg);   /* 1.25rem */
-    --element-margin-md: var(--space-xl);   /* 1.5rem */
-    --element-margin-lg: var(--space-2xl);  /* 2rem */
-    --element-margin-xl: var(--space-3xl);  /* 2.5rem */
-    
+    --card-padding-sm: var(--space-md); /* 1rem */
+    --card-padding-md: var(--space-lg); /* 1.25rem */
+    --card-padding-lg: var(--space-xl); /* 1.5rem */
+    --section-padding: var(--space-4xl); /* 3.75rem */
+    --element-margin-sm: var(--space-lg); /* 1.25rem */
+    --element-margin-md: var(--space-xl); /* 1.5rem */
+    --element-margin-lg: var(--space-2xl); /* 2rem */
+    --element-margin-xl: var(--space-3xl); /* 2.5rem */
+
     /* Component Sizing */
-    --button-min-width: 280px;              /* Minimum button width for CTA buttons */
-    --button-touch-target: 44px;            /* Minimum touch target size for accessibility */
+    --button-min-width: 280px; /* Minimum button width for CTA buttons */
+    --button-touch-target: 44px; /* Minimum touch target size for accessibility */
 
     --radius: 0.5rem;
-    
-    /* Mathematically Optimized Easing Functions */
-    --ease-natural: cubic-bezier(0.4, 0.0, 0.2, 1);        /* Material Design standard */
-    --ease-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);     /* Fast start, slow end */
-    --ease-accelerate: cubic-bezier(0.4, 0.0, 1, 1);       /* Slow start, fast end */
-    --ease-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);          /* Sharp transitions */
-    --ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);   /* Gentle, natural motion */
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Playful bounce effect */
-    --ease-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);         /* Smooth, natural motion */
-    --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Spring-like motion */
-    
-    /* Animation Delay System - Golden Ratio progression */
-    --animation-delay-small: 0.1s;      /* 100ms */
-    --animation-delay-medium: 0.2s;     /* 200ms */
-    --animation-delay-large: 0.3s;      /* 300ms */
-    --animation-delay-xl: 0.5s;         /* 500ms */
-    
-    /* Transition Duration System */
-    --transitions-instant: 100ms;       /* Instant transitions */
-    --transitions-fast: 200ms;          /* Fast transitions */
-    --transitions-default: 300ms;       /* Default transitions */
-    --transitions-slow: 500ms;          /* Slow transitions */
 
+    /* Mathematically Optimized Easing Functions */
+    --ease-natural: cubic-bezier(0.4, 0, 0.2, 1); /* Material Design standard */
+    --ease-decelerate: cubic-bezier(0, 0, 0.2, 1); /* Fast start, slow end */
+    --ease-accelerate: cubic-bezier(0.4, 0, 1, 1); /* Slow start, fast end */
+    --ease-sharp: cubic-bezier(0.4, 0, 0.6, 1); /* Sharp transitions */
+    --ease-gentle: cubic-bezier(
+      0.25,
+      0.46,
+      0.45,
+      0.94
+    ); /* Gentle, natural motion */
+    --ease-bounce: cubic-bezier(
+      0.68,
+      -0.55,
+      0.265,
+      1.55
+    ); /* Playful bounce effect */
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1); /* Smooth, natural motion */
+    --ease-spring: cubic-bezier(
+      0.175,
+      0.885,
+      0.32,
+      1.275
+    ); /* Spring-like motion */
+
+    /* Animation Delay System - Golden Ratio progression */
+    --animation-delay-small: 0.1s; /* 100ms */
+    --animation-delay-medium: 0.2s; /* 200ms */
+    --animation-delay-large: 0.3s; /* 300ms */
+    --animation-delay-xl: 0.5s; /* 500ms */
+
+    /* Transition Duration System */
+    --transitions-instant: 100ms; /* Instant transitions */
+    --transitions-fast: 200ms; /* Fast transitions */
+    --transitions-default: 300ms; /* Default transitions */
+    --transitions-slow: 500ms; /* Slow transitions */
   }
 
   .dark {

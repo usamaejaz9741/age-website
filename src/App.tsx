@@ -72,7 +72,10 @@ const queryClient = new QueryClient({
  */
 const App = () => {
   /** State to control preloader visibility */
-  const [showPreloader, setShowPreloader] = useState(true);
+  const [showPreloader, setShowPreloader] = useState(() => {
+    // Skip preloader if query param is present (for E2E tests)
+    return !window.location.search.includes('no-preloader=true');
+  });
 
   /**
    * FOUC Prevention and Font Loading Setup

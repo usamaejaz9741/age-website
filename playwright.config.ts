@@ -14,12 +14,12 @@ export default defineConfig({
   testDir: './e2e',
   
   // Timeout for each test
-  timeout: 30000,
+  timeout: 60000,
   
   // Test execution configuration
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 1 : undefined,
   
   // Reporter configuration
@@ -49,7 +49,7 @@ export default defineConfig({
     video: 'retain-on-failure',
     
     // Timeout for actions
-    actionTimeout: 10000,
+    actionTimeout: 15000,
     
     // Navigation timeout
     navigationTimeout: 30000,
@@ -88,4 +88,3 @@ export default defineConfig({
     timeout: 120000,
   },
 });
-

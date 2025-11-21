@@ -56,9 +56,32 @@ export default defineConfig(({ mode }) => ({
     target: 'esnext',
     rollupOptions: {
       output: {
-        // Simplified chunk splitting - let Vite handle it automatically
-        // This prevents module initialization order issues
-        manualChunks: undefined
+        manualChunks: (id) => {
+          // Core React vendor chunk
+          if (id.includes('node_modules/react') || 
+              id.includes('node_modules/react-dom') || 
+              id.includes('node_modules/react-router-dom')) {
+            return 'vendor-react';
+          }
+          
+          // Supabase vendor chunk
+          if (id.includes('node_modules/@supabase')) {
+            return 'vendor-supabase';
+          }
+          
+          // UI and Utilities vendor chunk
+          if (id.includes('node_modules/@radix-ui') || 
+              id.includes('node_modules/lucide-react') ||
+              id.includes('node_modules/clsx') ||
+              id.includes('node_modules/tailwind-merge')) {
+            return 'vendor-ui';
+          }
+          
+          // Tanstack Query
+          if (id.includes('node_modules/@tanstack')) {
+            return 'vendor-tanstack';
+          }
+        }
       }
     }
   },

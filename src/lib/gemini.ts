@@ -39,24 +39,24 @@ export interface QuizAuditData {
  * @throws Error if AI generation fails
  */
 export async function generateQuizAudit(data: QuizAuditData, signal?: AbortSignal): Promise<string> {
+  // Validate input data to prevent prompt injection and ensure data quality
+  if (!data || typeof data !== 'object') {
+    throw new Error('Invalid audit data provided');
+  }
+
+  if (!data.email || typeof data.email !== 'string') {
+    throw new Error('Invalid email address');
+  }
+
+  if (typeof data.score !== 'number' || data.score < 0 || data.score > 100) {
+    throw new Error('Invalid score value');
+  }
+
+  if (!data.band || !['Explorer', 'Experimenter', 'Accelerator'].includes(data.band)) {
+    throw new Error('Invalid maturity band');
+  }
+
   try {
-    // Validate input data to prevent prompt injection and ensure data quality
-    if (!data || typeof data !== 'object') {
-      throw new Error('Invalid audit data provided');
-    }
-
-    if (!data.email || typeof data.email !== 'string') {
-      throw new Error('Invalid email address');
-    }
-
-    if (typeof data.score !== 'number' || data.score < 0 || data.score > 100) {
-      throw new Error('Invalid score value');
-    }
-
-    if (!data.band || !['Explorer', 'Experimenter', 'Accelerator'].includes(data.band)) {
-      throw new Error('Invalid maturity band');
-    }
-
     // Construct AI prompt with user assessment data
     // Structured to generate actionable, business-focused recommendations
     const prompt = `# AI Growth Audit Report Generation
@@ -119,6 +119,10 @@ Make the report comprehensive, professional, and immediately actionable for busi
 
     return response;
   } catch (error) {
+    // If the request was aborted, re-throw the error
+    if (signal?.aborted) {
+      throw error;
+    }
     // Log error and use fallback report
     logError('AI Audit Generation', error, { band: data.band, score: data.score });
     

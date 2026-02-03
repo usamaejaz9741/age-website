@@ -30,7 +30,7 @@ export const SEO_CONFIG = {
   DEFAULT_COUNTRY: 'PK',
   DEFAULT_REGION: 'Sindh',
   DEFAULT_CITY: 'Karachi',
-  CONTACT_EMAIL: 'hello@alviglobal.com',
+  CONTACT_EMAIL: 'info@alviglobal.com',
   SOCIAL_LINKS: {
     twitter: 'https://twitter.com/AlviGlobalEnt',
     linkedin: 'https://linkedin.com/company/alvi-global-enterprises'
@@ -193,7 +193,7 @@ export function generateOrganizationSchema(additionalData: Record<string, unknow
       '@type': 'ContactPoint',
       contactType: 'customer service',
       email: SEO_CONFIG.CONTACT_EMAIL,
-      telephone: '+92 301 8222054'
+      telephone: '+1 (272) 370-1445'
     },
     sameAs: Object.values(SEO_CONFIG.SOCIAL_LINKS),
     ...additionalData

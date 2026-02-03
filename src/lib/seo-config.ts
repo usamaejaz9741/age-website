@@ -41,7 +41,7 @@ export const DEFAULT_SEO_CONFIG = {
   country: 'PK',
   region: 'Sindh',
   city: 'Karachi',
-  contactEmail: 'hello@alviglobal.com',
+  contactEmail: 'info@alviglobal.com',
   socialLinks: {
     twitter: 'https://twitter.com/AlviGlobalEnt',
     linkedin: 'https://linkedin.com/company/alvi-global-enterprises'
@@ -196,7 +196,7 @@ export const STRUCTURED_DATA_TEMPLATES = {
       '@type': 'ContactPoint',
       contactType: 'customer service',
       email: DEFAULT_SEO_CONFIG.contactEmail,
-      telephone: '+92 301 8222054'
+      telephone: '+1 (272) 370-1445'
     },
     sameAs: Object.values(DEFAULT_SEO_CONFIG.socialLinks)
   },

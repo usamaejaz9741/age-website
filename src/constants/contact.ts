@@ -13,13 +13,13 @@
  */
 export const CONTACT_INFO = {
   /** Primary contact email */
-  email: 'hello@alviglobal.com',
+  email: 'info@alviglobal.com',
   
   /** Primary phone number (international format) */
-  phone: '+92 301 8222054',
+  phone: '+1 (272) 370-1445',
   
   /** Primary phone number (display format) */
-  phoneDisplay: '+92 301 8222054',
+  phoneDisplay: '+1 (272) 370-1445',
   
   /** Support email */
   supportEmail: 'support@alviglobal.com',
@@ -107,7 +107,7 @@ export const EMAIL_TEMPLATES = {
  * @example
  * ```typescript
  * const mailtoLink = generateMailtoLink('growthScoreResults');
- * // Returns: "mailto:hello@alviglobal.com?subject=AI Growth Score Results&body=..."
+ * // Returns: "mailto:info@alviglobal.com?subject=AI Growth Score Results&body=..."
  * ```
  */
 export function generateMailtoLink(
